@@ -44,7 +44,12 @@ impl ClerkFapiClient {
             .map_err(|e| format!("Failed to create HTTP client: {e}"))?;
 
         // Create custom client
-        let client = ClerkHttpClient::new(http_client, state.clone(), config.kind);
+        let client = ClerkHttpClient::new(
+            http_client,
+            state.clone(),
+            config.kind,
+            config.clerk_api_version.clone(),
+        );
 
         Ok(Self {
             client: Arc::new(client),

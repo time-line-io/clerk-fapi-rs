@@ -13,6 +13,7 @@ pub struct ClerkHttpClient {
     state: Arc<RwLock<ClerkState>>,
     client_kind: ClientKind,
     dev_browser_token_id: RwLock<Option<String>>,
+    clerk_api_version: Option<String>,
 }
 
 impl std::fmt::Display for ClerkHttpClient {
@@ -32,12 +33,14 @@ impl ClerkHttpClient {
         client: ReqwestClient,
         state: Arc<RwLock<ClerkState>>,
         client_kind: ClientKind,
+        clerk_api_version: Option<String>,
     ) -> Self {
         Self {
             inner: client,
             state,
             client_kind,
             dev_browser_token_id: RwLock::new(None),
+            clerk_api_version,
         }
     }
 
@@ -50,6 +53,17 @@ impl ClerkHttpClient {
 
     /// Process the request before sending
     fn process_request(&self, mut req: Request) -> Request {
+        if let Some(version) = self.clerk_api_version.as_ref() {
+            match HeaderValue::from_str(version.as_str()) {
+                Ok(value) => {
+                    req.headers_mut().insert("Clerk-API-Version", value);
+                }
+                Err(e) => {
+                    warn!("ClerkHttpClient: Failed to set Clerk-API-Version header: {e}");
+                }
+            }
+        }
+
         // When running in non standard browser we need to tell Clerk
         // API that with the _is_native query parameter
         let url = req.url_mut();

@@ -24,6 +24,51 @@ fn test_client_cloning() {
     );
 }
 
+#[tokio::test]
+async fn test_sends_clerk_api_version_header_by_default() {
+    let mut server = Server::new_async().await;
+
+    let env_mock = server
+        .mock("GET", "/v1/environment")
+        .match_query(Matcher::Any)
+        .match_header("Clerk-API-Version", "2025-04-10")
+        .with_status(200)
+        .with_body(get_env_data())
+        .with_header("content-type", "application/json")
+        .create_async()
+        .await;
+
+    let client_mock = server
+        .mock("GET", "/v1/client")
+        .match_query(Matcher::Any)
+        .match_header("Clerk-API-Version", "2025-04-10")
+        .with_status(200)
+        .with_body(
+            serde_json::json!({
+                "response": not_logged_in_client(),
+                "client": null
+            })
+            .to_string(),
+        )
+        .with_header("content-type", "application/json")
+        .create_async()
+        .await;
+
+    let clerk = Clerk::new(
+        ClerkFapiConfiguration::new(
+            "pk_test_Y2xlcmsuZXhhbXBsZS5jb20k".to_string(),
+            Some(server.url()),
+            None,
+        )
+        .unwrap(),
+    );
+
+    clerk.load().await.unwrap();
+
+    env_mock.assert_async().await;
+    client_mock.assert_async().await;
+}
+
 fn get_env_data() -> String {
     serde_json::json!(
         {

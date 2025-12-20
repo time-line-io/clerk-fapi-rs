@@ -114,6 +114,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
+## Session Token JWT v2
+
+Clerk Session Token JWT v1 is deprecated. To ensure Clerk returns **Session Token JWT v2**, this crate sends the `Clerk-API-Version: 2025-04-10` header **by default**.
+
+If you need a different pinned version:
+
+- `ClerkFapiConfiguration::with_clerk_api_version("YYYY-MM-DD")`
+- Or disable the header entirely with `ClerkFapiConfiguration::without_clerk_api_version()`
+
 ## Updating types
 
 1. Get latest defintions from

@@ -15,6 +15,7 @@ use std::sync::Arc;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 const NAME: &str = env!("CARGO_PKG_NAME");
+const DEFAULT_CLERK_API_VERSION: &str = "2025-04-10";
 const PUBLISHABLE_KEY_LIVE_PREFIX: &str = "pk_live_";
 const PUBLISHABLE_KEY_TEST_PREFIX: &str = "pk_test_";
 
@@ -148,6 +149,10 @@ pub struct ClerkFapiConfiguration {
     pub(crate) store: Arc<dyn Store>,
     pub(crate) store_prefix: String,
     pub(crate) kind: ClientKind,
+    /// Clerk API version pinning (via the `Clerk-API-Version` header).
+    ///
+    /// Defaults to `2025-04-10` to ensure Session Token JWT v2 is returned.
+    pub(crate) clerk_api_version: Option<String>,
 }
 
 impl ClerkFapiConfiguration {
@@ -198,7 +203,20 @@ impl ClerkFapiConfiguration {
             store,
             store_prefix,
             kind,
+            clerk_api_version: Some(DEFAULT_CLERK_API_VERSION.to_string()),
         })
+    }
+
+    /// Override the Clerk API version header (`Clerk-API-Version`).
+    pub fn with_clerk_api_version(mut self, version: impl Into<String>) -> Self {
+        self.clerk_api_version = Some(version.into());
+        self
+    }
+
+    /// Disable the Clerk API version header entirely.
+    pub fn without_clerk_api_version(mut self) -> Self {
+        self.clerk_api_version = None;
+        self
     }
 
     /// Returns the base URL for API requests
@@ -309,6 +327,7 @@ impl Default for ClerkFapiConfiguration {
             store: Arc::new(DefaultStore::default()),
             store_prefix: "ClerkFapi:".to_string(),
             kind: ClientKind::NonBrowser,
+            clerk_api_version: Some(DEFAULT_CLERK_API_VERSION.to_string()),
         }
     }
 }
