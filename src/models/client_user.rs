@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ClientUser {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value.
+    /// String representing the object's type. Objects of the same type share the same value. 
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "username", deserialize_with = "Option::deserialize")]
@@ -28,20 +28,11 @@ pub struct ClientUser {
     pub image_url: Option<String>,
     #[serde(rename = "has_image")]
     pub has_image: bool,
-    #[serde(
-        rename = "primary_email_address_id",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "primary_email_address_id", deserialize_with = "Option::deserialize")]
     pub primary_email_address_id: Option<String>,
-    #[serde(
-        rename = "primary_phone_number_id",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "primary_phone_number_id", deserialize_with = "Option::deserialize")]
     pub primary_phone_number_id: Option<String>,
-    #[serde(
-        rename = "primary_web3_wallet_id",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "primary_web3_wallet_id", deserialize_with = "Option::deserialize")]
     pub primary_web3_wallet_id: Option<String>,
     #[serde(rename = "password_enabled")]
     pub password_enabled: bool,
@@ -59,22 +50,14 @@ pub struct ClientUser {
     pub web3_wallets: Vec<models::ClientWeb3Wallet>,
     #[serde(rename = "passkeys")]
     pub passkeys: Vec<models::ClientPasskey>,
-    #[serde(
-        rename = "organization_memberships",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "organization_memberships", skip_serializing_if = "Option::is_none")]
     pub organization_memberships: Option<Vec<models::ClientOrganizationMembership>>,
     #[serde(rename = "external_accounts")]
     pub external_accounts: Vec<models::ExternalAccountWithVerification>,
     #[serde(rename = "saml_accounts")]
     pub saml_accounts: Vec<models::ClientSamlAccount>,
     /// Unix timestamp of last update.
-    #[serde(
-        rename = "password_last_updated_at",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "password_last_updated_at", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub password_last_updated_at: Option<Option<i64>>,
     #[serde(rename = "public_metadata")]
     pub public_metadata: std::collections::HashMap<String, serde_json::Value>,
@@ -90,20 +73,14 @@ pub struct ClientUser {
     /// Flag to denote whether user is banned or not.
     #[serde(rename = "banned")]
     pub banned: bool,
-    /// Flag to denote whether user is currently locked, i.e. restricted from signing in or not.
+    /// Flag to denote whether user is currently locked, i.e. restricted from signing in or not. 
     #[serde(rename = "locked")]
     pub locked: bool,
-    /// The number of seconds remaining until the lockout period expires for a locked user. A null value for a locked user indicates that lockout never expires.
-    #[serde(
-        rename = "lockout_expires_in_seconds",
-        deserialize_with = "Option::deserialize"
-    )]
+    /// The number of seconds remaining until the lockout period expires for a locked user. A null value for a locked user indicates that lockout never expires. 
+    #[serde(rename = "lockout_expires_in_seconds", deserialize_with = "Option::deserialize")]
     pub lockout_expires_in_seconds: Option<i64>,
-    /// The number of verification attempts remaining until the user is locked. Null if account lockout is not enabled. Note: if a user is locked explicitly via the Backend API, they may still have verification attempts remaining.
-    #[serde(
-        rename = "verification_attempts_remaining",
-        deserialize_with = "Option::deserialize"
-    )]
+    /// The number of verification attempts remaining until the user is locked. Null if account lockout is not enabled. Note: if a user is locked explicitly via the Backend API, they may still have verification attempts remaining. 
+    #[serde(rename = "verification_attempts_remaining", deserialize_with = "Option::deserialize")]
     pub verification_attempts_remaining: Option<i64>,
     /// Unix timestamp of creation.
     #[serde(rename = "created_at")]
@@ -118,11 +95,8 @@ pub struct ClientUser {
     #[serde(rename = "create_organization_enabled")]
     pub create_organization_enabled: bool,
     /// The maximum number of organizations the user can create. 0 means unlimited.
-    #[serde(
-        rename = "create_organizations_limit",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub create_organizations_limit: Option<i64>,
+    #[serde(rename = "create_organizations_limit", skip_serializing_if = "Option::is_none")]
+    pub create_organizations_limit: Option<i32>,
     /// Unix timestamp of the latest session activity, with day precision.
     #[serde(rename = "last_active_at", deserialize_with = "Option::deserialize")]
     pub last_active_at: Option<i64>,
@@ -141,42 +115,7 @@ pub struct ClientUser {
 }
 
 impl ClientUser {
-    pub fn new(
-        id: String,
-        object: Object,
-        username: Option<String>,
-        first_name: Option<String>,
-        last_name: Option<String>,
-        has_image: bool,
-        primary_email_address_id: Option<String>,
-        primary_phone_number_id: Option<String>,
-        primary_web3_wallet_id: Option<String>,
-        password_enabled: bool,
-        two_factor_enabled: bool,
-        totp_enabled: bool,
-        backup_code_enabled: bool,
-        email_addresses: Vec<models::ClientEmailAddress>,
-        phone_numbers: Vec<models::ClientPhoneNumber>,
-        web3_wallets: Vec<models::ClientWeb3Wallet>,
-        passkeys: Vec<models::ClientPasskey>,
-        external_accounts: Vec<models::ExternalAccountWithVerification>,
-        saml_accounts: Vec<models::ClientSamlAccount>,
-        public_metadata: std::collections::HashMap<String, serde_json::Value>,
-        external_id: Option<String>,
-        last_sign_in_at: Option<i64>,
-        banned: bool,
-        locked: bool,
-        lockout_expires_in_seconds: Option<i64>,
-        verification_attempts_remaining: Option<i64>,
-        created_at: i64,
-        updated_at: i64,
-        delete_self_enabled: bool,
-        create_organization_enabled: bool,
-        last_active_at: Option<i64>,
-        mfa_enabled_at: Option<i64>,
-        mfa_disabled_at: Option<i64>,
-        legal_accepted_at: Option<i64>,
-    ) -> ClientUser {
+    pub fn new(id: String, object: Object, username: Option<String>, first_name: Option<String>, last_name: Option<String>, has_image: bool, primary_email_address_id: Option<String>, primary_phone_number_id: Option<String>, primary_web3_wallet_id: Option<String>, password_enabled: bool, two_factor_enabled: bool, totp_enabled: bool, backup_code_enabled: bool, email_addresses: Vec<models::ClientEmailAddress>, phone_numbers: Vec<models::ClientPhoneNumber>, web3_wallets: Vec<models::ClientWeb3Wallet>, passkeys: Vec<models::ClientPasskey>, external_accounts: Vec<models::ExternalAccountWithVerification>, saml_accounts: Vec<models::ClientSamlAccount>, public_metadata: std::collections::HashMap<String, serde_json::Value>, external_id: Option<String>, last_sign_in_at: Option<i64>, banned: bool, locked: bool, lockout_expires_in_seconds: Option<i64>, verification_attempts_remaining: Option<i64>, created_at: i64, updated_at: i64, delete_self_enabled: bool, create_organization_enabled: bool, last_active_at: Option<i64>, mfa_enabled_at: Option<i64>, mfa_disabled_at: Option<i64>, legal_accepted_at: Option<i64>) -> ClientUser {
         ClientUser {
             id,
             object,
@@ -222,7 +161,7 @@ impl ClientUser {
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value.
+/// String representing the object's type. Objects of the same type share the same value. 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "user")]
@@ -234,3 +173,4 @@ impl Default for Object {
         Self::User
     }
 }
+

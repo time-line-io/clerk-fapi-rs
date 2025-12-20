@@ -22,21 +22,12 @@ pub struct ClientSignInUserData {
     #[serde(rename = "has_image")]
     pub has_image: bool,
     /// Use `image_url` instead.
-    #[serde(
-        rename = "profile_image_url",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "profile_image_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub profile_image_url: Option<Option<String>>,
 }
 
 impl ClientSignInUserData {
-    pub fn new(
-        first_name: Option<String>,
-        last_name: Option<String>,
-        has_image: bool,
-    ) -> ClientSignInUserData {
+    pub fn new(first_name: Option<String>, last_name: Option<String>, has_image: bool) -> ClientSignInUserData {
         ClientSignInUserData {
             first_name,
             last_name,
@@ -46,3 +37,4 @@ impl ClientSignInUserData {
         }
     }
 }
+

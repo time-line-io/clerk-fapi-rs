@@ -19,20 +19,10 @@ pub struct StubsVerificationFromOauth {
     pub status: Status,
     #[serde(rename = "strategy")]
     pub strategy: Strategy,
-    #[serde(
-        rename = "attempts",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub attempts: Option<Option<i64>>,
-    #[serde(
-        rename = "expire_at",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub expire_at: Option<Option<i64>>,
+    #[serde(rename = "attempts", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub attempts: Option<Option<i32>>,
+    #[serde(rename = "expire_at", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub expire_at: Option<Option<i32>>,
 }
 
 impl StubsVerificationFromOauth {
@@ -46,7 +36,7 @@ impl StubsVerificationFromOauth {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "verification_from_oauth")]
@@ -58,7 +48,7 @@ impl Default for Object {
         Self::VerificationFromOauth
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "verified")]
@@ -72,7 +62,7 @@ impl Default for Status {
         Self::Verified
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
     #[serde(rename = "from_oauth_apple")]
@@ -90,3 +80,4 @@ impl Default for Strategy {
         Self::FromOauthApple
     }
 }
+

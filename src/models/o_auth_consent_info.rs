@@ -16,20 +16,10 @@ pub struct OAuthConsentInfo {
     #[serde(rename = "oauth_application_name")]
     pub oauth_application_name: String,
     /// URL to the OAuth application's logo image
-    #[serde(
-        rename = "oauth_application_logo_url",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "oauth_application_logo_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub oauth_application_logo_url: Option<Option<String>>,
     /// URL to the OAuth application's website or homepage
-    #[serde(
-        rename = "oauth_application_url",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "oauth_application_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub oauth_application_url: Option<Option<String>>,
     #[serde(rename = "client_id")]
     pub client_id: String,
@@ -38,11 +28,7 @@ pub struct OAuthConsentInfo {
 }
 
 impl OAuthConsentInfo {
-    pub fn new(
-        oauth_application_name: String,
-        client_id: String,
-        scopes: Vec<models::OAuthScopeWithDescription>,
-    ) -> OAuthConsentInfo {
+    pub fn new(oauth_application_name: String, client_id: String, scopes: Vec<models::OAuthScopeWithDescription>) -> OAuthConsentInfo {
         OAuthConsentInfo {
             oauth_application_name,
             oauth_application_logo_url: None,
@@ -52,3 +38,4 @@ impl OAuthConsentInfo {
         }
     }
 }
+

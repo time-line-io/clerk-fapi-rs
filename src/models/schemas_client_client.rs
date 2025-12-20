@@ -22,15 +22,15 @@ pub struct SchemasClientClient {
     #[serde(rename = "sessions")]
     pub sessions: Vec<models::SchemasClientSession>,
     #[serde(rename = "sign_in", deserialize_with = "Option::deserialize")]
-    pub sign_in: Option<Box<models::ClientSignIn>>,
+    pub sign_in: Option<Box<models::SchemasClientSignIn>>,
     #[serde(rename = "sign_up", deserialize_with = "Option::deserialize")]
     pub sign_up: Option<Box<models::ClientSignUp>>,
     /// Last active session_id.
-    #[serde(
-        rename = "last_active_session_id",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "last_active_session_id", deserialize_with = "Option::deserialize")]
     pub last_active_session_id: Option<String>,
+    /// The authentication strategy that was last used to authenticate the user on this client. 
+    #[serde(rename = "last_authentication_strategy", deserialize_with = "Option::deserialize")]
+    pub last_authentication_strategy: Option<String>,
     /// Unix timestamp of the cookie expiration.
     #[serde(rename = "cookie_expires_at", deserialize_with = "Option::deserialize")]
     pub cookie_expires_at: Option<i64>,
@@ -46,25 +46,15 @@ pub struct SchemasClientClient {
 }
 
 impl SchemasClientClient {
-    pub fn new(
-        object: Object,
-        id: String,
-        sessions: Vec<models::SchemasClientSession>,
-        sign_in: Option<models::ClientSignIn>,
-        sign_up: Option<models::ClientSignUp>,
-        last_active_session_id: Option<String>,
-        cookie_expires_at: Option<i64>,
-        captcha_bypass: bool,
-        created_at: i64,
-        updated_at: i64,
-    ) -> SchemasClientClient {
+    pub fn new(object: Object, id: String, sessions: Vec<models::SchemasClientSession>, sign_in: Option<models::SchemasClientSignIn>, sign_up: Option<models::ClientSignUp>, last_active_session_id: Option<String>, last_authentication_strategy: Option<String>, cookie_expires_at: Option<i64>, captcha_bypass: bool, created_at: i64, updated_at: i64) -> SchemasClientClient {
         SchemasClientClient {
             object,
             id,
             sessions,
-            sign_in: sign_in.map(Box::new),
-            sign_up: sign_up.map(Box::new),
+            sign_in: if let Some(x) = sign_in {Some(Box::new(x))} else {None},
+            sign_up: if let Some(x) = sign_up {Some(Box::new(x))} else {None},
             last_active_session_id,
+            last_authentication_strategy,
             cookie_expires_at,
             captcha_bypass,
             created_at,
@@ -84,3 +74,4 @@ impl Default for Object {
         Self::Client
     }
 }
+

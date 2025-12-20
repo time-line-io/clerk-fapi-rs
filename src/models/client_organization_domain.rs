@@ -23,23 +23,15 @@ pub struct ClientOrganizationDomain {
     pub name: String,
     #[serde(rename = "enrollment_mode")]
     pub enrollment_mode: String,
-    #[serde(
-        rename = "affiliation_email_address",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "affiliation_email_address", deserialize_with = "Option::deserialize")]
     pub affiliation_email_address: Option<String>,
     #[serde(rename = "verification", deserialize_with = "Option::deserialize")]
     pub verification: Option<Box<models::ClientOrganizationDomainVerification>>,
     #[serde(rename = "total_pending_invitations")]
-    pub total_pending_invitations: i64,
+    pub total_pending_invitations: i32,
     #[serde(rename = "total_pending_suggestions")]
-    pub total_pending_suggestions: i64,
-    #[serde(
-        rename = "public_organization_data",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    pub total_pending_suggestions: i32,
+    #[serde(rename = "public_organization_data", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub public_organization_data: Option<Option<Box<models::ClientPublicOrganizationData>>>,
     /// Unix timestamp of creation.
     #[serde(rename = "created_at")]
@@ -50,19 +42,7 @@ pub struct ClientOrganizationDomain {
 }
 
 impl ClientOrganizationDomain {
-    pub fn new(
-        object: Object,
-        id: String,
-        organization_id: String,
-        name: String,
-        enrollment_mode: String,
-        affiliation_email_address: Option<String>,
-        verification: Option<models::ClientOrganizationDomainVerification>,
-        total_pending_invitations: i64,
-        total_pending_suggestions: i64,
-        created_at: i64,
-        updated_at: i64,
-    ) -> ClientOrganizationDomain {
+    pub fn new(object: Object, id: String, organization_id: String, name: String, enrollment_mode: String, affiliation_email_address: Option<String>, verification: Option<models::ClientOrganizationDomainVerification>, total_pending_invitations: i32, total_pending_suggestions: i32, created_at: i64, updated_at: i64) -> ClientOrganizationDomain {
         ClientOrganizationDomain {
             object,
             id,
@@ -70,7 +50,7 @@ impl ClientOrganizationDomain {
             name,
             enrollment_mode,
             affiliation_email_address,
-            verification: verification.map(Box::new),
+            verification: if let Some(x) = verification {Some(Box::new(x))} else {None},
             total_pending_invitations,
             total_pending_suggestions,
             public_organization_data: None,
@@ -79,7 +59,7 @@ impl ClientOrganizationDomain {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "organization_domain")]
@@ -91,3 +71,4 @@ impl Default for Object {
         Self::OrganizationDomain
     }
 }
+

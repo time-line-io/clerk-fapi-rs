@@ -20,13 +20,11 @@ pub struct ClientClientWrappedWeb3Wallet {
 }
 
 impl ClientClientWrappedWeb3Wallet {
-    pub fn new(
-        response: models::ClientWeb3Wallet,
-        client: models::ClientClient,
-    ) -> ClientClientWrappedWeb3Wallet {
+    pub fn new(response: models::ClientWeb3Wallet, client: models::ClientClient) -> ClientClientWrappedWeb3Wallet {
         ClientClientWrappedWeb3Wallet {
             response: Box::new(response),
             client: Box::new(client),
         }
     }
 }
+

@@ -20,32 +20,17 @@ pub struct VerificationGoogleOneTap {
     #[serde(rename = "strategy")]
     pub strategy: Strategy,
     #[serde(rename = "expire_at", deserialize_with = "Option::deserialize")]
-    pub expire_at: Option<i64>,
+    pub expire_at: Option<i32>,
     #[serde(rename = "attempts", deserialize_with = "Option::deserialize")]
-    pub attempts: Option<i64>,
-    #[serde(
-        rename = "verified_at_client",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    pub attempts: Option<i32>,
+    #[serde(rename = "verified_at_client", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub verified_at_client: Option<Option<String>>,
-    #[serde(
-        rename = "error",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "error", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub error: Option<Option<Box<models::ClerkError>>>,
 }
 
 impl VerificationGoogleOneTap {
-    pub fn new(
-        status: Status,
-        strategy: Strategy,
-        expire_at: Option<i64>,
-        attempts: Option<i64>,
-    ) -> VerificationGoogleOneTap {
+    pub fn new(status: Status, strategy: Strategy, expire_at: Option<i32>, attempts: Option<i32>) -> VerificationGoogleOneTap {
         VerificationGoogleOneTap {
             object: None,
             status,
@@ -57,7 +42,7 @@ impl VerificationGoogleOneTap {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "verification_google_one_tap")]
@@ -69,7 +54,7 @@ impl Default for Object {
         Self::VerificationGoogleOneTap
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "unverified")]
@@ -83,7 +68,7 @@ impl Default for Status {
         Self::Unverified
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
     #[serde(rename = "google_one_tap")]
@@ -95,3 +80,4 @@ impl Default for Strategy {
         Self::GoogleOneTap
     }
 }
+

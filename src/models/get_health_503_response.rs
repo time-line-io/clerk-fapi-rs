@@ -21,10 +21,13 @@ pub struct GetHealth503Response {
 
 impl GetHealth503Response {
     pub fn new(status: Status, message: String) -> GetHealth503Response {
-        GetHealth503Response { status, message }
+        GetHealth503Response {
+            status,
+            message,
+        }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "unhealthy")]
@@ -36,3 +39,4 @@ impl Default for Status {
         Self::Unhealthy
     }
 }
+

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::{clerk_http_client::ClerkHttpClient, configuration::ClientKind};
+use crate::clerk_http_client::ClerkHttpClient;
 
 #[derive(Debug)]
 pub struct Configuration {

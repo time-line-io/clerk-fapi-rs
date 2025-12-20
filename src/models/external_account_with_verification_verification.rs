@@ -14,9 +14,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "object")]
 pub enum ExternalAccountWithVerificationVerification {
-    #[serde(rename = "verification_oauth")]
+    #[serde(rename="verification_oauth")]
     VerificationOauth(Box<models::VerificationOauth>),
-    #[serde(rename = "verification_google_one_tap")]
+    #[serde(rename="verification_google_one_tap")]
     VerificationGoogleOneTap(Box<models::VerificationGoogleOneTap>),
 }
 
@@ -26,6 +26,7 @@ impl Default for ExternalAccountWithVerificationVerification {
     }
 }
 
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "unverified")]
@@ -39,7 +40,7 @@ impl Default for Status {
         Self::Unverified
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
     #[serde(rename = "google_one_tap")]
@@ -51,3 +52,4 @@ impl Default for Strategy {
         Self::GoogleOneTap
     }
 }
+

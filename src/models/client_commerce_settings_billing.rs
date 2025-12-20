@@ -13,22 +13,10 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClientCommerceSettingsBilling {
-    #[serde(rename = "enabled", skip_serializing_if = "Option::is_none")]
-    pub enabled: Option<bool>,
-    #[serde(
-        rename = "stripe_publishable_key",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "stripe_publishable_key", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub stripe_publishable_key: Option<Option<String>>,
-    #[serde(
-        rename = "has_paid_user_plans",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub has_paid_user_plans: Option<bool>,
-    #[serde(rename = "has_paid_org_plans", skip_serializing_if = "Option::is_none")]
-    pub has_paid_org_plans: Option<bool>,
+    #[serde(rename = "free_trial_requires_payment_method", skip_serializing_if = "Option::is_none")]
+    pub free_trial_requires_payment_method: Option<bool>,
     #[serde(rename = "user", skip_serializing_if = "Option::is_none")]
     pub user: Option<Box<models::ClientCommerceSettingsBillingUser>>,
     #[serde(rename = "organization", skip_serializing_if = "Option::is_none")]
@@ -38,12 +26,11 @@ pub struct ClientCommerceSettingsBilling {
 impl ClientCommerceSettingsBilling {
     pub fn new() -> ClientCommerceSettingsBilling {
         ClientCommerceSettingsBilling {
-            enabled: None,
             stripe_publishable_key: None,
-            has_paid_user_plans: None,
-            has_paid_org_plans: None,
+            free_trial_requires_payment_method: None,
             user: None,
             organization: None,
         }
     }
 }
+

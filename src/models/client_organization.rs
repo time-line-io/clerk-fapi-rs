@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ClientOrganization {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value.
+    /// String representing the object's type. Objects of the same type share the same value. 
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "name")]
@@ -27,47 +27,28 @@ pub struct ClientOrganization {
     #[serde(rename = "has_image")]
     pub has_image: bool,
     #[serde(rename = "members_count", skip_serializing_if = "Option::is_none")]
-    pub members_count: Option<i64>,
-    #[serde(
-        rename = "pending_invitations_count",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub pending_invitations_count: Option<i64>,
+    pub members_count: Option<i32>,
+    #[serde(rename = "pending_invitations_count", skip_serializing_if = "Option::is_none")]
+    pub pending_invitations_count: Option<i32>,
     #[serde(rename = "max_allowed_memberships")]
-    pub max_allowed_memberships: i64,
+    pub max_allowed_memberships: i32,
     #[serde(rename = "admin_delete_enabled")]
     pub admin_delete_enabled: bool,
     #[serde(rename = "public_metadata")]
     pub public_metadata: std::collections::HashMap<String, serde_json::Value>,
-    /// Unix timestamp of creation.
+    /// Unix timestamp of creation. 
     #[serde(rename = "created_at")]
     pub created_at: i64,
-    /// Unix timestamp of last update.
+    /// Unix timestamp of last update. 
     #[serde(rename = "updated_at")]
     pub updated_at: i64,
     /// Deprecated. Use `image_url` instead.
-    #[serde(
-        rename = "logo_url",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "logo_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub logo_url: Option<Option<String>>,
 }
 
 impl ClientOrganization {
-    pub fn new(
-        id: String,
-        object: Object,
-        name: String,
-        slug: String,
-        has_image: bool,
-        max_allowed_memberships: i64,
-        admin_delete_enabled: bool,
-        public_metadata: std::collections::HashMap<String, serde_json::Value>,
-        created_at: i64,
-        updated_at: i64,
-    ) -> ClientOrganization {
+    pub fn new(id: String, object: Object, name: String, slug: String, has_image: bool, max_allowed_memberships: i32, admin_delete_enabled: bool, public_metadata: std::collections::HashMap<String, serde_json::Value>, created_at: i64, updated_at: i64) -> ClientOrganization {
         ClientOrganization {
             id,
             object,
@@ -86,7 +67,7 @@ impl ClientOrganization {
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value.
+/// String representing the object's type. Objects of the same type share the same value. 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "organization")]
@@ -98,3 +79,4 @@ impl Default for Object {
         Self::Organization
     }
 }
+

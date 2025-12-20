@@ -19,38 +19,20 @@ pub struct VerificationOauth {
     pub status: Status,
     #[serde(rename = "strategy")]
     pub strategy: String,
-    #[serde(
-        rename = "external_verification_redirect_url",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "external_verification_redirect_url", skip_serializing_if = "Option::is_none")]
     pub external_verification_redirect_url: Option<String>,
-    #[serde(
-        rename = "error",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "error", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub error: Option<Option<Box<models::ClerkError>>>,
     #[serde(rename = "expire_at")]
     pub expire_at: i64,
     #[serde(rename = "attempts", deserialize_with = "Option::deserialize")]
-    pub attempts: Option<i64>,
-    #[serde(
-        rename = "verified_at_client",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    pub attempts: Option<i32>,
+    #[serde(rename = "verified_at_client", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub verified_at_client: Option<Option<String>>,
 }
 
 impl VerificationOauth {
-    pub fn new(
-        status: Status,
-        strategy: String,
-        expire_at: i64,
-        attempts: Option<i64>,
-    ) -> VerificationOauth {
+    pub fn new(status: Status, strategy: String, expire_at: i64, attempts: Option<i32>) -> VerificationOauth {
         VerificationOauth {
             object: None,
             status,
@@ -63,7 +45,7 @@ impl VerificationOauth {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "verification_oauth")]
@@ -75,7 +57,7 @@ impl Default for Object {
         Self::VerificationOauth
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "unverified")]
@@ -95,3 +77,4 @@ impl Default for Status {
         Self::Unverified
     }
 }
+

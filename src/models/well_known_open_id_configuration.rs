@@ -21,6 +21,8 @@ pub struct WellKnownOpenIdConfiguration {
     pub token_endpoint: String,
     #[serde(rename = "revocation_endpoint")]
     pub revocation_endpoint: String,
+    #[serde(rename = "introspection_endpoint")]
+    pub introspection_endpoint: String,
     #[serde(rename = "userinfo_endpoint")]
     pub userinfo_endpoint: String,
     #[serde(rename = "jwks_uri")]
@@ -47,33 +49,18 @@ pub struct WellKnownOpenIdConfiguration {
     pub backchannel_logout_supported: bool,
     #[serde(rename = "frontchannel_logout_supported")]
     pub frontchannel_logout_supported: bool,
+    #[serde(rename = "end_session_endpoint", skip_serializing_if = "Option::is_none")]
+    pub end_session_endpoint: Option<String>,
 }
 
 impl WellKnownOpenIdConfiguration {
-    pub fn new(
-        issuer: String,
-        authorization_endpoint: String,
-        token_endpoint: String,
-        revocation_endpoint: String,
-        userinfo_endpoint: String,
-        jwks_uri: String,
-        scopes_supported: Vec<String>,
-        response_types_supported: Vec<String>,
-        response_modes_supported: Vec<String>,
-        grant_types_supported: Vec<String>,
-        subject_types_supported: Vec<String>,
-        id_token_signing_alg_values_supported: Vec<String>,
-        token_endpoint_auth_methods_supported: Vec<String>,
-        claims_supported: Vec<String>,
-        code_challenge_methods_supported: Vec<String>,
-        backchannel_logout_supported: bool,
-        frontchannel_logout_supported: bool,
-    ) -> WellKnownOpenIdConfiguration {
+    pub fn new(issuer: String, authorization_endpoint: String, token_endpoint: String, revocation_endpoint: String, introspection_endpoint: String, userinfo_endpoint: String, jwks_uri: String, scopes_supported: Vec<String>, response_types_supported: Vec<String>, response_modes_supported: Vec<String>, grant_types_supported: Vec<String>, subject_types_supported: Vec<String>, id_token_signing_alg_values_supported: Vec<String>, token_endpoint_auth_methods_supported: Vec<String>, claims_supported: Vec<String>, code_challenge_methods_supported: Vec<String>, backchannel_logout_supported: bool, frontchannel_logout_supported: bool) -> WellKnownOpenIdConfiguration {
         WellKnownOpenIdConfiguration {
             issuer,
             authorization_endpoint,
             token_endpoint,
             revocation_endpoint,
+            introspection_endpoint,
             userinfo_endpoint,
             jwks_uri,
             scopes_supported,
@@ -87,6 +74,8 @@ impl WellKnownOpenIdConfiguration {
             code_challenge_methods_supported,
             backchannel_logout_supported,
             frontchannel_logout_supported,
+            end_session_endpoint: None,
         }
     }
 }
+

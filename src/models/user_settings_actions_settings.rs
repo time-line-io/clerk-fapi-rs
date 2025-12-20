@@ -17,19 +17,12 @@ pub struct UserSettingsActionsSettings {
     pub delete_self: bool,
     #[serde(rename = "create_organization")]
     pub create_organization: bool,
-    #[serde(
-        rename = "create_organizations_limit",
-        deserialize_with = "Option::deserialize"
-    )]
-    pub create_organizations_limit: Option<i64>,
+    #[serde(rename = "create_organizations_limit", deserialize_with = "Option::deserialize")]
+    pub create_organizations_limit: Option<i32>,
 }
 
 impl UserSettingsActionsSettings {
-    pub fn new(
-        delete_self: bool,
-        create_organization: bool,
-        create_organizations_limit: Option<i64>,
-    ) -> UserSettingsActionsSettings {
+    pub fn new(delete_self: bool, create_organization: bool, create_organizations_limit: Option<i32>) -> UserSettingsActionsSettings {
         UserSettingsActionsSettings {
             delete_self,
             create_organization,
@@ -37,3 +30,4 @@ impl UserSettingsActionsSettings {
         }
     }
 }
+

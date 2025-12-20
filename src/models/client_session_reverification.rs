@@ -21,55 +21,28 @@ pub struct ClientSessionReverification {
     pub level: String,
     #[serde(rename = "status")]
     pub status: Status,
-    #[serde(
-        rename = "supported_first_factors",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "supported_first_factors", deserialize_with = "Option::deserialize")]
     pub supported_first_factors: Option<Vec<models::StubsSignInFactor>>,
-    #[serde(
-        rename = "supported_second_factors",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "supported_second_factors", deserialize_with = "Option::deserialize")]
     pub supported_second_factors: Option<Vec<models::StubsSignInFactor>>,
-    #[serde(
-        rename = "first_factor_verification",
-        deserialize_with = "Option::deserialize"
-    )]
-    pub first_factor_verification:
-        Option<Box<models::ClientSessionReverificationFirstFactorVerification>>,
-    #[serde(
-        rename = "second_factor_verification",
-        deserialize_with = "Option::deserialize"
-    )]
-    pub second_factor_verification:
-        Option<Box<models::ClientSessionReverificationSecondFactorVerification>>,
+    #[serde(rename = "first_factor_verification", deserialize_with = "Option::deserialize")]
+    pub first_factor_verification: Option<Box<models::ClientSessionReverificationFirstFactorVerification>>,
+    #[serde(rename = "second_factor_verification", deserialize_with = "Option::deserialize")]
+    pub second_factor_verification: Option<Box<models::ClientSessionReverificationSecondFactorVerification>>,
     #[serde(rename = "session")]
     pub session: Box<models::ClientSessionBase>,
 }
 
 impl ClientSessionReverification {
-    pub fn new(
-        object: Object,
-        level: String,
-        status: Status,
-        supported_first_factors: Option<Vec<models::StubsSignInFactor>>,
-        supported_second_factors: Option<Vec<models::StubsSignInFactor>>,
-        first_factor_verification: Option<
-            models::ClientSessionReverificationFirstFactorVerification,
-        >,
-        second_factor_verification: Option<
-            models::ClientSessionReverificationSecondFactorVerification,
-        >,
-        session: models::ClientSessionBase,
-    ) -> ClientSessionReverification {
+    pub fn new(object: Object, level: String, status: Status, supported_first_factors: Option<Vec<models::StubsSignInFactor>>, supported_second_factors: Option<Vec<models::StubsSignInFactor>>, first_factor_verification: Option<models::ClientSessionReverificationFirstFactorVerification>, second_factor_verification: Option<models::ClientSessionReverificationSecondFactorVerification>, session: models::ClientSessionBase) -> ClientSessionReverification {
         ClientSessionReverification {
             object,
             level,
             status,
             supported_first_factors,
             supported_second_factors,
-            first_factor_verification: first_factor_verification.map(Box::new),
-            second_factor_verification: second_factor_verification.map(Box::new),
+            first_factor_verification: if let Some(x) = first_factor_verification {Some(Box::new(x))} else {None},
+            second_factor_verification: if let Some(x) = second_factor_verification {Some(Box::new(x))} else {None},
             session: Box::new(session),
         }
     }
@@ -86,7 +59,7 @@ impl Default for Object {
         Self::SessionReverification
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "needs_first_factor")]
@@ -102,3 +75,4 @@ impl Default for Status {
         Self::NeedsFirstFactor
     }
 }
+

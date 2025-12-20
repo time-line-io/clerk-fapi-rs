@@ -15,48 +15,38 @@ use serde::{Deserialize, Serialize};
 pub struct ClientPasskey {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value.
+    /// String representing the object's type. Objects of the same type share the same value. 
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "name")]
     pub name: String,
-    /// Unix timestamp of when the passkey was last used.
-    #[serde(
-        rename = "last_used_at",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    /// Unix timestamp of when the passkey was last used. 
+    #[serde(rename = "last_used_at", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub last_used_at: Option<Option<i64>>,
     #[serde(rename = "verification", deserialize_with = "Option::deserialize")]
     pub verification: Option<Box<models::StubsVerificationPasskey>>,
-    /// Unix timestamp of creation
+    /// Unix timestamp of creation 
     #[serde(rename = "created_at", skip_serializing_if = "Option::is_none")]
     pub created_at: Option<i64>,
-    /// Unix timestamp of update
+    /// Unix timestamp of update 
     #[serde(rename = "updated_at", skip_serializing_if = "Option::is_none")]
     pub updated_at: Option<i64>,
 }
 
 impl ClientPasskey {
-    pub fn new(
-        id: String,
-        object: Object,
-        name: String,
-        verification: Option<models::StubsVerificationPasskey>,
-    ) -> ClientPasskey {
+    pub fn new(id: String, object: Object, name: String, verification: Option<models::StubsVerificationPasskey>) -> ClientPasskey {
         ClientPasskey {
             id,
             object,
             name,
             last_used_at: None,
-            verification: verification.map(Box::new),
+            verification: if let Some(x) = verification {Some(Box::new(x))} else {None},
             created_at: None,
             updated_at: None,
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value.
+/// String representing the object's type. Objects of the same type share the same value. 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "passkey")]
@@ -68,3 +58,4 @@ impl Default for Object {
         Self::Passkey
     }
 }
+

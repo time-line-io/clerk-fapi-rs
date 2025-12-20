@@ -15,36 +15,18 @@ use serde::{Deserialize, Serialize};
 pub struct ClientAccountPortalCustomization {
     #[serde(rename = "appearance", deserialize_with = "Option::deserialize")]
     pub appearance: Option<Appearance>,
-    #[serde(
-        rename = "background_color_dark",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "background_color_dark", deserialize_with = "Option::deserialize")]
     pub background_color_dark: Option<String>,
-    #[serde(
-        rename = "background_color_light",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "background_color_light", deserialize_with = "Option::deserialize")]
     pub background_color_light: Option<String>,
-    #[serde(
-        rename = "primary_color_dark",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "primary_color_dark", deserialize_with = "Option::deserialize")]
     pub primary_color_dark: Option<String>,
-    #[serde(
-        rename = "primary_color_light",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "primary_color_light", deserialize_with = "Option::deserialize")]
     pub primary_color_light: Option<String>,
 }
 
 impl ClientAccountPortalCustomization {
-    pub fn new(
-        appearance: Option<Appearance>,
-        background_color_dark: Option<String>,
-        background_color_light: Option<String>,
-        primary_color_dark: Option<String>,
-        primary_color_light: Option<String>,
-    ) -> ClientAccountPortalCustomization {
+    pub fn new(appearance: Option<Appearance>, background_color_dark: Option<String>, background_color_light: Option<String>, primary_color_dark: Option<String>, primary_color_light: Option<String>) -> ClientAccountPortalCustomization {
         ClientAccountPortalCustomization {
             appearance,
             background_color_dark,
@@ -54,7 +36,7 @@ impl ClientAccountPortalCustomization {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Appearance {
     #[serde(rename = "auto")]
@@ -70,3 +52,4 @@ impl Default for Appearance {
         Self::Auto
     }
 }
+

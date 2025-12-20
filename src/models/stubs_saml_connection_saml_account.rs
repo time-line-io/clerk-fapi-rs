@@ -29,34 +29,20 @@ pub struct StubsSamlConnectionSamlAccount {
     pub sync_user_attributes: bool,
     #[serde(rename = "allow_subdomains", skip_serializing_if = "Option::is_none")]
     pub allow_subdomains: Option<bool>,
-    #[serde(
-        rename = "allow_idp_initiated",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "allow_idp_initiated", skip_serializing_if = "Option::is_none")]
     pub allow_idp_initiated: Option<bool>,
-    #[serde(
-        rename = "disable_additional_identifications",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "disable_additional_identifications", skip_serializing_if = "Option::is_none")]
     pub disable_additional_identifications: Option<bool>,
-    /// Unix timestamp of creation.
+    /// Unix timestamp of creation. 
     #[serde(rename = "created_at")]
     pub created_at: i64,
-    /// Unix timestamp of last update.
+    /// Unix timestamp of last update. 
     #[serde(rename = "updated_at")]
     pub updated_at: i64,
 }
 
 impl StubsSamlConnectionSamlAccount {
-    pub fn new(
-        id: String,
-        name: String,
-        active: bool,
-        provider: String,
-        sync_user_attributes: bool,
-        created_at: i64,
-        updated_at: i64,
-    ) -> StubsSamlConnectionSamlAccount {
+    pub fn new(id: String, name: String, active: bool, provider: String, sync_user_attributes: bool, created_at: i64, updated_at: i64) -> StubsSamlConnectionSamlAccount {
         StubsSamlConnectionSamlAccount {
             id,
             name,
@@ -73,3 +59,4 @@ impl StubsSamlConnectionSamlAccount {
         }
     }
 }
+

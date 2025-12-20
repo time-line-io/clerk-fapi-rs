@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ClientSession {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value.
+    /// String representing the object's type. Objects of the same type share the same value. 
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "status")]
@@ -26,31 +26,13 @@ pub struct ClientSession {
     pub abandon_at: i64,
     #[serde(rename = "last_active_at")]
     pub last_active_at: i64,
-    #[serde(
-        rename = "last_active_token",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "last_active_token", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub last_active_token: Option<Option<Box<models::Token>>>,
-    #[serde(
-        rename = "actor",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "actor", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub actor: Option<Option<std::collections::HashMap<String, serde_json::Value>>>,
-    #[serde(
-        rename = "tasks",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "tasks", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub tasks: Option<Option<Vec<models::ClientSessionTask>>>,
-    #[serde(
-        rename = "last_active_organization_id",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "last_active_organization_id", deserialize_with = "Option::deserialize")]
     pub last_active_organization_id: Option<String>,
     #[serde(rename = "user", skip_serializing_if = "Option::is_none")]
     pub user: Option<Box<models::ClientUser>>,
@@ -58,7 +40,7 @@ pub struct ClientSession {
     pub public_user_data: Option<serde_json::Value>,
     /// Each item represents the minutes that have passed since the last time a first or second factor were verified.
     #[serde(rename = "factor_verification_age")]
-    pub factor_verification_age: Vec<i64>,
+    pub factor_verification_age: Vec<i32>,
     /// Unix timestamp of creation.
     #[serde(rename = "created_at")]
     pub created_at: i64,
@@ -68,19 +50,7 @@ pub struct ClientSession {
 }
 
 impl ClientSession {
-    pub fn new(
-        id: String,
-        object: Object,
-        status: Status,
-        expire_at: i64,
-        abandon_at: i64,
-        last_active_at: i64,
-        last_active_organization_id: Option<String>,
-        public_user_data: Option<serde_json::Value>,
-        factor_verification_age: Vec<i64>,
-        created_at: i64,
-        updated_at: i64,
-    ) -> ClientSession {
+    pub fn new(id: String, object: Object, status: Status, expire_at: i64, abandon_at: i64, last_active_at: i64, last_active_organization_id: Option<String>, public_user_data: Option<serde_json::Value>, factor_verification_age: Vec<i32>, created_at: i64, updated_at: i64) -> ClientSession {
         ClientSession {
             id,
             object,
@@ -100,38 +70,11 @@ impl ClientSession {
         }
     }
 }
-
-impl From<models::schemas_client_session::SchemasClientSession> for ClientSession {
-    fn from(schemas_client_session: models::schemas_client_session::SchemasClientSession) -> Self {
-        ClientSession::new(
-            schemas_client_session.id,
-            Object::from(schemas_client_session.object),
-            Status::from(schemas_client_session.status),
-            schemas_client_session.expire_at,
-            schemas_client_session.abandon_at,
-            schemas_client_session.last_active_at,
-            schemas_client_session.last_active_organization_id,
-            schemas_client_session.public_user_data,
-            schemas_client_session.factor_verification_age,
-            schemas_client_session.created_at,
-            schemas_client_session.updated_at,
-        )
-    }
-}
-
-/// String representing the object's type. Objects of the same type share the same value.
+/// String representing the object's type. Objects of the same type share the same value. 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "session")]
     Session,
-}
-
-impl From<models::schemas_client_session::Object> for Object {
-    fn from(object: models::schemas_client_session::Object) -> Self {
-        match object {
-            models::schemas_client_session::Object::Session => Object::Session,
-        }
-    }
 }
 
 impl Default for Object {
@@ -139,7 +82,7 @@ impl Default for Object {
         Self::Session
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "active")]
@@ -158,21 +101,9 @@ pub enum Status {
     Pending,
 }
 
-impl From<models::schemas_client_session::Status> for Status {
-    fn from(status: models::schemas_client_session::Status) -> Self {
-        match status {
-            models::schemas_client_session::Status::Active => Status::Active,
-            models::schemas_client_session::Status::Revoked => Status::Revoked,
-            models::schemas_client_session::Status::Ended => Status::Ended,
-            models::schemas_client_session::Status::Expired => Status::Expired,
-            models::schemas_client_session::Status::Removed => Status::Removed,
-            models::schemas_client_session::Status::Abandoned => Status::Abandoned,
-        }
-    }
-}
-
 impl Default for Status {
     fn default() -> Status {
         Self::Active
     }
 }
+

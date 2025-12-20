@@ -2,6 +2,7 @@
 
 use clerk_fapi_rs::clerk::Clerk;
 use clerk_fapi_rs::configuration::ClerkFapiConfiguration;
+use mockito::Matcher;
 use mockito::Server;
 use serde_json::{self, Value};
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -407,13 +408,35 @@ fn get_env_data() -> String {
                 }
             },
             "api_keys_settings": {
-                "enabled": false
+                "enabled": false,
+                "user_api_keys_enabled": false,
+                "orgs_api_keys_enabled": false
             },
             "maintenance_mode": false,
             "client_debug_mode": false
           }
     )
     .to_string()
+}
+
+#[test]
+fn test_parse_environment_fixture() {
+    // Helpful guard: ensures our environment fixture stays compatible with the generated models.
+    let s = get_env_data();
+    match serde_json::from_str::<clerk_fapi_rs::models::ClientEnvironment>(&s) {
+        Ok(_env) => {}
+        Err(e) => {
+            eprintln!("env fixture deserialize error: {e}");
+            eprintln!("line={}, column={}", e.line(), e.column());
+            // This fixture is a single-line JSON string (built via `json!(...)`), so `column`
+            // is close to a byte offset into the string.
+            let col = e.column().saturating_sub(1);
+            let start = col.saturating_sub(120);
+            let end = (col + 120).min(s.len());
+            eprintln!("around error: {}", &s[start..end]);
+            panic!("env fixture deserialize failed");
+        }
+    }
 }
 
 fn not_logged_in_client() -> Value {
@@ -637,7 +660,8 @@ async fn test_init() {
     let mut mock_server = mockito::Server::new_async().await;
 
     let client_mock = mock_server
-        .mock("GET", "/v1/client?_is_native=1")
+        .mock("GET", "/v1/client")
+        .match_query(Matcher::Any)
         .with_status(200)
         .with_body(
             serde_json::json!({
@@ -651,7 +675,8 @@ async fn test_init() {
         .await;
 
     let env_mock = mock_server
-        .mock("GET", "/v1/environment?_is_native=1")
+        .mock("GET", "/v1/environment")
+        .match_query(Matcher::Any)
         .with_status(200)
         .with_body(get_env_data())
         .with_header("content-type", "application/json")
@@ -679,7 +704,8 @@ async fn test_init_environment_failure() {
     let mut server = Server::new_async().await;
 
     let env_mock = server
-        .mock("GET", "/v1/environment?_is_native=1")
+        .mock("GET", "/v1/environment")
+        .match_query(Matcher::Any)
         .with_status(500)
         .with_header("content-type", "application/json")
         .create_async()
@@ -705,7 +731,8 @@ async fn test_init_uses_update_client() {
     let mut server = Server::new_async().await;
 
     let env_mock = server
-        .mock("GET", "/v1/environment?_is_native=1")
+        .mock("GET", "/v1/environment")
+        .match_query(Matcher::Any)
         .with_status(200)
         .with_body(get_env_data())
         .with_header("content-type", "application/json")
@@ -713,7 +740,8 @@ async fn test_init_uses_update_client() {
         .await;
 
     let client_mock = server
-        .mock("GET", "/v1/client?_is_native=1")
+        .mock("GET", "/v1/client")
+        .match_query(Matcher::Any)
         .with_status(200)
         .with_header("content-type", "application/json")
         .with_body(
@@ -752,7 +780,8 @@ async fn test_get_token() {
     let mut server = Server::new_async().await;
 
     let client_mock = server
-        .mock("GET", "/v1/client?_is_native=1")
+        .mock("GET", "/v1/client")
+        .match_query(Matcher::Any)
         .with_status(200)
         .with_body(
             serde_json::json!({
@@ -766,7 +795,8 @@ async fn test_get_token() {
         .await;
 
     let env_mock = server
-        .mock("GET", "/v1/environment?_is_native=1")
+        .mock("GET", "/v1/environment")
+        .match_query(Matcher::Any)
         .with_body(get_env_data())
         .with_header("content-type", "application/json")
         .create_async()
@@ -775,8 +805,9 @@ async fn test_get_token() {
     let token_mock = server
         .mock(
             "POST",
-            "/v1/client/sessions/sess_abc123xyz456def789/tokens?_is_native=1",
+            "/v1/client/sessions/sess_abc123xyz456def789/tokens",
         )
+        .match_query(Matcher::Any)
         .with_status(200)
         .with_body(
             serde_json::json!({
@@ -812,7 +843,8 @@ async fn test_listener() {
     let mut server = Server::new_async().await;
 
     let client_mock = server
-        .mock("GET", "/v1/client?_is_native=1")
+        .mock("GET", "/v1/client")
+        .match_query(Matcher::Any)
         .with_status(200)
         .with_body(
             serde_json::json!({
@@ -826,7 +858,8 @@ async fn test_listener() {
         .await;
 
     let env_mock = server
-        .mock("GET", "/v1/environment?_is_native=1")
+        .mock("GET", "/v1/environment")
+        .match_query(Matcher::Any)
         .with_status(200)
         .with_body(get_env_data())
         .with_header("content-type", "application/json")

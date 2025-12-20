@@ -27,7 +27,7 @@ impl GetProxyHealth200ResponseOneOf {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "healthy")]
@@ -39,3 +39,4 @@ impl Default for Status {
         Self::Healthy
     }
 }
+

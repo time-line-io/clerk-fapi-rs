@@ -26,12 +26,7 @@ pub struct ClientPublicOrganizationData {
 }
 
 impl ClientPublicOrganizationData {
-    pub fn new(
-        id: String,
-        name: String,
-        slug: String,
-        has_image: bool,
-    ) -> ClientPublicOrganizationData {
+    pub fn new(id: String, name: String, slug: String, has_image: bool) -> ClientPublicOrganizationData {
         ClientPublicOrganizationData {
             id,
             name,
@@ -41,3 +36,4 @@ impl ClientPublicOrganizationData {
         }
     }
 }
+

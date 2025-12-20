@@ -14,19 +14,17 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SchemasClientClientWrappedSignIn {
     #[serde(rename = "response")]
-    pub response: Box<models::ClientSignIn>,
+    pub response: Box<models::SchemasClientSignIn>,
     #[serde(rename = "client", deserialize_with = "Option::deserialize")]
     pub client: Option<Box<models::SchemasClientClient>>,
 }
 
 impl SchemasClientClientWrappedSignIn {
-    pub fn new(
-        response: models::ClientSignIn,
-        client: Option<models::SchemasClientClient>,
-    ) -> SchemasClientClientWrappedSignIn {
+    pub fn new(response: models::SchemasClientSignIn, client: Option<models::SchemasClientClient>) -> SchemasClientClientWrappedSignIn {
         SchemasClientClientWrappedSignIn {
             response: Box::new(response),
-            client: client.map(Box::new),
+            client: if let Some(x) = client {Some(Box::new(x))} else {None},
         }
     }
 }
+

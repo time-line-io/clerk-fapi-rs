@@ -20,13 +20,11 @@ pub struct ClientClientWrappedClient {
 }
 
 impl ClientClientWrappedClient {
-    pub fn new(
-        response: Option<models::ClientClient>,
-        client: Option<models::ClientClient>,
-    ) -> ClientClientWrappedClient {
+    pub fn new(response: Option<models::ClientClient>, client: Option<models::ClientClient>) -> ClientClientWrappedClient {
         ClientClientWrappedClient {
-            response: response.map(Box::new),
-            client: client.map(Box::new),
+            response: if let Some(x) = response {Some(Box::new(x))} else {None},
+            client: if let Some(x) = client {Some(Box::new(x))} else {None},
         }
     }
 }
+

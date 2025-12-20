@@ -34,16 +34,7 @@ pub struct ClientPermission {
 }
 
 impl ClientPermission {
-    pub fn new(
-        object: Object,
-        id: String,
-        name: String,
-        key: String,
-        description: String,
-        r#type: Type,
-        created_at: i64,
-        updated_at: i64,
-    ) -> ClientPermission {
+    pub fn new(object: Object, id: String, name: String, key: String, description: String, r#type: Type, created_at: i64, updated_at: i64) -> ClientPermission {
         ClientPermission {
             object,
             id,
@@ -56,7 +47,7 @@ impl ClientPermission {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "permission")]
@@ -68,7 +59,7 @@ impl Default for Object {
         Self::Permission
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Type {
     #[serde(rename = "system")]
@@ -82,3 +73,4 @@ impl Default for Type {
         Self::System
     }
 }
+

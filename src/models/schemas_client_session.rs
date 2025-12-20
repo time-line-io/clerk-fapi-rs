@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct SchemasClientSession {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value.
+    /// String representing the object's type. Objects of the same type share the same value. 
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "status")]
@@ -26,24 +26,11 @@ pub struct SchemasClientSession {
     pub abandon_at: i64,
     #[serde(rename = "last_active_at")]
     pub last_active_at: i64,
-    #[serde(
-        rename = "last_active_token",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "last_active_token", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub last_active_token: Option<Option<Box<models::Token>>>,
-    #[serde(
-        rename = "actor",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "actor", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub actor: Option<Option<std::collections::HashMap<String, serde_json::Value>>>,
-    #[serde(
-        rename = "last_active_organization_id",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "last_active_organization_id", deserialize_with = "Option::deserialize")]
     pub last_active_organization_id: Option<String>,
     #[serde(rename = "user", skip_serializing_if = "Option::is_none")]
     pub user: Option<Box<models::ClientUser>>,
@@ -51,7 +38,7 @@ pub struct SchemasClientSession {
     pub public_user_data: Option<serde_json::Value>,
     /// Each item represents the minutes that have passed since the last time a first or second factor were verified.
     #[serde(rename = "factor_verification_age")]
-    pub factor_verification_age: Vec<i64>,
+    pub factor_verification_age: Vec<i32>,
     /// Unix timestamp of creation.
     #[serde(rename = "created_at")]
     pub created_at: i64,
@@ -61,19 +48,7 @@ pub struct SchemasClientSession {
 }
 
 impl SchemasClientSession {
-    pub fn new(
-        id: String,
-        object: Object,
-        status: Status,
-        expire_at: i64,
-        abandon_at: i64,
-        last_active_at: i64,
-        last_active_organization_id: Option<String>,
-        public_user_data: Option<serde_json::Value>,
-        factor_verification_age: Vec<i64>,
-        created_at: i64,
-        updated_at: i64,
-    ) -> SchemasClientSession {
+    pub fn new(id: String, object: Object, status: Status, expire_at: i64, abandon_at: i64, last_active_at: i64, last_active_organization_id: Option<String>, public_user_data: Option<serde_json::Value>, factor_verification_age: Vec<i32>, created_at: i64, updated_at: i64) -> SchemasClientSession {
         SchemasClientSession {
             id,
             object,
@@ -92,7 +67,7 @@ impl SchemasClientSession {
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value.
+/// String representing the object's type. Objects of the same type share the same value. 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "session")]
@@ -104,7 +79,7 @@ impl Default for Object {
         Self::Session
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "active")]
@@ -126,3 +101,4 @@ impl Default for Status {
         Self::Active
     }
 }
+

@@ -19,6 +19,9 @@ pub struct UserSettingsEnterpriseSso {
 
 impl UserSettingsEnterpriseSso {
     pub fn new(enabled: bool) -> UserSettingsEnterpriseSso {
-        UserSettingsEnterpriseSso { enabled }
+        UserSettingsEnterpriseSso {
+            enabled,
+        }
     }
 }
+

@@ -20,17 +20,14 @@ pub struct StubsSignUpVerification {
 }
 
 impl StubsSignUpVerification {
-    pub fn new(
-        next_action: NextAction,
-        supported_strategies: Vec<String>,
-    ) -> StubsSignUpVerification {
+    pub fn new(next_action: NextAction, supported_strategies: Vec<String>) -> StubsSignUpVerification {
         StubsSignUpVerification {
             next_action,
             supported_strategies,
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum NextAction {
     #[serde(rename = "needs_prepare")]
@@ -46,3 +43,4 @@ impl Default for NextAction {
         Self::NeedsPrepare
     }
 }
+

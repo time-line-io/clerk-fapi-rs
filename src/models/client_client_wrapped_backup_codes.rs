@@ -20,13 +20,11 @@ pub struct ClientClientWrappedBackupCodes {
 }
 
 impl ClientClientWrappedBackupCodes {
-    pub fn new(
-        response: models::BackupCodes,
-        client: models::ClientClient,
-    ) -> ClientClientWrappedBackupCodes {
+    pub fn new(response: models::BackupCodes, client: models::ClientClient) -> ClientClientWrappedBackupCodes {
         ClientClientWrappedBackupCodes {
             response: Box::new(response),
             client: Box::new(client),
         }
     }
 }
+

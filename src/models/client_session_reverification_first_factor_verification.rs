@@ -17,6 +17,7 @@ pub enum ClientSessionReverificationFirstFactorVerification {
     StubsVerificationPassword(Box<models::StubsVerificationPassword>),
     StubsVerificationOtp(Box<models::StubsVerificationOtp>),
     StubsVerificationPasskey(Box<models::StubsVerificationPasskey>),
+    StubsVerificationSaml(Box<models::StubsVerificationSaml>),
 }
 
 impl Default for ClientSessionReverificationFirstFactorVerification {
@@ -24,19 +25,19 @@ impl Default for ClientSessionReverificationFirstFactorVerification {
         Self::StubsVerificationPassword(Default::default())
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
-    #[serde(rename = "verification_passkey")]
-    VerificationPasskey,
+    #[serde(rename = "verification_saml")]
+    VerificationSaml,
 }
 
 impl Default for Object {
     fn default() -> Object {
-        Self::VerificationPasskey
+        Self::VerificationSaml
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "unverified")]
@@ -47,6 +48,8 @@ pub enum Status {
     Failed,
     #[serde(rename = "expired")]
     Expired,
+    #[serde(rename = "transferable")]
+    Transferable,
 }
 
 impl Default for Status {
@@ -54,15 +57,16 @@ impl Default for Status {
         Self::Unverified
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
-    #[serde(rename = "passkey")]
-    Passkey,
+    #[serde(rename = "saml")]
+    Saml,
 }
 
 impl Default for Strategy {
     fn default() -> Strategy {
-        Self::Passkey
+        Self::Saml
     }
 }
+

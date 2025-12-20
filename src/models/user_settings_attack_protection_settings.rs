@@ -20,17 +20,11 @@ pub struct UserSettingsAttackProtectionSettings {
     #[serde(rename = "email_link")]
     pub email_link: Box<models::UserSettingsAttackProtectionSettingsEmailLink>,
     #[serde(rename = "enumeration_protection")]
-    pub enumeration_protection:
-        Box<models::UserSettingsAttackProtectionSettingsEnumerationProtection>,
+    pub enumeration_protection: Box<models::UserSettingsAttackProtectionSettingsEnumerationProtection>,
 }
 
 impl UserSettingsAttackProtectionSettings {
-    pub fn new(
-        user_lockout: models::UserSettingsAttackProtectionSettingsUserLockout,
-        pii: models::UserSettingsAttackProtectionSettingsPii,
-        email_link: models::UserSettingsAttackProtectionSettingsEmailLink,
-        enumeration_protection: models::UserSettingsAttackProtectionSettingsEnumerationProtection,
-    ) -> UserSettingsAttackProtectionSettings {
+    pub fn new(user_lockout: models::UserSettingsAttackProtectionSettingsUserLockout, pii: models::UserSettingsAttackProtectionSettingsPii, email_link: models::UserSettingsAttackProtectionSettingsEmailLink, enumeration_protection: models::UserSettingsAttackProtectionSettingsEnumerationProtection) -> UserSettingsAttackProtectionSettings {
         UserSettingsAttackProtectionSettings {
             user_lockout: Box::new(user_lockout),
             pii: Box::new(pii),
@@ -39,3 +33,4 @@ impl UserSettingsAttackProtectionSettings {
         }
     }
 }
+

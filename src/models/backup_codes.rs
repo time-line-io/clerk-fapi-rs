@@ -26,13 +26,7 @@ pub struct BackupCodes {
 }
 
 impl BackupCodes {
-    pub fn new(
-        object: Object,
-        id: String,
-        codes: Vec<String>,
-        created_at: i64,
-        updated_at: i64,
-    ) -> BackupCodes {
+    pub fn new(object: Object, id: String, codes: Vec<String>, created_at: i64, updated_at: i64) -> BackupCodes {
         BackupCodes {
             object,
             id,
@@ -42,7 +36,7 @@ impl BackupCodes {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "backup_code")]
@@ -54,3 +48,4 @@ impl Default for Object {
         Self::BackupCode
     }
 }
+

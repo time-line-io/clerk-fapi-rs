@@ -21,83 +21,28 @@ pub struct OAuthUserInfo {
     pub user_id: String,
     #[serde(rename = "sub")]
     pub sub: String,
-    #[serde(
-        rename = "email",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "email", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub email: Option<Option<String>>,
-    #[serde(
-        rename = "email_verified",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "email_verified", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub email_verified: Option<Option<bool>>,
-    #[serde(
-        rename = "family_name",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "family_name", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub family_name: Option<Option<String>>,
-    #[serde(
-        rename = "given_name",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "given_name", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub given_name: Option<Option<String>>,
-    #[serde(
-        rename = "name",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "name", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub name: Option<Option<String>>,
     /// Deprecated. Use `preferred_username` instead.
-    #[serde(
-        rename = "username",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "username", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub username: Option<Option<String>>,
-    #[serde(
-        rename = "preferred_username",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "preferred_username", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub preferred_username: Option<Option<String>>,
-    #[serde(
-        rename = "picture",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "picture", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub picture: Option<Option<String>>,
-    #[serde(
-        rename = "public_metadata",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "public_metadata", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub public_metadata: Option<Option<std::collections::HashMap<String, serde_json::Value>>>,
-    #[serde(
-        rename = "private_metadata",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "private_metadata", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub private_metadata: Option<Option<std::collections::HashMap<String, serde_json::Value>>>,
-    #[serde(
-        rename = "unsafe_metadata",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "unsafe_metadata", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub unsafe_metadata: Option<Option<std::collections::HashMap<String, serde_json::Value>>>,
 }
 
@@ -122,3 +67,4 @@ impl OAuthUserInfo {
         }
     }
 }
+

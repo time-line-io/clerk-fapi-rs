@@ -31,25 +31,12 @@ pub struct UserSettingsSocial {
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// A URL pointing to the logo of the social provider.
-    #[serde(
-        rename = "logo_url",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "logo_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub logo_url: Option<Option<String>>,
 }
 
 impl UserSettingsSocial {
-    pub fn new(
-        enabled: bool,
-        required: bool,
-        authenticatable: bool,
-        block_email_subaddresses: bool,
-        strategy: String,
-        not_selectable: bool,
-        deprecated: bool,
-    ) -> UserSettingsSocial {
+    pub fn new(enabled: bool, required: bool, authenticatable: bool, block_email_subaddresses: bool, strategy: String, not_selectable: bool, deprecated: bool) -> UserSettingsSocial {
         UserSettingsSocial {
             enabled,
             required,
@@ -63,3 +50,4 @@ impl UserSettingsSocial {
         }
     }
 }
+

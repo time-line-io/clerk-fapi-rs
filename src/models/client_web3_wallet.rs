@@ -15,41 +15,34 @@ use serde::{Deserialize, Serialize};
 pub struct ClientWeb3Wallet {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value.
+    /// String representing the object's type. Objects of the same type share the same value. 
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "web3_wallet")]
     pub web3_wallet: String,
     #[serde(rename = "verification", deserialize_with = "Option::deserialize")]
     pub verification: Option<Box<models::ClientWeb3WalletVerification>>,
-    /// Unix timestamp of creation
+    /// Unix timestamp of creation 
     #[serde(rename = "created_at")]
     pub created_at: i64,
-    /// Unix timestamp of creation
+    /// Unix timestamp of creation 
     #[serde(rename = "updated_at")]
     pub updated_at: i64,
 }
 
 impl ClientWeb3Wallet {
-    pub fn new(
-        id: String,
-        object: Object,
-        web3_wallet: String,
-        verification: Option<models::ClientWeb3WalletVerification>,
-        created_at: i64,
-        updated_at: i64,
-    ) -> ClientWeb3Wallet {
+    pub fn new(id: String, object: Object, web3_wallet: String, verification: Option<models::ClientWeb3WalletVerification>, created_at: i64, updated_at: i64) -> ClientWeb3Wallet {
         ClientWeb3Wallet {
             id,
             object,
             web3_wallet,
-            verification: verification.map(Box::new),
+            verification: if let Some(x) = verification {Some(Box::new(x))} else {None},
             created_at,
             updated_at,
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value.
+/// String representing the object's type. Objects of the same type share the same value. 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "web3_wallet")]
@@ -61,3 +54,4 @@ impl Default for Object {
         Self::Web3Wallet
     }
 }
+

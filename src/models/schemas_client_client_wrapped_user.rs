@@ -20,13 +20,11 @@ pub struct SchemasClientClientWrappedUser {
 }
 
 impl SchemasClientClientWrappedUser {
-    pub fn new(
-        response: models::ClientUser,
-        client: models::SchemasClientClient,
-    ) -> SchemasClientClientWrappedUser {
+    pub fn new(response: models::ClientUser, client: models::SchemasClientClient) -> SchemasClientClientWrappedUser {
         SchemasClientClientWrappedUser {
             response: Box::new(response),
             client: Box::new(client),
         }
     }
 }
+

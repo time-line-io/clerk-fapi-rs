@@ -21,8 +21,6 @@ pub struct ClerkError {
     pub code: String,
     #[serde(rename = "meta", skip_serializing_if = "Option::is_none")]
     pub meta: Option<serde_json::Value>,
-    #[serde(rename = "clerk_trace_id", skip_serializing_if = "Option::is_none")]
-    pub clerk_trace_id: Option<String>,
 }
 
 impl ClerkError {
@@ -32,7 +30,7 @@ impl ClerkError {
             long_message,
             code,
             meta: None,
-            clerk_trace_id: None,
         }
     }
 }
+

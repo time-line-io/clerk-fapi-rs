@@ -20,13 +20,11 @@ pub struct ClientClientWrappedExternalAccount {
 }
 
 impl ClientClientWrappedExternalAccount {
-    pub fn new(
-        response: models::ExternalAccountWithVerification,
-        client: models::ClientClient,
-    ) -> ClientClientWrappedExternalAccount {
+    pub fn new(response: models::ExternalAccountWithVerification, client: models::ClientClient) -> ClientClientWrappedExternalAccount {
         ClientClientWrappedExternalAccount {
             response,
             client: Box::new(client),
         }
     }
 }
+

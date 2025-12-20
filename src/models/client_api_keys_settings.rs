@@ -16,10 +16,21 @@ pub struct ClientApiKeysSettings {
     /// Indicates whether the API Keys feature is enabled.
     #[serde(rename = "enabled")]
     pub enabled: bool,
+    /// Indicates whether User API Keys are enabled.
+    #[serde(rename = "user_api_keys_enabled")]
+    pub user_api_keys_enabled: bool,
+    /// Indicates whether Organization API Keys are enabled.
+    #[serde(rename = "orgs_api_keys_enabled")]
+    pub orgs_api_keys_enabled: bool,
 }
 
 impl ClientApiKeysSettings {
-    pub fn new(enabled: bool) -> ClientApiKeysSettings {
-        ClientApiKeysSettings { enabled }
+    pub fn new(enabled: bool, user_api_keys_enabled: bool, orgs_api_keys_enabled: bool) -> ClientApiKeysSettings {
+        ClientApiKeysSettings {
+            enabled,
+            user_api_keys_enabled,
+            orgs_api_keys_enabled,
+        }
     }
 }
+

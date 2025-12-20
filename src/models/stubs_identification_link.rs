@@ -21,10 +21,13 @@ pub struct StubsIdentificationLink {
 
 impl StubsIdentificationLink {
     pub fn new(r#type: Type, id: String) -> StubsIdentificationLink {
-        StubsIdentificationLink { r#type, id }
+        StubsIdentificationLink {
+            r#type,
+            id,
+        }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Type {
     #[serde(rename = "oauth_apple")]
@@ -44,3 +47,4 @@ impl Default for Type {
         Self::OauthApple
     }
 }
+

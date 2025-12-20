@@ -32,16 +32,7 @@ pub struct UserSettingsAttribute {
 }
 
 impl UserSettingsAttribute {
-    pub fn new(
-        enabled: bool,
-        required: bool,
-        used_for_first_factor: bool,
-        first_factors: Vec<String>,
-        used_for_second_factor: bool,
-        second_factors: Vec<String>,
-        verifications: Vec<String>,
-        verify_at_sign_up: bool,
-    ) -> UserSettingsAttribute {
+    pub fn new(enabled: bool, required: bool, used_for_first_factor: bool, first_factors: Vec<String>, used_for_second_factor: bool, second_factors: Vec<String>, verifications: Vec<String>, verify_at_sign_up: bool) -> UserSettingsAttribute {
         UserSettingsAttribute {
             enabled,
             required,
@@ -54,3 +45,4 @@ impl UserSettingsAttribute {
         }
     }
 }
+

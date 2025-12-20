@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ClientEmailAddress {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value.
+    /// String representing the object's type. Objects of the same type share the same value. 
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "email_address")]
@@ -26,37 +26,25 @@ pub struct ClientEmailAddress {
     pub verification: Option<Box<models::ClientEmailAddressVerification>>,
     #[serde(rename = "linked_to")]
     pub linked_to: Vec<models::StubsIdentificationLink>,
-    /// Indicates whether this email address domain matches an active enterprise connection.
-    #[serde(
-        rename = "matches_sso_connection",
-        skip_serializing_if = "Option::is_none"
-    )]
+    /// Indicates whether this email address domain matches an active enterprise connection. 
+    #[serde(rename = "matches_sso_connection", skip_serializing_if = "Option::is_none")]
     pub matches_sso_connection: Option<bool>,
-    /// Unix timestamp of creation
+    /// Unix timestamp of creation 
     #[serde(rename = "created_at")]
     pub created_at: i64,
-    /// Unix timestamp of creation
+    /// Unix timestamp of creation 
     #[serde(rename = "updated_at")]
     pub updated_at: i64,
 }
 
 impl ClientEmailAddress {
-    pub fn new(
-        id: String,
-        object: Object,
-        email_address: String,
-        reserved: bool,
-        verification: Option<models::ClientEmailAddressVerification>,
-        linked_to: Vec<models::StubsIdentificationLink>,
-        created_at: i64,
-        updated_at: i64,
-    ) -> ClientEmailAddress {
+    pub fn new(id: String, object: Object, email_address: String, reserved: bool, verification: Option<models::ClientEmailAddressVerification>, linked_to: Vec<models::StubsIdentificationLink>, created_at: i64, updated_at: i64) -> ClientEmailAddress {
         ClientEmailAddress {
             id,
             object,
             email_address,
             reserved,
-            verification: verification.map(Box::new),
+            verification: if let Some(x) = verification {Some(Box::new(x))} else {None},
             linked_to,
             matches_sso_connection: None,
             created_at,
@@ -64,7 +52,7 @@ impl ClientEmailAddress {
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value.
+/// String representing the object's type. Objects of the same type share the same value. 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "email_address")]
@@ -76,3 +64,4 @@ impl Default for Object {
         Self::EmailAddress
     }
 }
+

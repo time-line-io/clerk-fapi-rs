@@ -20,13 +20,11 @@ pub struct ClientDeleteSession {
 }
 
 impl ClientDeleteSession {
-    pub fn new(
-        response: Option<models::ClientClient>,
-        client: Option<serde_json::Value>,
-    ) -> ClientDeleteSession {
+    pub fn new(response: Option<models::ClientClient>, client: Option<serde_json::Value>) -> ClientDeleteSession {
         ClientDeleteSession {
-            response: response.map(Box::new),
+            response: if let Some(x) = response {Some(Box::new(x))} else {None},
             client,
         }
     }
 }
+

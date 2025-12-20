@@ -13,20 +13,23 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Token {
-    /// String representing the object's type. Objects of the same type share the same value.
+    /// String representing the object's type. Objects of the same type share the same value. 
     #[serde(rename = "object")]
     pub object: Object,
-    /// String representing the encoded jwt value.
+    /// String representing the encoded JWT value. 
     #[serde(rename = "jwt")]
     pub jwt: String,
 }
 
 impl Token {
     pub fn new(object: Object, jwt: String) -> Token {
-        Token { object, jwt }
+        Token {
+            object,
+            jwt,
+        }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value.
+/// String representing the object's type. Objects of the same type share the same value. 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "token")]
@@ -38,3 +41,4 @@ impl Default for Object {
         Self::Token
     }
 }
+

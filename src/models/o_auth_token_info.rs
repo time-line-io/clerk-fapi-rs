@@ -17,36 +17,16 @@ pub struct OAuthTokenInfo {
     #[serde(rename = "active")]
     pub active: bool,
     /// Client identifier for the OAuth 2.0 client that requested this token.
-    #[serde(
-        rename = "client_id",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "client_id", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub client_id: Option<Option<String>>,
     /// Integer timestamp, measured in the number of seconds since January 1 1970 UTC, indicating when this token was originally issued, as defined in JWT [RFC7519].
-    #[serde(
-        rename = "iat",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub iat: Option<Option<i64>>,
+    #[serde(rename = "iat", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub iat: Option<Option<i32>>,
     /// A JSON string containing a space-separated list of scopes associated with this token, in the format described in Section 3.3 of OAuth 2.0 [RFC6749].
-    #[serde(
-        rename = "scope",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "scope", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub scope: Option<Option<String>>,
     /// Subject of the token, as defined in JWT [RFC7519].
-    #[serde(
-        rename = "sub",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "sub", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub sub: Option<Option<String>>,
 }
 
@@ -61,3 +41,4 @@ impl OAuthTokenInfo {
         }
     }
 }
+

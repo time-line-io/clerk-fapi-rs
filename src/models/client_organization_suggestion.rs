@@ -17,10 +17,7 @@ pub struct ClientOrganizationSuggestion {
     pub object: Object,
     #[serde(rename = "id")]
     pub id: String,
-    #[serde(
-        rename = "public_organization_data",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "public_organization_data", skip_serializing_if = "Option::is_none")]
     pub public_organization_data: Option<Box<models::ClientPublicOrganizationData>>,
     #[serde(rename = "status")]
     pub status: String,
@@ -33,13 +30,7 @@ pub struct ClientOrganizationSuggestion {
 }
 
 impl ClientOrganizationSuggestion {
-    pub fn new(
-        object: Object,
-        id: String,
-        status: String,
-        created_at: i64,
-        updated_at: i64,
-    ) -> ClientOrganizationSuggestion {
+    pub fn new(object: Object, id: String, status: String, created_at: i64, updated_at: i64) -> ClientOrganizationSuggestion {
         ClientOrganizationSuggestion {
             object,
             id,
@@ -50,7 +41,7 @@ impl ClientOrganizationSuggestion {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "organization_suggestion")]
@@ -62,3 +53,4 @@ impl Default for Object {
         Self::OrganizationSuggestion
     }
 }
+

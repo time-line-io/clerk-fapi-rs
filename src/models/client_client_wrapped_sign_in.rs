@@ -20,13 +20,11 @@ pub struct ClientClientWrappedSignIn {
 }
 
 impl ClientClientWrappedSignIn {
-    pub fn new(
-        response: models::ClientSignIn,
-        client: Option<models::ClientClient>,
-    ) -> ClientClientWrappedSignIn {
+    pub fn new(response: models::ClientSignIn, client: Option<models::ClientClient>) -> ClientClientWrappedSignIn {
         ClientClientWrappedSignIn {
             response: Box::new(response),
-            client: client.map(Box::new),
+            client: if let Some(x) = client {Some(Box::new(x))} else {None},
         }
     }
 }
+

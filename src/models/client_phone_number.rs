@@ -15,20 +15,14 @@ use serde::{Deserialize, Serialize};
 pub struct ClientPhoneNumber {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value.
+    /// String representing the object's type. Objects of the same type share the same value. 
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "phone_number")]
     pub phone_number: String,
-    #[serde(
-        rename = "reserved_for_second_factor",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "reserved_for_second_factor", skip_serializing_if = "Option::is_none")]
     pub reserved_for_second_factor: Option<bool>,
-    #[serde(
-        rename = "default_second_factor",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "default_second_factor", skip_serializing_if = "Option::is_none")]
     pub default_second_factor: Option<bool>,
     #[serde(rename = "reserved")]
     pub reserved: bool,
@@ -36,32 +30,18 @@ pub struct ClientPhoneNumber {
     pub verification: Option<Box<models::ClientPhoneNumberVerification>>,
     #[serde(rename = "linked_to")]
     pub linked_to: Vec<models::StubsIdentificationLink>,
-    #[serde(
-        rename = "backup_codes",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "backup_codes", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub backup_codes: Option<Option<Vec<String>>>,
-    /// Unix timestamp of creation
+    /// Unix timestamp of creation 
     #[serde(rename = "created_at")]
     pub created_at: i64,
-    /// Unix timestamp of creation
+    /// Unix timestamp of creation 
     #[serde(rename = "updated_at")]
     pub updated_at: i64,
 }
 
 impl ClientPhoneNumber {
-    pub fn new(
-        id: String,
-        object: Object,
-        phone_number: String,
-        reserved: bool,
-        verification: Option<models::ClientPhoneNumberVerification>,
-        linked_to: Vec<models::StubsIdentificationLink>,
-        created_at: i64,
-        updated_at: i64,
-    ) -> ClientPhoneNumber {
+    pub fn new(id: String, object: Object, phone_number: String, reserved: bool, verification: Option<models::ClientPhoneNumberVerification>, linked_to: Vec<models::StubsIdentificationLink>, created_at: i64, updated_at: i64) -> ClientPhoneNumber {
         ClientPhoneNumber {
             id,
             object,
@@ -69,7 +49,7 @@ impl ClientPhoneNumber {
             reserved_for_second_factor: None,
             default_second_factor: None,
             reserved,
-            verification: verification.map(Box::new),
+            verification: if let Some(x) = verification {Some(Box::new(x))} else {None},
             linked_to,
             backup_codes: None,
             created_at,
@@ -77,7 +57,7 @@ impl ClientPhoneNumber {
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value.
+/// String representing the object's type. Objects of the same type share the same value. 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "phone_number")]
@@ -89,3 +69,4 @@ impl Default for Object {
         Self::PhoneNumber
     }
 }
+

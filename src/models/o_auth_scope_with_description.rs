@@ -15,12 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct OAuthScopeWithDescription {
     #[serde(rename = "scope")]
     pub scope: String,
-    #[serde(
-        rename = "description",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "description", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub description: Option<Option<String>>,
     /// Whether the scope requires user consent
     #[serde(rename = "requires_consent")]
@@ -36,3 +31,4 @@ impl OAuthScopeWithDescription {
         }
     }
 }
+

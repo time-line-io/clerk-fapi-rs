@@ -57,27 +57,7 @@ pub struct ClientAuthConfig {
 }
 
 impl ClientAuthConfig {
-    pub fn new(
-        object: Object,
-        id: String,
-        first_name: FirstName,
-        last_name: LastName,
-        email_address: EmailAddress,
-        phone_number: PhoneNumber,
-        username: Username,
-        password: Password,
-        identification_requirements: Vec<Vec<String>>,
-        identification_strategies: Vec<String>,
-        first_factors: Vec<String>,
-        second_factors: Vec<String>,
-        email_address_verification_strategies: Vec<String>,
-        single_session_mode: bool,
-        enhanced_email_deliverability: bool,
-        test_mode: bool,
-        url_based_session_syncing: bool,
-        claimed_at: Option<i64>,
-        reverification: bool,
-    ) -> ClientAuthConfig {
+    pub fn new(object: Object, id: String, first_name: FirstName, last_name: LastName, email_address: EmailAddress, phone_number: PhoneNumber, username: Username, password: Password, identification_requirements: Vec<Vec<String>>, identification_strategies: Vec<String>, first_factors: Vec<String>, second_factors: Vec<String>, email_address_verification_strategies: Vec<String>, single_session_mode: bool, enhanced_email_deliverability: bool, test_mode: bool, url_based_session_syncing: bool, claimed_at: Option<i64>, reverification: bool) -> ClientAuthConfig {
         ClientAuthConfig {
             object,
             id,
@@ -102,7 +82,7 @@ impl ClientAuthConfig {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "auth_config")]
@@ -114,7 +94,7 @@ impl Default for Object {
         Self::AuthConfig
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum FirstName {
     #[serde(rename = "on")]
@@ -130,7 +110,7 @@ impl Default for FirstName {
         Self::On
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum LastName {
     #[serde(rename = "on")]
@@ -146,7 +126,7 @@ impl Default for LastName {
         Self::On
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum EmailAddress {
     #[serde(rename = "on")]
@@ -162,7 +142,7 @@ impl Default for EmailAddress {
         Self::On
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum PhoneNumber {
     #[serde(rename = "on")]
@@ -178,7 +158,7 @@ impl Default for PhoneNumber {
         Self::On
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Username {
     #[serde(rename = "on")]
@@ -194,7 +174,7 @@ impl Default for Username {
         Self::On
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Password {
     #[serde(rename = "on")]
@@ -210,3 +190,4 @@ impl Default for Password {
         Self::On
     }
 }
+

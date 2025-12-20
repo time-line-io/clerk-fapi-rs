@@ -26,11 +26,11 @@ pub struct ClientClient {
     #[serde(rename = "sign_up", deserialize_with = "Option::deserialize")]
     pub sign_up: Option<Box<models::ClientSignUp>>,
     /// Last active session_id.
-    #[serde(
-        rename = "last_active_session_id",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "last_active_session_id", deserialize_with = "Option::deserialize")]
     pub last_active_session_id: Option<String>,
+    /// The authentication strategy that was last used to authenticate the user on this client. 
+    #[serde(rename = "last_authentication_strategy", deserialize_with = "Option::deserialize")]
+    pub last_authentication_strategy: Option<String>,
     /// Unix timestamp of the cookie expiration.
     #[serde(rename = "cookie_expires_at", deserialize_with = "Option::deserialize")]
     pub cookie_expires_at: Option<i64>,
@@ -46,25 +46,15 @@ pub struct ClientClient {
 }
 
 impl ClientClient {
-    pub fn new(
-        object: Object,
-        id: String,
-        sessions: Vec<models::ClientSession>,
-        sign_in: Option<models::ClientSignIn>,
-        sign_up: Option<models::ClientSignUp>,
-        last_active_session_id: Option<String>,
-        cookie_expires_at: Option<i64>,
-        captcha_bypass: bool,
-        created_at: i64,
-        updated_at: i64,
-    ) -> ClientClient {
+    pub fn new(object: Object, id: String, sessions: Vec<models::ClientSession>, sign_in: Option<models::ClientSignIn>, sign_up: Option<models::ClientSignUp>, last_active_session_id: Option<String>, last_authentication_strategy: Option<String>, cookie_expires_at: Option<i64>, captcha_bypass: bool, created_at: i64, updated_at: i64) -> ClientClient {
         ClientClient {
             object,
             id,
             sessions,
-            sign_in: sign_in.map(Box::new),
-            sign_up: sign_up.map(Box::new),
+            sign_in: if let Some(x) = sign_in {Some(Box::new(x))} else {None},
+            sign_up: if let Some(x) = sign_up {Some(Box::new(x))} else {None},
             last_active_session_id,
+            last_authentication_strategy,
             cookie_expires_at,
             captcha_bypass,
             created_at,
@@ -72,24 +62,6 @@ impl ClientClient {
         }
     }
 }
-
-impl From<models::schemas_client_client::SchemasClientClient> for ClientClient {
-    fn from(value: models::schemas_client_client::SchemasClientClient) -> Self {
-        ClientClient {
-            object: Object::Client,
-            id: value.id,
-            sessions: value.sessions.into_iter().map(|s| s.into()).collect(),
-            sign_in: value.sign_in,
-            sign_up: value.sign_up,
-            last_active_session_id: value.last_active_session_id,
-            cookie_expires_at: value.cookie_expires_at,
-            captcha_bypass: value.captcha_bypass,
-            created_at: value.created_at,
-            updated_at: value.updated_at,
-        }
-    }
-}
-
 /// String representing the object's type. Objects of the same type share the same value.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
@@ -97,16 +69,9 @@ pub enum Object {
     Client,
 }
 
-impl From<models::schemas_client_client::Object> for Object {
-    fn from(value: models::schemas_client_client::Object) -> Self {
-        match value {
-            models::schemas_client_client::Object::Client => Object::Client,
-        }
-    }
-}
-
 impl Default for Object {
     fn default() -> Object {
         Self::Client
     }
 }
+

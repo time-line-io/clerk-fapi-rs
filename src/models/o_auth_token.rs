@@ -11,23 +11,31 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
 
+/// OAuthToken : OAuth 2.0 token response according to RFC 6749 Section 5.1. When using OpenID Connect (with `openid` scope), also includes an `id_token` field.
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct OAuthToken {
+    /// The access token issued by the authorization server. This token can be used to access protected resources on behalf of the user.
     #[serde(rename = "access_token")]
     pub access_token: String,
+    /// The type of token issued. Always \"Bearer\" for OAuth 2.0.
     #[serde(rename = "token_type")]
     pub token_type: String,
+    /// The lifetime in seconds of the access token. For example, the value \"86400\" denotes that the access token will expire in 1 day from when the response was generated.
     #[serde(rename = "expires_in", skip_serializing_if = "Option::is_none")]
-    pub expires_in: Option<i64>,
+    pub expires_in: Option<i32>,
+    /// The refresh token which can be used to obtain new access tokens using the same authorization grant. Refresh tokens have a 10 year lifetime.
     #[serde(rename = "refresh_token", skip_serializing_if = "Option::is_none")]
     pub refresh_token: Option<String>,
+    /// Space-separated list of scopes that were granted for this access token. May differ from requested scopes if the authorization server granted a subset.
     #[serde(rename = "scope", skip_serializing_if = "Option::is_none")]
     pub scope: Option<String>,
+    /// JWT ID token containing user identity information (OpenID Connect). Only present when the `openid` scope was granted. This is a signed JWT that can be decoded and verified using the instance's public keys.
     #[serde(rename = "id_token", skip_serializing_if = "Option::is_none")]
     pub id_token: Option<String>,
 }
 
 impl OAuthToken {
+    /// OAuth 2.0 token response according to RFC 6749 Section 5.1. When using OpenID Connect (with `openid` scope), also includes an `id_token` field.
     pub fn new(access_token: String, token_type: String) -> OAuthToken {
         OAuthToken {
             access_token,
@@ -39,3 +47,4 @@ impl OAuthToken {
         }
     }
 }
+

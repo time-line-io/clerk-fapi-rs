@@ -1,5 +1,39 @@
 pub mod backup_codes;
 pub use self::backup_codes::BackupCodes;
+pub mod billing_fee;
+pub use self::billing_fee::BillingFee;
+pub mod billing_money_response;
+pub use self::billing_money_response::BillingMoneyResponse;
+pub mod billing_payee;
+pub use self::billing_payee::BillingPayee;
+pub mod billing_payer;
+pub use self::billing_payer::BillingPayer;
+pub mod billing_payment_attempt;
+pub use self::billing_payment_attempt::BillingPaymentAttempt;
+pub mod billing_payment_method;
+pub use self::billing_payment_method::BillingPaymentMethod;
+pub mod billing_payment_method_initialize;
+pub use self::billing_payment_method_initialize::BillingPaymentMethodInitialize;
+pub mod billing_plan;
+pub use self::billing_plan::BillingPlan;
+pub mod billing_plan_features_inner;
+pub use self::billing_plan_features_inner::BillingPlanFeaturesInner;
+pub mod billing_statement;
+pub use self::billing_statement::BillingStatement;
+pub mod billing_statement_response_group;
+pub use self::billing_statement_response_group::BillingStatementResponseGroup;
+pub mod billing_statement_totals_response;
+pub use self::billing_statement_totals_response::BillingStatementTotalsResponse;
+pub mod billing_subscription;
+pub use self::billing_subscription::BillingSubscription;
+pub mod billing_subscription_credit_response;
+pub use self::billing_subscription_credit_response::BillingSubscriptionCreditResponse;
+pub mod billing_subscription_item;
+pub use self::billing_subscription_item::BillingSubscriptionItem;
+pub mod billing_subscription_item_next_payment;
+pub use self::billing_subscription_item_next_payment::BillingSubscriptionItemNextPayment;
+pub mod billing_subscription_next_payment;
+pub use self::billing_subscription_next_payment::BillingSubscriptionNextPayment;
 pub mod clerk_error;
 pub use self::clerk_error::ClerkError;
 pub mod clerk_errors;
@@ -14,6 +48,42 @@ pub mod client_api_keys_settings;
 pub use self::client_api_keys_settings::ClientApiKeysSettings;
 pub mod client_auth_config;
 pub use self::client_auth_config::ClientAuthConfig;
+pub mod client_billing_checkout;
+pub use self::client_billing_checkout::ClientBillingCheckout;
+pub mod client_billing_generic_array;
+pub use self::client_billing_generic_array::ClientBillingGenericArray;
+pub mod client_billing_generic_array_response;
+pub use self::client_billing_generic_array_response::ClientBillingGenericArrayResponse;
+pub mod client_billing_generic_object;
+pub use self::client_billing_generic_object::ClientBillingGenericObject;
+pub mod client_billing_payment_attempt;
+pub use self::client_billing_payment_attempt::ClientBillingPaymentAttempt;
+pub mod client_billing_payment_attempt_list;
+pub use self::client_billing_payment_attempt_list::ClientBillingPaymentAttemptList;
+pub mod client_billing_payment_attempt_list_response;
+pub use self::client_billing_payment_attempt_list_response::ClientBillingPaymentAttemptListResponse;
+pub mod client_billing_payment_method;
+pub use self::client_billing_payment_method::ClientBillingPaymentMethod;
+pub mod client_billing_payment_method_initialize;
+pub use self::client_billing_payment_method_initialize::ClientBillingPaymentMethodInitialize;
+pub mod client_billing_payment_method_list;
+pub use self::client_billing_payment_method_list::ClientBillingPaymentMethodList;
+pub mod client_billing_payment_method_list_response;
+pub use self::client_billing_payment_method_list_response::ClientBillingPaymentMethodListResponse;
+pub mod client_billing_statement;
+pub use self::client_billing_statement::ClientBillingStatement;
+pub mod client_billing_statement_list;
+pub use self::client_billing_statement_list::ClientBillingStatementList;
+pub mod client_billing_statement_list_response;
+pub use self::client_billing_statement_list_response::ClientBillingStatementListResponse;
+pub mod client_billing_subscription;
+pub use self::client_billing_subscription::ClientBillingSubscription;
+pub mod client_billing_subscription_item;
+pub use self::client_billing_subscription_item::ClientBillingSubscriptionItem;
+pub mod client_billing_subscription_item_list;
+pub use self::client_billing_subscription_item_list::ClientBillingSubscriptionItemList;
+pub mod client_billing_subscription_item_list_response;
+pub use self::client_billing_subscription_item_list_response::ClientBillingSubscriptionItemListResponse;
 pub mod client_client;
 pub use self::client_client::ClientClient;
 pub mod client_client_wrapped_backup_codes;
@@ -138,6 +208,10 @@ pub mod client_phone_number;
 pub use self::client_phone_number::ClientPhoneNumber;
 pub mod client_phone_number_verification;
 pub use self::client_phone_number_verification::ClientPhoneNumberVerification;
+pub mod client_protect_config;
+pub use self::client_protect_config::ClientProtectConfig;
+pub mod client_protect_config_loader;
+pub use self::client_protect_config_loader::ClientProtectConfigLoader;
 pub mod client_public_organization_data;
 pub use self::client_public_organization_data::ClientPublicOrganizationData;
 pub mod client_public_user_data;
@@ -186,6 +260,12 @@ pub mod client_web3_wallet;
 pub use self::client_web3_wallet::ClientWeb3Wallet;
 pub mod client_web3_wallet_verification;
 pub use self::client_web3_wallet_verification::ClientWeb3WalletVerification;
+pub mod create_api_key_201_response;
+pub use self::create_api_key_201_response::CreateApiKey201Response;
+pub mod create_api_key_request;
+pub use self::create_api_key_request::CreateApiKeyRequest;
+pub mod create_organization_payment_method_request;
+pub use self::create_organization_payment_method_request::CreateOrganizationPaymentMethodRequest;
 pub mod create_session_token_200_response;
 pub use self::create_session_token_200_response::CreateSessionToken200Response;
 pub mod external_account_with_verification;
@@ -194,10 +274,28 @@ pub mod external_account_with_verification_verification;
 pub use self::external_account_with_verification_verification::ExternalAccountWithVerificationVerification;
 pub mod fraud_settings_native_settings;
 pub use self::fraud_settings_native_settings::FraudSettingsNativeSettings;
+pub mod get_api_keys_200_response;
+pub use self::get_api_keys_200_response::GetApiKeys200Response;
+pub mod get_api_keys_200_response_data_inner;
+pub use self::get_api_keys_200_response_data_inner::GetApiKeys200ResponseDataInner;
+pub mod get_api_keys_400_response;
+pub use self::get_api_keys_400_response::GetApiKeys400Response;
+pub mod get_api_keys_400_response_errors_inner;
+pub use self::get_api_keys_400_response_errors_inner::GetApiKeys400ResponseErrorsInner;
+pub mod get_api_keys_404_response;
+pub use self::get_api_keys_404_response::GetApiKeys404Response;
+pub mod get_api_keys_404_response_errors_inner;
+pub use self::get_api_keys_404_response_errors_inner::GetApiKeys404ResponseErrorsInner;
+pub mod get_billing_plan_list_200_response;
+pub use self::get_billing_plan_list_200_response::GetBillingPlanList200Response;
 pub mod get_health_200_response;
 pub use self::get_health_200_response::GetHealth200Response;
 pub mod get_health_503_response;
 pub use self::get_health_503_response::GetHealth503Response;
+pub mod get_o_auth_token_400_response;
+pub use self::get_o_auth_token_400_response::GetOAuthToken400Response;
+pub mod get_o_auth_token_401_response;
+pub use self::get_o_auth_token_401_response::GetOAuthToken401Response;
 pub mod get_proxy_health_200_response;
 pub use self::get_proxy_health_200_response::GetProxyHealth200Response;
 pub mod get_proxy_health_200_response_one_of;
@@ -224,6 +322,12 @@ pub mod jwks_symmetric_key;
 pub use self::jwks_symmetric_key::JwksSymmetricKey;
 pub mod o_auth_consent_info;
 pub use self::o_auth_consent_info::OAuthConsentInfo;
+pub mod o_auth_dynamic_client_registration_error;
+pub use self::o_auth_dynamic_client_registration_error::OAuthDynamicClientRegistrationError;
+pub mod o_auth_dynamic_client_registration_request;
+pub use self::o_auth_dynamic_client_registration_request::OAuthDynamicClientRegistrationRequest;
+pub mod o_auth_dynamic_client_registration_response;
+pub use self::o_auth_dynamic_client_registration_response::OAuthDynamicClientRegistrationResponse;
 pub mod o_auth_scope_with_description;
 pub use self::o_auth_scope_with_description::OAuthScopeWithDescription;
 pub mod o_auth_token;
@@ -236,6 +340,10 @@ pub mod organization_settings_actions_settings;
 pub use self::organization_settings_actions_settings::OrganizationSettingsActionsSettings;
 pub mod organization_settings_domains_settings;
 pub use self::organization_settings_domains_settings::OrganizationSettingsDomainsSettings;
+pub mod organization_settings_slug_settings;
+pub use self::organization_settings_slug_settings::OrganizationSettingsSlugSettings;
+pub mod revoke_api_key_request;
+pub use self::revoke_api_key_request::RevokeApiKeyRequest;
 pub mod schemas_client_client;
 pub use self::schemas_client_client::SchemasClientClient;
 pub mod schemas_client_client_wrapped_organization;
@@ -248,6 +356,14 @@ pub mod schemas_client_session;
 pub use self::schemas_client_session::SchemasClientSession;
 pub mod schemas_client_session_base;
 pub use self::schemas_client_session_base::SchemasClientSessionBase;
+pub mod schemas_client_sign_in;
+pub use self::schemas_client_sign_in::SchemasClientSignIn;
+pub mod schemas_client_sign_in_second_factor_verification;
+pub use self::schemas_client_sign_in_second_factor_verification::SchemasClientSignInSecondFactorVerification;
+pub mod schemas_stubs_sign_in_factor;
+pub use self::schemas_stubs_sign_in_factor::SchemasStubsSignInFactor;
+pub mod set_organization_default_payment_method_request;
+pub use self::set_organization_default_payment_method_request::SetOrganizationDefaultPaymentMethodRequest;
 pub mod stubs_identification_link;
 pub use self::stubs_identification_link::StubsIdentificationLink;
 pub mod stubs_saml_connection_saml_account;
@@ -290,6 +406,8 @@ pub mod token;
 pub use self::token::Token;
 pub mod totp;
 pub use self::totp::Totp;
+pub mod update_api_key_request;
+pub use self::update_api_key_request::UpdateApiKeyRequest;
 pub mod user_settings_actions_settings;
 pub use self::user_settings_actions_settings::UserSettingsActionsSettings;
 pub mod user_settings_attack_protection_settings;
@@ -340,3 +458,141 @@ pub mod well_known_o_auth2_authorization_server_metadata;
 pub use self::well_known_o_auth2_authorization_server_metadata::WellKnownOAuth2AuthorizationServerMetadata;
 pub mod well_known_open_id_configuration;
 pub use self::well_known_open_id_configuration::WellKnownOpenIdConfiguration;
+
+// ---------------------------------------------------------------------------
+// Handwritten conversions
+// ---------------------------------------------------------------------------
+
+fn try_convert_via_json<T, U>(value: T) -> Option<U>
+where
+    T: serde::Serialize,
+    U: serde::de::DeserializeOwned,
+{
+    serde_json::to_value(value)
+        .ok()
+        .and_then(|v| serde_json::from_value::<U>(v).ok())
+}
+
+impl From<SchemasClientSession> for ClientSession {
+    fn from(value: SchemasClientSession) -> Self {
+        // Best effort: the schema types are usually JSON-compatible with the client types.
+        if let Some(v) = try_convert_via_json::<SchemasClientSession, ClientSession>(value.clone()) {
+            return v;
+        }
+
+        // Fallback mapping for known-compatible fields.
+        ClientSession {
+            id: value.id,
+            object: client_session::Object::Session,
+            status: match value.status {
+                schemas_client_session::Status::Active => client_session::Status::Active,
+                schemas_client_session::Status::Revoked => client_session::Status::Revoked,
+                schemas_client_session::Status::Ended => client_session::Status::Ended,
+                schemas_client_session::Status::Expired => client_session::Status::Expired,
+                schemas_client_session::Status::Removed => client_session::Status::Removed,
+                schemas_client_session::Status::Abandoned => client_session::Status::Abandoned,
+            },
+            expire_at: value.expire_at,
+            abandon_at: value.abandon_at,
+            last_active_at: value.last_active_at,
+            last_active_token: value.last_active_token,
+            actor: value.actor,
+            tasks: None,
+            last_active_organization_id: value.last_active_organization_id,
+            user: value.user,
+            public_user_data: value.public_user_data,
+            factor_verification_age: value.factor_verification_age,
+            created_at: value.created_at,
+            updated_at: value.updated_at,
+        }
+    }
+}
+
+impl From<SchemasClientSignIn> for ClientSignIn {
+    fn from(value: SchemasClientSignIn) -> Self {
+        // Best effort conversion. If it fails, we fall back to a minimal struct.
+        if let Some(v) = try_convert_via_json::<SchemasClientSignIn, ClientSignIn>(value.clone()) {
+            return v;
+        }
+
+        ClientSignIn {
+            object: client_sign_in::Object::SignInAttempt,
+            id: value.id,
+            status: match value.status {
+                schemas_client_sign_in::Status::Abandoned => client_sign_in::Status::Abandoned,
+                schemas_client_sign_in::Status::NeedsIdentifier => client_sign_in::Status::NeedsIdentifier,
+                schemas_client_sign_in::Status::NeedsFirstFactor => client_sign_in::Status::NeedsFirstFactor,
+                schemas_client_sign_in::Status::NeedsSecondFactor => client_sign_in::Status::NeedsSecondFactor,
+                schemas_client_sign_in::Status::NeedsClientTrust => client_sign_in::Status::NeedsClientTrust,
+                schemas_client_sign_in::Status::NeedsNewPassword => client_sign_in::Status::NeedsNewPassword,
+                schemas_client_sign_in::Status::Complete => client_sign_in::Status::Complete,
+            },
+            supported_identifiers: value
+                .supported_identifiers
+                .into_iter()
+                .map(|s| match s {
+                    schemas_client_sign_in::SupportedIdentifiers::EmailAddress => {
+                        client_sign_in::SupportedIdentifiers::EmailAddress
+                    }
+                    schemas_client_sign_in::SupportedIdentifiers::PhoneNumber => {
+                        client_sign_in::SupportedIdentifiers::PhoneNumber
+                    }
+                    schemas_client_sign_in::SupportedIdentifiers::Username => {
+                        client_sign_in::SupportedIdentifiers::Username
+                    }
+                    schemas_client_sign_in::SupportedIdentifiers::Web3Wallet => {
+                        client_sign_in::SupportedIdentifiers::Web3Wallet
+                    }
+                    schemas_client_sign_in::SupportedIdentifiers::Passkey => {
+                        client_sign_in::SupportedIdentifiers::Passkey
+                    }
+                })
+                .collect(),
+            supported_first_factors: None,
+            supported_second_factors: None,
+            first_factor_verification: value.first_factor_verification,
+            second_factor_verification: None,
+            identifier: value.identifier,
+            user_data: value.user_data,
+            created_session_id: value.created_session_id,
+            abandon_at: value.abandon_at,
+            client_trust_state: value.client_trust_state.map(|inner| {
+                inner.map(|s| match s {
+                    schemas_client_sign_in::ClientTrustState::Pending => {
+                        client_sign_in::ClientTrustState::Pending
+                    }
+                    schemas_client_sign_in::ClientTrustState::New => client_sign_in::ClientTrustState::New,
+                    schemas_client_sign_in::ClientTrustState::Known => {
+                        client_sign_in::ClientTrustState::Known
+                    }
+                })
+            }),
+        }
+    }
+}
+
+impl From<SchemasClientClient> for ClientClient {
+    fn from(value: SchemasClientClient) -> Self {
+        if let Some(v) = try_convert_via_json::<SchemasClientClient, ClientClient>(value.clone()) {
+            return v;
+        }
+
+        let sessions = value.sessions.into_iter().map(Into::into).collect();
+        let sign_in = value.sign_in.map(|s| Box::new((*s).into()));
+
+        ClientClient {
+            object: client_client::Object::Client,
+            id: value.id,
+            sessions,
+            sign_in,
+            // Note: schema already uses ClientSignUp here.
+            sign_up: value.sign_up,
+            last_active_session_id: value.last_active_session_id,
+            last_authentication_strategy: value.last_authentication_strategy,
+            cookie_expires_at: value.cookie_expires_at,
+            captcha_bypass: value.captcha_bypass,
+            created_at: value.created_at,
+            updated_at: value.updated_at,
+        }
+    }
+}

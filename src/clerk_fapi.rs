@@ -1,3 +1,4 @@
+use crate::apis::configuration::Configuration as ApiConfiguration;
 use crate::apis::*;
 use crate::clerk_http_client::ClerkHttpClient;
 use crate::clerk_state::ClerkState;
@@ -105,14 +106,14 @@ impl ClerkFapiClient {
         if let Some(client) = response.client.clone() {
             self.handle_client_update(*client);
         }
-        Ok(*response.response)
+        Ok((*response.response).into())
     }
 
     // Backup Codes API methods
     pub async fn create_backup_codes(&self) -> Result<BackupCodes, Error<CreateBackupCodesError>> {
         let response = backup_codes_api::create_backup_codes(&self.clerk_config()).await?;
         self.handle_client_update(*response.client.clone());
-        Ok(*response.response)
+        Ok((*response.response).into())
     }
 
     // Client API methods
@@ -294,8 +295,8 @@ impl ClerkFapiClient {
     pub async fn list_organization_domains(
         &self,
         organization_id: &str,
-        limit: Option<i64>,
-        offset: Option<i64>,
+        limit: Option<i32>,
+        offset: Option<i32>,
         verified: Option<bool>,
         enrollment_mode: Option<&str>,
     ) -> Result<ClientClientWrappedOrganizationDomainsResponse, Error<ListOrganizationDomainsError>>
@@ -589,6 +590,9 @@ impl ClerkFapiClient {
         organization_id: &str,
     ) -> Result<Vec<ClientOrganizationInvitation>, Error<GetAllPendingOrganizationInvitationsError>>
     {
+        // Clerk deprecated this endpoint, but we keep it for backwards compatibility
+        // and to preserve this method's error type.
+        #[allow(deprecated)]
         let response = invitations_api::get_all_pending_organization_invitations(
             &self.clerk_config(),
             organization_id,
@@ -607,8 +611,8 @@ impl ClerkFapiClient {
     pub async fn get_organization_invitations(
         &self,
         organization_id: &str,
-        limit: Option<i64>,
-        offset: Option<i64>,
+        limit: Option<i32>,
+        offset: Option<i32>,
         status: Option<&str>,
     ) -> Result<Vec<ClientOrganizationInvitation>, Error<GetOrganizationInvitationsError>> {
         let response = invitations_api::get_organization_invitations(
@@ -666,8 +670,8 @@ impl ClerkFapiClient {
     pub async fn list_organization_memberships(
         &self,
         organization_id: &str,
-        limit: Option<i64>,
-        offset: Option<i64>,
+        limit: Option<i32>,
+        offset: Option<i32>,
         paginated: Option<bool>,
         query: Option<&str>,
         role: Option<&str>,
@@ -741,8 +745,8 @@ impl ClerkFapiClient {
     pub async fn list_organization_membership_requests(
         &self,
         organization_id: &str,
-        limit: Option<i64>,
-        offset: Option<i64>,
+        limit: Option<i32>,
+        offset: Option<i32>,
         status: Option<&str>,
     ) -> Result<
         ClientClientWrappedOrganizationMembershipRequestsResponse,
@@ -805,7 +809,7 @@ impl ClerkFapiClient {
         client_id: &str,
         _clerk_session_id: Option<&str>,
     ) -> Result<OAuthConsentInfo, Error<GetOAuthConsentError>> {
-        o_auth2_identify_provider_api::get_o_auth_consent(
+        o_auth2_identity_provider_api::get_o_auth_consent(
             configuration,
             client_id,
             _clerk_session_id,
@@ -813,8 +817,29 @@ impl ClerkFapiClient {
         .await
     }
 
-    pub async fn get_o_auth_token(&self) -> Result<OAuthToken, Error<GetOAuthTokenError>> {
-        o_auth2_identify_provider_api::get_o_auth_token(&self.clerk_config()).await
+    pub async fn get_o_auth_token(
+        &self,
+        grant_type: &str,
+        code: Option<&str>,
+        redirect_uri: Option<&str>,
+        code_verifier: Option<&str>,
+        client_id: Option<&str>,
+        client_secret: Option<&str>,
+        refresh_token: Option<&str>,
+        scope: Option<&str>,
+    ) -> Result<OAuthToken, Error<GetOAuthTokenError>> {
+        o_auth2_identity_provider_api::get_o_auth_token(
+            &self.clerk_config(),
+            grant_type,
+            code,
+            redirect_uri,
+            code_verifier,
+            client_id,
+            client_secret,
+            refresh_token,
+            scope,
+        )
+        .await
     }
 
     pub async fn get_o_auth_token_info(
@@ -823,7 +848,7 @@ impl ClerkFapiClient {
         token_type_hint: Option<&str>,
         scope: Option<&str>,
     ) -> Result<OAuthTokenInfo, Error<GetOAuthTokenInfoError>> {
-        o_auth2_identify_provider_api::get_o_auth_token_info(
+        o_auth2_identity_provider_api::get_o_auth_token_info(
             &self.clerk_config(),
             token,
             token_type_hint,
@@ -835,23 +860,71 @@ impl ClerkFapiClient {
     pub async fn get_o_auth_user_info(
         &self,
     ) -> Result<OAuthUserInfo, Error<GetOAuthUserInfoError>> {
-        o_auth2_identify_provider_api::get_o_auth_user_info(&self.clerk_config()).await
+        o_auth2_identity_provider_api::get_o_auth_user_info(&self.clerk_config()).await
     }
 
     pub async fn get_o_auth_user_info_post(
         &self,
     ) -> Result<OAuthUserInfo, Error<GetOAuthUserInfoPostError>> {
-        o_auth2_identify_provider_api::get_o_auth_user_info_post(&self.clerk_config()).await
+        o_auth2_identity_provider_api::get_o_auth_user_info_post(&self.clerk_config()).await
     }
 
-    pub async fn request_o_auth_authorize(&self) -> Result<(), Error<RequestOAuthAuthorizeError>> {
-        o_auth2_identify_provider_api::request_o_auth_authorize(&self.clerk_config()).await
+    pub async fn request_o_auth_authorize(
+        &self,
+        response_type: &str,
+        client_id: &str,
+        redirect_uri: Option<&str>,
+        scope: Option<Vec<String>>,
+        state: Option<&str>,
+        prompt: Option<Vec<String>>,
+        code_challenge: Option<&str>,
+        code_challenge_method: Option<&str>,
+        response_mode: Option<&str>,
+        nonce: Option<&str>,
+    ) -> Result<(), Error<RequestOAuthAuthorizeError>> {
+        o_auth2_identity_provider_api::request_o_auth_authorize(
+            &self.clerk_config(),
+            response_type,
+            client_id,
+            redirect_uri,
+            scope,
+            state,
+            prompt,
+            code_challenge,
+            code_challenge_method,
+            response_mode,
+            nonce,
+        )
+        .await
     }
 
     pub async fn request_o_auth_authorize_post(
         &self,
+        response_type: &str,
+        client_id: &str,
+        redirect_uri: Option<&str>,
+        scope: Option<&str>,
+        state: Option<&str>,
+        prompt: Option<&str>,
+        code_challenge: Option<&str>,
+        code_challenge_method: Option<&str>,
+        response_mode: Option<&str>,
+        nonce: Option<&str>,
     ) -> Result<(), Error<RequestOAuthAuthorizePostError>> {
-        o_auth2_identify_provider_api::request_o_auth_authorize_post(&self.clerk_config()).await
+        o_auth2_identity_provider_api::request_o_auth_authorize_post(
+            &self.clerk_config(),
+            response_type,
+            client_id,
+            redirect_uri,
+            scope,
+            state,
+            prompt,
+            code_challenge,
+            code_challenge_method,
+            response_mode,
+            nonce,
+        )
+        .await
     }
 
     pub async fn revoke_o_auth_token(
@@ -859,7 +932,7 @@ impl ClerkFapiClient {
         token: Option<&str>,
         token_type_hint: Option<&str>,
     ) -> Result<(), Error<RevokeOAuthTokenError>> {
-        o_auth2_identify_provider_api::revoke_o_auth_token(
+        o_auth2_identity_provider_api::revoke_o_auth_token(
             &self.clerk_config(),
             token,
             token_type_hint,
@@ -932,7 +1005,7 @@ impl ClerkFapiClient {
     pub async fn update_organization_logo(
         &self,
         organization_id: &str,
-        file: FileData,
+        file: Option<std::path::PathBuf>,
     ) -> Result<ClientOrganization, Error<UpdateOrganizationLogoError>> {
         let response =
             organization_api::update_organization_logo(&self.clerk_config(), organization_id, file)
@@ -986,8 +1059,8 @@ impl ClerkFapiClient {
 
     pub async fn get_organization_memberships(
         &self,
-        limit: Option<i64>,
-        offset: Option<i64>,
+        limit: Option<i32>,
+        offset: Option<i32>,
         paginated: Option<bool>,
     ) -> Result<Vec<ClientOrganizationMembership>, Error<GetOrganizationMembershipsError>> {
         let response = organizations_memberships_api::get_organization_memberships(
@@ -1009,8 +1082,8 @@ impl ClerkFapiClient {
 
     pub async fn get_organization_suggestions(
         &self,
-        limit: Option<i64>,
-        offset: Option<i64>,
+        limit: Option<i32>,
+        offset: Option<i32>,
         status: Option<&str>,
     ) -> Result<
         ClientClientWrappedOrganizationSuggestionsResponse,
@@ -1029,8 +1102,8 @@ impl ClerkFapiClient {
 
     pub async fn get_users_organization_invitations(
         &self,
-        limit: Option<i64>,
-        offset: Option<i64>,
+        limit: Option<i32>,
+        offset: Option<i32>,
         status: Option<&str>,
     ) -> Result<
         ClientClientWrappedOrganizationInvitationsUserContextResponse,
@@ -1236,8 +1309,8 @@ impl ClerkFapiClient {
     pub async fn list_organization_roles(
         &self,
         organization_id: &str,
-        limit: Option<i64>,
-        offset: Option<i64>,
+        limit: Option<i32>,
+        offset: Option<i32>,
     ) -> Result<ClientClientWrappedRolesResponse, Error<ListOrganizationRolesError>> {
         let response = roles_api::list_organization_roles(
             &self.clerk_config(),
@@ -1599,12 +1672,14 @@ impl ClerkFapiClient {
             sign_in_id,
             strategy,
             phone_number_id,
+            None,
+            None,
         )
         .await?;
         if let Some(client) = response.client.clone() {
             self.handle_client_update(*client);
         };
-        Ok(*response.response)
+        Ok((*response.response).into())
     }
 
     pub async fn reset_password(
@@ -1623,7 +1698,7 @@ impl ClerkFapiClient {
         if let Some(client) = response.client.clone() {
             self.handle_client_update((*client).into());
         };
-        Ok(*response.response)
+        Ok((*response.response).into())
     }
 
     pub async fn verify(&self, token: &str) -> Result<(), Error<VerifyError>> {
@@ -1911,10 +1986,10 @@ impl ClerkFapiClient {
         Ok(*response.response)
     }
 
-    /// Does not work, file upload not implemented yet
+    /// Does not work reliably; file upload behavior depends on platform + spec correctness.
     pub async fn update_profile_image(
         &self,
-        file: FileData,
+        file: Option<std::path::PathBuf>,
     ) -> Result<Image, Error<UpdateProfileImageError>> {
         let response = user_api::update_profile_image(&self.clerk_config(), file).await?;
         if let Some(client) = response.client.clone() {

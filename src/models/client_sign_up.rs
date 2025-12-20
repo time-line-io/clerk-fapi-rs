@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClientSignUp {
-    /// String representing the object's type. Objects of the same type share the same value.
+    /// String representing the object's type. Objects of the same type share the same value. 
     #[serde(rename = "object")]
     pub object: Object,
     /// Unique identifier for this sign up.
@@ -21,19 +21,19 @@ pub struct ClientSignUp {
     pub id: String,
     #[serde(rename = "status")]
     pub status: Status,
-    /// List of required fields which need to be supplied to the current sign-up. These fields are mandatory in order for the sign-up to satisfy the attached registration policy and be marked as complete.
+    /// List of required fields which need to be supplied to the current sign-up. These fields are mandatory in order for the sign-up to satisfy the attached registration policy and be marked as complete. 
     #[serde(rename = "required_fields")]
     pub required_fields: Vec<String>,
-    /// List of optional fields which can be supplied to the current sign-up. These fields are not required and their absence does not prevent the sign-up to be marked as complete.
+    /// List of optional fields which can be supplied to the current sign-up. These fields are not required and their absence does not prevent the sign-up to be marked as complete. 
     #[serde(rename = "optional_fields")]
     pub optional_fields: Vec<String>,
-    /// List of the missing fields which still need to be supplied to the current sign-up. These fields are mandatory in order for the sign-up to satisfy the attached registration policy and be marked as complete.
+    /// List of the missing fields which still need to be supplied to the current sign-up. These fields are mandatory in order for the sign-up to satisfy the attached registration policy and be marked as complete. 
     #[serde(rename = "missing_fields")]
     pub missing_fields: Vec<String>,
-    /// List of fields which are already supplied to the current sign-up but they need to be verified. Example of such fields are email addresses and phone numbers.
+    /// List of fields which are already supplied to the current sign-up but they need to be verified. Example of such fields are email addresses and phone numbers. 
     #[serde(rename = "unverified_fields")]
     pub unverified_fields: Vec<String>,
-    /// Group for all available verifications.
+    /// Group for all available verifications. 
     #[serde(rename = "verifications")]
     pub verifications: Box<models::ClientSignUpVerifications>,
     #[serde(rename = "username", deserialize_with = "Option::deserialize")]
@@ -50,20 +50,17 @@ pub struct ClientSignUp {
     pub first_name: Option<String>,
     #[serde(rename = "last_name", deserialize_with = "Option::deserialize")]
     pub last_name: Option<String>,
-    /// Custom JSON that callers can use to store arbitrary values that make sense in the context of the current sign up.
+    /// Custom JSON that callers can use to store arbitrary values that make sense in the context of the current sign up. 
     #[serde(rename = "unsafe_metadata", skip_serializing_if = "Option::is_none")]
     pub unsafe_metadata: Option<std::collections::HashMap<String, serde_json::Value>>,
-    /// Custom JSON that can be used to store arbitrary values which will end up in the user's public metadata. This field can only be populated from the application's BE. At this point, this can be done via invitations.
+    /// Custom JSON that can be used to store arbitrary values which will end up in the user's public metadata. This field can only be populated from the application's BE. At this point, this can be done via invitations. 
     #[serde(rename = "public_metadata", skip_serializing_if = "Option::is_none")]
     pub public_metadata: Option<std::collections::HashMap<String, serde_json::Value>>,
     #[serde(rename = "custom_action")]
     pub custom_action: bool,
     #[serde(rename = "external_id", deserialize_with = "Option::deserialize")]
     pub external_id: Option<String>,
-    #[serde(
-        rename = "created_session_id",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "created_session_id", deserialize_with = "Option::deserialize")]
     pub created_session_id: Option<String>,
     #[serde(rename = "created_user_id", deserialize_with = "Option::deserialize")]
     pub created_user_id: Option<String>,
@@ -76,29 +73,7 @@ pub struct ClientSignUp {
 }
 
 impl ClientSignUp {
-    pub fn new(
-        object: Object,
-        id: String,
-        status: Status,
-        required_fields: Vec<String>,
-        optional_fields: Vec<String>,
-        missing_fields: Vec<String>,
-        unverified_fields: Vec<String>,
-        verifications: models::ClientSignUpVerifications,
-        username: Option<String>,
-        email_address: Option<String>,
-        phone_number: Option<String>,
-        web3_wallet: Option<String>,
-        password_enabled: bool,
-        first_name: Option<String>,
-        last_name: Option<String>,
-        custom_action: bool,
-        external_id: Option<String>,
-        created_session_id: Option<String>,
-        created_user_id: Option<String>,
-        abandon_at: i64,
-        legal_accepted_at: Option<i64>,
-    ) -> ClientSignUp {
+    pub fn new(object: Object, id: String, status: Status, required_fields: Vec<String>, optional_fields: Vec<String>, missing_fields: Vec<String>, unverified_fields: Vec<String>, verifications: models::ClientSignUpVerifications, username: Option<String>, email_address: Option<String>, phone_number: Option<String>, web3_wallet: Option<String>, password_enabled: bool, first_name: Option<String>, last_name: Option<String>, custom_action: bool, external_id: Option<String>, created_session_id: Option<String>, created_user_id: Option<String>, abandon_at: i64, legal_accepted_at: Option<i64>) -> ClientSignUp {
         ClientSignUp {
             object,
             id,
@@ -126,7 +101,7 @@ impl ClientSignUp {
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value.
+/// String representing the object's type. Objects of the same type share the same value. 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "sign_up_attempt")]
@@ -138,7 +113,7 @@ impl Default for Object {
         Self::SignUpAttempt
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "abandoned")]
@@ -154,3 +129,4 @@ impl Default for Status {
         Self::Abandoned
     }
 }
+

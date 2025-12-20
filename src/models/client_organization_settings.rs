@@ -16,30 +16,28 @@ pub struct ClientOrganizationSettings {
     #[serde(rename = "enabled")]
     pub enabled: bool,
     #[serde(rename = "max_allowed_memberships")]
-    pub max_allowed_memberships: i64,
+    pub max_allowed_memberships: i32,
     #[serde(rename = "actions")]
     pub actions: Box<models::OrganizationSettingsActionsSettings>,
     #[serde(rename = "domains")]
     pub domains: Box<models::OrganizationSettingsDomainsSettings>,
+    #[serde(rename = "slug", skip_serializing_if = "Option::is_none")]
+    pub slug: Option<Box<models::OrganizationSettingsSlugSettings>>,
     /// The role key that a user will be assigned after creating an organization.
     #[serde(rename = "creator_role")]
     pub creator_role: String,
 }
 
 impl ClientOrganizationSettings {
-    pub fn new(
-        enabled: bool,
-        max_allowed_memberships: i64,
-        actions: models::OrganizationSettingsActionsSettings,
-        domains: models::OrganizationSettingsDomainsSettings,
-        creator_role: String,
-    ) -> ClientOrganizationSettings {
+    pub fn new(enabled: bool, max_allowed_memberships: i32, actions: models::OrganizationSettingsActionsSettings, domains: models::OrganizationSettingsDomainsSettings, creator_role: String) -> ClientOrganizationSettings {
         ClientOrganizationSettings {
             enabled,
             max_allowed_memberships,
             actions: Box::new(actions),
             domains: Box::new(domains),
+            slug: None,
             creator_role,
         }
     }
 }
+

@@ -23,55 +23,30 @@ pub struct ClientSignIn {
     /// List of supported identifiers that can be used to sign in.
     #[serde(rename = "supported_identifiers")]
     pub supported_identifiers: Vec<SupportedIdentifiers>,
-    #[serde(
-        rename = "supported_first_factors",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "supported_first_factors", deserialize_with = "Option::deserialize")]
     pub supported_first_factors: Option<Vec<models::StubsSignInFactor>>,
-    #[serde(
-        rename = "supported_second_factors",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "supported_second_factors", deserialize_with = "Option::deserialize")]
     pub supported_second_factors: Option<Vec<models::StubsSignInFactor>>,
-    #[serde(
-        rename = "first_factor_verification",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "first_factor_verification", deserialize_with = "Option::deserialize")]
     pub first_factor_verification: Option<Box<models::ClientSignInFirstFactorVerification>>,
-    #[serde(
-        rename = "second_factor_verification",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "second_factor_verification", deserialize_with = "Option::deserialize")]
     pub second_factor_verification: Option<Box<models::ClientSignInSecondFactorVerification>>,
     #[serde(rename = "identifier", deserialize_with = "Option::deserialize")]
     pub identifier: Option<String>,
     #[serde(rename = "user_data", deserialize_with = "Option::deserialize")]
     pub user_data: Option<Box<models::ClientSignInUserData>>,
-    #[serde(
-        rename = "created_session_id",
-        deserialize_with = "Option::deserialize"
-    )]
+    #[serde(rename = "created_session_id", deserialize_with = "Option::deserialize")]
     pub created_session_id: Option<String>,
     /// Unix timestamp at which the sign in will be abandoned.
     #[serde(rename = "abandon_at")]
     pub abandon_at: i64,
+    /// The trust state of the client for this sign-in attempt. - `pending`: The identifier has not been set yet. - `new`: The user has not had a session on this client before. - `known`: The user has had a session on this client before. 
+    #[serde(rename = "client_trust_state", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub client_trust_state: Option<Option<ClientTrustState>>,
 }
 
 impl ClientSignIn {
-    pub fn new(
-        object: Object,
-        id: String,
-        status: Status,
-        supported_identifiers: Vec<SupportedIdentifiers>,
-        supported_first_factors: Option<Vec<models::StubsSignInFactor>>,
-        supported_second_factors: Option<Vec<models::StubsSignInFactor>>,
-        first_factor_verification: Option<models::ClientSignInFirstFactorVerification>,
-        second_factor_verification: Option<models::ClientSignInSecondFactorVerification>,
-        identifier: Option<String>,
-        user_data: Option<models::ClientSignInUserData>,
-        created_session_id: Option<String>,
-        abandon_at: i64,
-    ) -> ClientSignIn {
+    pub fn new(object: Object, id: String, status: Status, supported_identifiers: Vec<SupportedIdentifiers>, supported_first_factors: Option<Vec<models::StubsSignInFactor>>, supported_second_factors: Option<Vec<models::StubsSignInFactor>>, first_factor_verification: Option<models::ClientSignInFirstFactorVerification>, second_factor_verification: Option<models::ClientSignInSecondFactorVerification>, identifier: Option<String>, user_data: Option<models::ClientSignInUserData>, created_session_id: Option<String>, abandon_at: i64) -> ClientSignIn {
         ClientSignIn {
             object,
             id,
@@ -79,12 +54,13 @@ impl ClientSignIn {
             supported_identifiers,
             supported_first_factors,
             supported_second_factors,
-            first_factor_verification: first_factor_verification.map(Box::new),
-            second_factor_verification: second_factor_verification.map(Box::new),
+            first_factor_verification: if let Some(x) = first_factor_verification {Some(Box::new(x))} else {None},
+            second_factor_verification: if let Some(x) = second_factor_verification {Some(Box::new(x))} else {None},
             identifier,
-            user_data: user_data.map(Box::new),
+            user_data: if let Some(x) = user_data {Some(Box::new(x))} else {None},
             created_session_id,
             abandon_at,
+            client_trust_state: None,
         }
     }
 }
@@ -100,7 +76,7 @@ impl Default for Object {
         Self::SignInAttempt
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "abandoned")]
@@ -111,6 +87,8 @@ pub enum Status {
     NeedsFirstFactor,
     #[serde(rename = "needs_second_factor")]
     NeedsSecondFactor,
+    #[serde(rename = "needs_client_trust")]
+    NeedsClientTrust,
     #[serde(rename = "needs_new_password")]
     NeedsNewPassword,
     #[serde(rename = "complete")]
@@ -142,3 +120,20 @@ impl Default for SupportedIdentifiers {
         Self::EmailAddress
     }
 }
+/// The trust state of the client for this sign-in attempt. - `pending`: The identifier has not been set yet. - `new`: The user has not had a session on this client before. - `known`: The user has had a session on this client before. 
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum ClientTrustState {
+    #[serde(rename = "pending")]
+    Pending,
+    #[serde(rename = "new")]
+    New,
+    #[serde(rename = "known")]
+    Known,
+}
+
+impl Default for ClientTrustState {
+    fn default() -> ClientTrustState {
+        Self::Pending
+    }
+}
+

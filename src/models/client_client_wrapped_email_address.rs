@@ -20,13 +20,11 @@ pub struct ClientClientWrappedEmailAddress {
 }
 
 impl ClientClientWrappedEmailAddress {
-    pub fn new(
-        response: models::ClientEmailAddress,
-        client: models::ClientClient,
-    ) -> ClientClientWrappedEmailAddress {
+    pub fn new(response: models::ClientEmailAddress, client: models::ClientClient) -> ClientClientWrappedEmailAddress {
         ClientClientWrappedEmailAddress {
             response: Box::new(response),
             client: Box::new(client),
         }
     }
 }
+

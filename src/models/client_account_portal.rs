@@ -38,19 +38,7 @@ pub struct ClientAccountPortal {
 }
 
 impl ClientAccountPortal {
-    pub fn new(
-        object: Object,
-        allowed: bool,
-        enabled: bool,
-        internal_linking: bool,
-        after_sign_in_url: String,
-        after_sign_up_url: String,
-        after_join_waitlist_url: String,
-        after_create_organization_url: String,
-        after_leave_organization_url: String,
-        logo_link_url: String,
-        customization: models::ClientAccountPortalCustomization,
-    ) -> ClientAccountPortal {
+    pub fn new(object: Object, allowed: bool, enabled: bool, internal_linking: bool, after_sign_in_url: String, after_sign_up_url: String, after_join_waitlist_url: String, after_create_organization_url: String, after_leave_organization_url: String, logo_link_url: String, customization: models::ClientAccountPortalCustomization) -> ClientAccountPortal {
         ClientAccountPortal {
             object,
             allowed,
@@ -66,7 +54,7 @@ impl ClientAccountPortal {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "account_portal")]
@@ -78,3 +66,4 @@ impl Default for Object {
         Self::AccountPortal
     }
 }
+

@@ -1,3 +1,0 @@
-[alias]
-run-sign-in = "run --bin basic_usage_sign_in"
-run-sign-up = "run --bin basic_usage_sign_up"

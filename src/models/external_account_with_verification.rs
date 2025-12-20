@@ -36,40 +36,20 @@ pub struct ExternalAccountWithVerification {
     /// Please use `image_url` instead
     #[serde(rename = "avatar_url", skip_serializing_if = "Option::is_none")]
     pub avatar_url: Option<String>,
-    #[serde(
-        rename = "image_url",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "image_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub image_url: Option<Option<String>>,
-    #[serde(
-        rename = "username",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "username", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub username: Option<Option<String>>,
-    #[serde(
-        rename = "phone_number",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "phone_number", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub phone_number: Option<Option<String>>,
     #[serde(rename = "public_metadata")]
     pub public_metadata: std::collections::HashMap<String, serde_json::Value>,
-    #[serde(
-        rename = "label",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "label", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub label: Option<Option<String>>,
-    /// Unix timestamp of creation
+    /// Unix timestamp of creation 
     #[serde(rename = "created_at")]
     pub created_at: i64,
-    /// Unix timestamp of creation
+    /// Unix timestamp of creation 
     #[serde(rename = "updated_at")]
     pub updated_at: i64,
     #[serde(rename = "verification", deserialize_with = "Option::deserialize")]
@@ -77,21 +57,7 @@ pub struct ExternalAccountWithVerification {
 }
 
 impl ExternalAccountWithVerification {
-    pub fn new(
-        object: Object,
-        id: String,
-        provider: String,
-        identification_id: String,
-        provider_user_id: String,
-        approved_scopes: String,
-        email_address: String,
-        first_name: String,
-        last_name: String,
-        public_metadata: std::collections::HashMap<String, serde_json::Value>,
-        created_at: i64,
-        updated_at: i64,
-        verification: Option<models::ExternalAccountWithVerificationVerification>,
-    ) -> ExternalAccountWithVerification {
+    pub fn new(object: Object, id: String, provider: String, identification_id: String, provider_user_id: String, approved_scopes: String, email_address: String, first_name: String, last_name: String, public_metadata: std::collections::HashMap<String, serde_json::Value>, created_at: i64, updated_at: i64, verification: Option<models::ExternalAccountWithVerificationVerification>) -> ExternalAccountWithVerification {
         ExternalAccountWithVerification {
             object,
             id,
@@ -110,7 +76,7 @@ impl ExternalAccountWithVerification {
             label: None,
             created_at,
             updated_at,
-            verification: verification.map(Box::new),
+            verification: if let Some(x) = verification {Some(Box::new(x))} else {None},
         }
     }
 }
@@ -130,3 +96,4 @@ impl Default for Object {
         Self::ExternalAccount
     }
 }
+

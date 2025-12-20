@@ -1,6 +1,5 @@
-pub use anyhow::Error as AnyhowError;
-pub use std::error;
-pub use std::fmt;
+use std::error;
+use std::fmt;
 
 #[derive(Debug, Clone)]
 pub struct ResponseContent<T> {
@@ -12,30 +11,27 @@ pub struct ResponseContent<T> {
 #[derive(Debug)]
 pub enum Error<T> {
     Reqwest(reqwest::Error),
-    Middleware(AnyhowError),
     Serde(serde_json::Error),
     Io(std::io::Error),
     ResponseError(ResponseContent<T>),
 }
 
-impl<T> fmt::Display for Error<T> {
+impl <T> fmt::Display for Error<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let (module, e) = match self {
             Error::Reqwest(e) => ("reqwest", e.to_string()),
-            Error::Middleware(e) => ("middleware", e.to_string()),
             Error::Serde(e) => ("serde", e.to_string()),
             Error::Io(e) => ("IO", e.to_string()),
             Error::ResponseError(e) => ("response", format!("status code {}", e.status)),
         };
-        write!(f, "error in {module}: {e}")
+        write!(f, "error in {}: {}", module, e)
     }
 }
 
-impl<T: fmt::Debug> error::Error for Error<T> {
+impl <T: fmt::Debug> error::Error for Error<T> {
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         Some(match self {
             Error::Reqwest(e) => e,
-            Error::Middleware(e) => e.as_ref(),
             Error::Serde(e) => e,
             Error::Io(e) => e,
             Error::ResponseError(_) => return None,
@@ -43,46 +39,21 @@ impl<T: fmt::Debug> error::Error for Error<T> {
     }
 }
 
-impl<T> From<reqwest::Error> for Error<T> {
+impl <T> From<reqwest::Error> for Error<T> {
     fn from(e: reqwest::Error) -> Self {
         Error::Reqwest(e)
     }
 }
 
-impl<T> From<serde_json::Error> for Error<T> {
+impl <T> From<serde_json::Error> for Error<T> {
     fn from(e: serde_json::Error) -> Self {
         Error::Serde(e)
     }
 }
 
-impl<T> From<std::io::Error> for Error<T> {
+impl <T> From<std::io::Error> for Error<T> {
     fn from(e: std::io::Error) -> Self {
         Error::Io(e)
-    }
-}
-
-impl<T> From<anyhow::Error> for Error<T> {
-    fn from(e: anyhow::Error) -> Self {
-        Error::Middleware(e)
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum ContentType {
-    Json,
-    Text,
-    Unsupported(String),
-}
-
-impl From<&str> for ContentType {
-    fn from(s: &str) -> Self {
-        if s.contains("application/json") {
-            ContentType::Json
-        } else if s.contains("text/plain") {
-            ContentType::Text
-        } else {
-            ContentType::Unsupported(s.to_string())
-        }
     }
 }
 
@@ -96,21 +67,20 @@ pub fn parse_deep_object(prefix: &str, value: &serde_json::Value) -> Vec<(String
 
         for (key, value) in object {
             match value {
-                serde_json::Value::Object(_) => {
-                    params.append(&mut parse_deep_object(&format!("{prefix}[{key}]"), value))
-                }
+                serde_json::Value::Object(_) => params.append(&mut parse_deep_object(
+                    &format!("{}[{}]", prefix, key),
+                    value,
+                )),
                 serde_json::Value::Array(array) => {
                     for (i, value) in array.iter().enumerate() {
                         params.append(&mut parse_deep_object(
-                            &format!("{prefix}[{key}][{i}]"),
+                            &format!("{}[{}][{}]", prefix, key, i),
                             value,
                         ));
                     }
-                }
-                serde_json::Value::String(s) => {
-                    params.push((format!("{prefix}[{key}]"), s.clone()))
-                }
-                _ => params.push((format!("{prefix}[{key}]"), value.to_string())),
+                },
+                serde_json::Value::String(s) => params.push((format!("{}[{}]", prefix, key), s.clone())),
+                _ => params.push((format!("{}[{}]", prefix, key), value.to_string())),
             }
         }
 
@@ -120,138 +90,101 @@ pub fn parse_deep_object(prefix: &str, value: &serde_json::Value) -> Vec<(String
     unimplemented!("Only objects are supported with style=deepObject")
 }
 
-// Simple in memory file for profile picture uploads
-#[derive(Debug, Clone)]
-pub struct FileData {
-    pub name: String,
-    pub data: Vec<u8>,
-    pub mime_type: String,
+/// Internal use only
+/// A content type supported by this client.
+#[allow(dead_code)]
+enum ContentType {
+    Json,
+    Text,
+    Unsupported(String)
 }
 
+impl From<&str> for ContentType {
+    fn from(content_type: &str) -> Self {
+        if content_type.starts_with("application") && content_type.contains("json") {
+            return Self::Json;
+        } else if content_type.starts_with("text/plain") {
+            return Self::Text;
+        } else {
+            return Self::Unsupported(content_type.to_string());
+        }
+    }
+}
+
+pub mod api_keys_api;
+#[allow(non_snake_case)]
 pub mod active_sessions_api;
-pub use self::active_sessions_api::{GetSessionsError, GetUsersSessionsError, RevokeSessionError};
 pub mod backup_codes_api;
-pub use self::backup_codes_api::CreateBackupCodesError;
+pub mod billing_api;
 pub mod client_api;
-pub use self::client_api::{
-    DeleteClientSessionsError, GetClientError, HandshakeClientError, PostClientError,
-    PutClientError,
-};
-pub mod configuration;
-pub use self::configuration::Configuration as ApiConfiguration;
+#[allow(non_snake_case)]
 pub mod default_api;
-pub use self::default_api::{
-    ClearSiteDataError, GetAccountPortalError, GetDevBrowserInitError, GetProxyHealthError,
-    LinkClientError, PostDevBrowserInitSetCookieError, SyncClientError,
-};
 pub mod dev_browser_api;
-pub use self::dev_browser_api::CreateDevBrowserError;
 pub mod domains_api;
-pub use self::domains_api::{
-    AttemptOrganizationDomainVerificationError, CreateOrganizationDomainError,
-    DeleteOrganizationDomainError, GetOrganizationDomainError, ListOrganizationDomainsError,
-    PrepareOrganizationDomainVerificationError, UpdateOrganizationDomainEnrollmentModeError,
-};
+#[allow(non_snake_case)]
 pub mod email_addresses_api;
-pub use self::email_addresses_api::{
-    CreateEmailAddressesError, DeleteEmailAddressError, GetEmailAddressError,
-    GetEmailAddressesError, SendVerificationEmailError, VerifyEmailAddressError,
-};
 pub mod environment_api;
-pub use self::environment_api::{GetEnvironmentError, UpdateEnvironmentError};
 pub mod external_accounts_api;
-pub use self::external_accounts_api::{
-    DeleteExternalAccountError, PostOAuthAccountsError, ReauthorizeExternalAccountError,
-    RevokeExternalAccountTokensError,
-};
 pub mod health_api;
-pub use self::health_api::GetHealthError;
 pub mod invitations_api;
-pub use self::invitations_api::{
-    BulkCreateOrganizationInvitationsError, CreateOrganizationInvitationsError,
-    GetAllPendingOrganizationInvitationsError, GetOrganizationInvitationsError,
-    RevokePendingOrganizationInvitationError,
-};
 pub mod members_api;
-pub use self::members_api::{
-    CreateOrganizationMembershipError, ListOrganizationMembershipsError,
-    RemoveOrganizationMemberError, UpdateOrganizationMembershipError,
-};
 pub mod membership_requests_api;
-pub use self::membership_requests_api::{
-    AcceptOrganizationMembershipRequestError, ListOrganizationMembershipRequestsError,
-    RejectOrganizationMembershipRequestError,
-};
 pub mod o_auth2_callbacks_api;
-pub use self::o_auth2_callbacks_api::{GetOauthCallbackError, PostOauthCallbackError};
-pub mod o_auth2_identify_provider_api;
-pub use self::o_auth2_identify_provider_api::{
-    GetOAuthConsentError, GetOAuthTokenError, GetOAuthTokenInfoError, GetOAuthUserInfoError,
-    GetOAuthUserInfoPostError, RequestOAuthAuthorizeError, RequestOAuthAuthorizePostError,
-    RevokeOAuthTokenError,
-};
+#[allow(non_snake_case)]
+pub mod o_auth2_identity_provider_api;
 pub mod organization_api;
-pub use self::organization_api::{
-    CreateOrganizationError, DeleteOrganizationError, DeleteOrganizationLogoError,
-    GetOrganizationError, UpdateOrganizationError, UpdateOrganizationLogoError,
-};
 pub mod organizations_memberships_api;
-pub use self::organizations_memberships_api::{
-    AcceptOrganizationInvitationError, AcceptOrganizationSuggestionError,
-    DeleteOrganizationMembershipsError, GetOrganizationMembershipsError,
-    GetOrganizationSuggestionsError, GetUsersOrganizationInvitationsError,
-};
+#[allow(non_snake_case)]
 pub mod passkeys_api;
-pub use self::passkeys_api::{
-    AttemptPasskeyVerificationError, DeletePasskeyError, PatchPasskeyError, PostPasskeyError,
-    ReadPasskeyError,
-};
+#[allow(non_snake_case)]
 pub mod phone_numbers_api;
-pub use self::phone_numbers_api::{
-    DeletePhoneNumberError, GetPhoneNumbersError, PostPhoneNumbersError, ReadPhoneNumberError,
-    SendVerificationSmsError, UpdatePhoneNumberError, VerifyPhoneNumberError,
-};
 pub mod redirect_api;
-pub use self::redirect_api::RedirectToUrlError;
 pub mod roles_api;
-pub use self::roles_api::ListOrganizationRolesError;
 pub mod saml_api;
-pub use self::saml_api::{AcsError, SamlMetadataError};
 pub mod sessions_api;
-pub use self::sessions_api::{
-    AttemptSessionReverificationFirstFactorError, AttemptSessionReverificationSecondFactorError,
-    CreateSessionTokenError, CreateSessionTokenWithTemplateError, EndSessionError, GetSessionError,
-    PrepareSessionReverificationFirstFactorError, PrepareSessionReverificationSecondFactorError,
-    RemoveClientSessionsAndRetainCookieError, RemoveSessionError, StartSessionReverificationError,
-    TouchSessionError,
-};
 pub mod sign_ins_api;
-pub use self::sign_ins_api::{
-    AcceptTicketError, AttemptSignInFactorOneError, AttemptSignInFactorTwoError, CreateSignInError,
-    GetSignInError, PrepareSignInFactorOneError, PrepareSignInFactorTwoError, ResetPasswordError,
-    VerifyError,
-};
 pub mod sign_ups_api;
-pub use self::sign_ups_api::{
-    AttemptSignUpsVerificationError, CreateSignUpsError, GetSignUpsError,
-    PrepareSignUpsVerificationError, UpdateSignUpsError,
-};
 pub mod totp_api;
-pub use self::totp_api::{DeleteTotpError, PostTotpError, VerifyTotpError};
+#[allow(non_snake_case)]
 pub mod user_api;
-pub use self::user_api::{
-    ChangePasswordError, CreateServiceTokenError, DeleteProfileImageError, DeleteUserError,
-    GetUserError, PatchUserError, RemovePasswordError, UpdateProfileImageError,
-};
 pub mod waitlist_api;
-pub use self::waitlist_api::JoinWaitlistError;
+#[allow(non_snake_case)]
 pub mod web3_wallets_api;
-pub use self::web3_wallets_api::{
-    AttemptWeb3WalletVerificationError, DeleteWeb3WalletError, GetWeb3WalletsError,
-    PostWeb3WalletsError, PrepareWeb3WalletVerificationError, ReadWeb3WalletError,
-};
 pub mod well_known_api;
-pub use self::well_known_api::{
-    GetAndroidAssetLinksError, GetAppleAppSiteAssociationError, GetJwksError,
-    GetOAuth2AuthorizationServerMetadataError, GetOpenIdConfigurationError,
-};
+
+// Re-export all API functions and typed error enums so that existing code using
+// `use crate::apis::*;` continues to compile after regenerations.
+pub use active_sessions_api::*;
+pub use api_keys_api::*;
+pub use backup_codes_api::*;
+pub use billing_api::*;
+pub use client_api::*;
+pub use default_api::*;
+pub use dev_browser_api::*;
+pub use domains_api::*;
+pub use email_addresses_api::*;
+pub use environment_api::*;
+pub use external_accounts_api::*;
+pub use health_api::*;
+pub use invitations_api::*;
+pub use members_api::*;
+pub use membership_requests_api::*;
+pub use o_auth2_callbacks_api::*;
+pub use o_auth2_identity_provider_api::*;
+pub use organization_api::*;
+pub use organizations_memberships_api::*;
+pub use passkeys_api::*;
+pub use phone_numbers_api::*;
+pub use redirect_api::*;
+pub use roles_api::*;
+pub use saml_api::*;
+pub use sessions_api::*;
+pub use sign_ins_api::*;
+pub use sign_ups_api::*;
+pub use totp_api::*;
+pub use user_api::*;
+pub use waitlist_api::*;
+pub use web3_wallets_api::*;
+pub use well_known_api::*;
+
+pub mod configuration;

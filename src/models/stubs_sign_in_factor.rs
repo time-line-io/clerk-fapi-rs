@@ -17,6 +17,12 @@ pub struct StubsSignInFactor {
     pub strategy: Strategy,
     #[serde(rename = "safe_identifier", skip_serializing_if = "Option::is_none")]
     pub safe_identifier: Option<String>,
+    /// Only defined if the strategy is equal to `enterprise_sso`
+    #[serde(rename = "enterprise_connection_id", skip_serializing_if = "Option::is_none")]
+    pub enterprise_connection_id: Option<String>,
+    /// Only defined if the strategy is equal to `enterprise_sso`
+    #[serde(rename = "enterprise_connection_name", skip_serializing_if = "Option::is_none")]
+    pub enterprise_connection_name: Option<String>,
     #[serde(rename = "email_address_id", skip_serializing_if = "Option::is_none")]
     pub email_address_id: Option<String>,
     #[serde(rename = "phone_number_id", skip_serializing_if = "Option::is_none")]
@@ -25,19 +31,9 @@ pub struct StubsSignInFactor {
     pub web3_wallet_id: Option<String>,
     #[serde(rename = "passkey_id", skip_serializing_if = "Option::is_none")]
     pub passkey_id: Option<String>,
-    #[serde(
-        rename = "primary",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "primary", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub primary: Option<Option<bool>>,
-    #[serde(
-        rename = "external_verification_redirect_url",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "external_verification_redirect_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub external_verification_redirect_url: Option<Option<String>>,
     #[serde(rename = "default", skip_serializing_if = "Option::is_none")]
     pub default: Option<bool>,
@@ -48,6 +44,8 @@ impl StubsSignInFactor {
         StubsSignInFactor {
             strategy,
             safe_identifier: None,
+            enterprise_connection_id: None,
+            enterprise_connection_name: None,
             email_address_id: None,
             phone_number_id: None,
             web3_wallet_id: None,
@@ -58,7 +56,7 @@ impl StubsSignInFactor {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
     #[serde(rename = "ticket")]
@@ -79,6 +77,8 @@ pub enum Strategy {
     Web3CoinbaseWalletSignature,
     #[serde(rename = "web3_okx_wallet_signature")]
     Web3OkxWalletSignature,
+    #[serde(rename = "web3_solana_signature")]
+    Web3SolanaSignature,
     #[serde(rename = "totp")]
     Totp,
     #[serde(rename = "backup_code")]
@@ -118,3 +118,4 @@ impl Default for Strategy {
         Self::Ticket
     }
 }
+

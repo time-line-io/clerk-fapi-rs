@@ -53,10 +53,7 @@ pub struct UserSettingsSocials {
     pub oauth_linear: Option<Box<models::UserSettingsSocial>>,
     #[serde(rename = "oauth_linkedin", skip_serializing_if = "Option::is_none")]
     pub oauth_linkedin: Option<Box<models::UserSettingsSocial>>,
-    #[serde(
-        rename = "oauth_linkedin_oidc",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "oauth_linkedin_oidc", skip_serializing_if = "Option::is_none")]
     pub oauth_linkedin_oidc: Option<Box<models::UserSettingsSocial>>,
     #[serde(rename = "oauth_microsoft", skip_serializing_if = "Option::is_none")]
     pub oauth_microsoft: Option<Box<models::UserSettingsSocial>>,
@@ -117,3 +114,4 @@ impl UserSettingsSocials {
         }
     }
 }
+

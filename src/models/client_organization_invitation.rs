@@ -26,10 +26,7 @@ pub struct ClientOrganizationInvitation {
     pub role_name: String,
     #[serde(rename = "organization_id", skip_serializing_if = "Option::is_none")]
     pub organization_id: Option<String>,
-    #[serde(
-        rename = "public_organization_data",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "public_organization_data", skip_serializing_if = "Option::is_none")]
     pub public_organization_data: Option<Box<models::ClientPublicOrganizationData>>,
     /// String representing the object's type. Objects of the same type share the same value.
     #[serde(rename = "status", skip_serializing_if = "Option::is_none")]
@@ -49,18 +46,7 @@ pub struct ClientOrganizationInvitation {
 }
 
 impl ClientOrganizationInvitation {
-    pub fn new(
-        id: String,
-        object: Object,
-        email_address: String,
-        role: String,
-        role_name: String,
-        public_metadata: std::collections::HashMap<String, serde_json::Value>,
-        url: Option<String>,
-        expires_at: Option<i64>,
-        created_at: i64,
-        updated_at: i64,
-    ) -> ClientOrganizationInvitation {
+    pub fn new(id: String, object: Object, email_address: String, role: String, role_name: String, public_metadata: std::collections::HashMap<String, serde_json::Value>, url: Option<String>, expires_at: Option<i64>, created_at: i64, updated_at: i64) -> ClientOrganizationInvitation {
         ClientOrganizationInvitation {
             id,
             object,
@@ -108,3 +94,4 @@ impl Default for Status {
         Self::Pending
     }
 }
+

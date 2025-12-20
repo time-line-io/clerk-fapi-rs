@@ -19,29 +19,14 @@ pub struct StubsVerificationSaml {
     pub status: Status,
     #[serde(rename = "strategy")]
     pub strategy: Strategy,
-    #[serde(
-        rename = "external_verification_redirect_url",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "external_verification_redirect_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub external_verification_redirect_url: Option<Option<String>>,
     #[serde(rename = "error", skip_serializing_if = "Option::is_none")]
     pub error: Option<Box<models::StubsVerificationSamlError>>,
-    #[serde(
-        rename = "expire_at",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub expire_at: Option<Option<i64>>,
-    #[serde(
-        rename = "attempts",
-        default,
-        with = "::serde_with::rust::double_option",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub attempts: Option<Option<i64>>,
+    #[serde(rename = "expire_at", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub expire_at: Option<Option<i32>>,
+    #[serde(rename = "attempts", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub attempts: Option<Option<i32>>,
 }
 
 impl StubsVerificationSaml {
@@ -57,7 +42,7 @@ impl StubsVerificationSaml {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "verification_saml")]
@@ -69,7 +54,7 @@ impl Default for Object {
         Self::VerificationSaml
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "unverified")]
@@ -89,7 +74,7 @@ impl Default for Status {
         Self::Unverified
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
     #[serde(rename = "saml")]
@@ -101,3 +86,4 @@ impl Default for Strategy {
         Self::Saml
     }
 }
+

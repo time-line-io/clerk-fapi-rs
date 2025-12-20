@@ -38,15 +38,7 @@ pub struct JwksEd25519PrivateKey {
 }
 
 impl JwksEd25519PrivateKey {
-    pub fn new(
-        kid: String,
-        alg: String,
-        r#use: String,
-        kty: Kty,
-        crv: Crv,
-        x: String,
-        d: String,
-    ) -> JwksEd25519PrivateKey {
+    pub fn new(kid: String, alg: String, r#use: String, kty: Kty, crv: Crv, x: String, d: String) -> JwksEd25519PrivateKey {
         JwksEd25519PrivateKey {
             kid,
             alg,
@@ -62,7 +54,7 @@ impl JwksEd25519PrivateKey {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Kty {
     #[serde(rename = "OKP")]
@@ -74,7 +66,7 @@ impl Default for Kty {
         Self::Okp
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Crv {
     #[serde(rename = "Ed25519")]
@@ -86,3 +78,4 @@ impl Default for Crv {
         Self::Ed25519
     }
 }
+

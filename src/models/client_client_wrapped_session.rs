@@ -20,13 +20,11 @@ pub struct ClientClientWrappedSession {
 }
 
 impl ClientClientWrappedSession {
-    pub fn new(
-        response: models::ClientSession,
-        client: Option<models::ClientClient>,
-    ) -> ClientClientWrappedSession {
+    pub fn new(response: models::ClientSession, client: Option<models::ClientClient>) -> ClientClientWrappedSession {
         ClientClientWrappedSession {
             response: Box::new(response),
-            client: client.map(Box::new),
+            client: if let Some(x) = client {Some(Box::new(x))} else {None},
         }
     }
 }
+

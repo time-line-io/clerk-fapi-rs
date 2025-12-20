@@ -40,20 +40,7 @@ pub struct ClientUserSettings {
 }
 
 impl ClientUserSettings {
-    pub fn new(
-        attributes: models::UserSettingsAttributes,
-        social: models::UserSettingsSocials,
-        saml: models::UserSettingsEnterpriseSso,
-        enterprise_sso: models::UserSettingsEnterpriseSso,
-        sign_in: models::UserSettingsSignIn,
-        sign_up: models::UserSettingsSignUp,
-        restrictions: models::UserSettingsRestrictions,
-        password_settings: models::UserSettingsPasswordSettings,
-        username_settings: models::UserSettingsUsernameSettings,
-        actions: models::UserSettingsActionsSettings,
-        attack_protection: models::UserSettingsAttackProtectionSettings,
-        passkey_settings: models::UserSettingsPasskeySettings,
-    ) -> ClientUserSettings {
+    pub fn new(attributes: models::UserSettingsAttributes, social: models::UserSettingsSocials, saml: models::UserSettingsEnterpriseSso, enterprise_sso: models::UserSettingsEnterpriseSso, sign_in: models::UserSettingsSignIn, sign_up: models::UserSettingsSignUp, restrictions: models::UserSettingsRestrictions, password_settings: models::UserSettingsPasswordSettings, username_settings: models::UserSettingsUsernameSettings, actions: models::UserSettingsActionsSettings, attack_protection: models::UserSettingsAttackProtectionSettings, passkey_settings: models::UserSettingsPasskeySettings) -> ClientUserSettings {
         ClientUserSettings {
             attributes: Box::new(attributes),
             social: Box::new(social),
@@ -70,3 +57,4 @@ impl ClientUserSettings {
         }
     }
 }
+

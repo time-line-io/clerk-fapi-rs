@@ -19,10 +19,7 @@ pub struct ClientEnvironment {
     pub display_config: Option<Box<models::ClientDisplayConfig>>,
     #[serde(rename = "user_settings", skip_serializing_if = "Option::is_none")]
     pub user_settings: Option<Box<models::ClientUserSettings>>,
-    #[serde(
-        rename = "organization_settings",
-        skip_serializing_if = "Option::is_none"
-    )]
+    #[serde(rename = "organization_settings", skip_serializing_if = "Option::is_none")]
     pub organization_settings: Option<Box<models::ClientOrganizationSettings>>,
     #[serde(rename = "fraud_settings", skip_serializing_if = "Option::is_none")]
     pub fraud_settings: Option<Box<models::ClientFraudSettings>>,
@@ -30,6 +27,8 @@ pub struct ClientEnvironment {
     pub commerce_settings: Option<Box<models::ClientCommerceSettings>>,
     #[serde(rename = "api_keys_settings", skip_serializing_if = "Option::is_none")]
     pub api_keys_settings: Option<Box<models::ClientApiKeysSettings>>,
+    #[serde(rename = "protect_config", skip_serializing_if = "Option::is_none")]
+    pub protect_config: Option<Box<models::ClientProtectConfig>>,
     #[serde(rename = "client_debug_mode", skip_serializing_if = "Option::is_none")]
     pub client_debug_mode: Option<bool>,
     #[serde(rename = "maintenance_mode", skip_serializing_if = "Option::is_none")]
@@ -46,8 +45,10 @@ impl ClientEnvironment {
             fraud_settings: None,
             commerce_settings: None,
             api_keys_settings: None,
+            protect_config: None,
             client_debug_mode: None,
             maintenance_mode: None,
         }
     }
 }
+

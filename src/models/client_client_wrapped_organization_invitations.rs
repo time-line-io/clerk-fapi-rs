@@ -20,13 +20,11 @@ pub struct ClientClientWrappedOrganizationInvitations {
 }
 
 impl ClientClientWrappedOrganizationInvitations {
-    pub fn new(
-        response: models::ClientClientWrappedOrganizationInvitationsResponse,
-        client: models::ClientClient,
-    ) -> ClientClientWrappedOrganizationInvitations {
+    pub fn new(response: models::ClientClientWrappedOrganizationInvitationsResponse, client: models::ClientClient) -> ClientClientWrappedOrganizationInvitations {
         ClientClientWrappedOrganizationInvitations {
             response: Box::new(response),
             client: Box::new(client),
         }
     }
 }
+

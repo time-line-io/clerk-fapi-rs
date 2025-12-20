@@ -23,11 +23,7 @@ pub struct OrganizationSettingsDomainsSettings {
 }
 
 impl OrganizationSettingsDomainsSettings {
-    pub fn new(
-        enabled: bool,
-        enrollment_modes: Vec<EnrollmentModes>,
-        default_role: String,
-    ) -> OrganizationSettingsDomainsSettings {
+    pub fn new(enabled: bool, enrollment_modes: Vec<EnrollmentModes>, default_role: String) -> OrganizationSettingsDomainsSettings {
         OrganizationSettingsDomainsSettings {
             enabled,
             enrollment_modes,
@@ -35,7 +31,7 @@ impl OrganizationSettingsDomainsSettings {
         }
     }
 }
-
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum EnrollmentModes {
     #[serde(rename = "manual_invitation")]
@@ -51,3 +47,4 @@ impl Default for EnrollmentModes {
         Self::ManualInvitation
     }
 }
+

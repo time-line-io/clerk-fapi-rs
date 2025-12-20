@@ -19,6 +19,9 @@ pub struct OrganizationSettingsActionsSettings {
 
 impl OrganizationSettingsActionsSettings {
     pub fn new(admin_delete: bool) -> OrganizationSettingsActionsSettings {
-        OrganizationSettingsActionsSettings { admin_delete }
+        OrganizationSettingsActionsSettings {
+            admin_delete,
+        }
     }
 }
+

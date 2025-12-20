@@ -26,21 +26,14 @@ pub struct UserSettingsRestrictions {
 }
 
 impl UserSettingsRestrictions {
-    pub fn new(
-        allowlist: models::UserSettingsRestrictionsEnabled,
-        blocklist: models::UserSettingsRestrictionsEnabled,
-        allowlist_blocklist_disabled_on_sign_in: models::UserSettingsRestrictionsEnabled,
-        block_email_subaddresses: models::UserSettingsRestrictionsEnabled,
-        block_disposable_email_domains: models::UserSettingsRestrictionsEnabled,
-    ) -> UserSettingsRestrictions {
+    pub fn new(allowlist: models::UserSettingsRestrictionsEnabled, blocklist: models::UserSettingsRestrictionsEnabled, allowlist_blocklist_disabled_on_sign_in: models::UserSettingsRestrictionsEnabled, block_email_subaddresses: models::UserSettingsRestrictionsEnabled, block_disposable_email_domains: models::UserSettingsRestrictionsEnabled) -> UserSettingsRestrictions {
         UserSettingsRestrictions {
             allowlist: Box::new(allowlist),
             blocklist: Box::new(blocklist),
-            allowlist_blocklist_disabled_on_sign_in: Box::new(
-                allowlist_blocklist_disabled_on_sign_in,
-            ),
+            allowlist_blocklist_disabled_on_sign_in: Box::new(allowlist_blocklist_disabled_on_sign_in),
             block_email_subaddresses: Box::new(block_email_subaddresses),
             block_disposable_email_domains: Box::new(block_disposable_email_domains),
         }
     }
 }
+
