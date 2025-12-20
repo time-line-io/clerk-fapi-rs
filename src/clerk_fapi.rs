@@ -177,6 +177,33 @@ impl ClerkFapiClient {
         Ok(response.response.map(|c| *c))
     }
 
+    //
+    // Billing API methods
+    //
+
+    /// Returns the billing subscription for the organization.
+    pub async fn get_organization_billing_subscription(
+        &self,
+        organization_id: &str,
+    ) -> Result<BillingSubscription, Error<billing_api::GetOrganizationBillingSubscriptionError>>
+    {
+        let response =
+            billing_api::get_organization_billing_subscription(&self.clerk_config(), organization_id)
+                .await?;
+        if let Some(client) = response.client.clone() {
+            self.handle_client_update(*client);
+        }
+        Ok(*response.response)
+    }
+
+    /// Returns a billing plan by ID or slug.
+    pub async fn get_billing_plan(
+        &self,
+        plan_id_or_slug: &str,
+    ) -> Result<BillingPlan, Error<billing_api::GetBillingPlanError>> {
+        billing_api::get_billing_plan(&self.clerk_config(), plan_id_or_slug).await
+    }
+
     // Default API methods
     pub async fn clear_site_data(&self) -> Result<(), Error<ClearSiteDataError>> {
         default_api::clear_site_data(&self.clerk_config()).await

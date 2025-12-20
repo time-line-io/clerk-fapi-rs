@@ -6,6 +6,7 @@ use crate::models::{
     ClientClient as Client, ClientClientWrappedOrganizationMembershipsResponse,
     ClientEnvironment as Environment, ClientOrganization as Organization,
     ClientOrganizationMembership, ClientSession as Session, ClientUser as User,
+    BillingPlan, BillingPlanFeaturesInner,
 };
 use crate::utils::{
     find_organization_id_from_memberships, find_target_organization, find_target_session,
@@ -84,6 +85,32 @@ impl fmt::Display for ClerkGetTokenError {
     }
 }
 impl Error for ClerkGetTokenError {}
+
+#[derive(Clone, Debug)]
+pub struct ActiveOrganizationPlanAndFeatures {
+    pub organization_id: String,
+    pub plan: BillingPlan,
+    pub features: Vec<BillingPlanFeaturesInner>,
+}
+
+#[derive(Debug)]
+pub enum ClerkGetActiveOrganizationPlanError {
+    ClerkNotLoadedError(ClerkNotLoadedError),
+    ClerkApiError,
+}
+
+impl fmt::Display for ClerkGetActiveOrganizationPlanError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            ClerkGetActiveOrganizationPlanError::ClerkNotLoadedError(e) => e.fmt(f),
+            ClerkGetActiveOrganizationPlanError::ClerkApiError => {
+                write!(f, "Error calling Clerk API")
+            }
+        }
+    }
+}
+
+impl Error for ClerkGetActiveOrganizationPlanError {}
 
 impl Clerk {
     /// Creates a new Clerk client with the provided configuration
@@ -369,6 +396,64 @@ impl Clerk {
     /// hasn't been loaded yet.
     pub fn organization(&self) -> Result<Option<Organization>, ClerkNotLoadedError> {
         self.state.read().organization()
+    }
+
+    /// Fetch the current active organization's billing plan and features (Clerk Commerce).
+    ///
+    /// Returns `Ok(None)` if there is no active organization, or if the organization has no
+    /// subscription items.
+    pub async fn get_active_organization_plan_and_features(
+        &self,
+    ) -> Result<Option<ActiveOrganizationPlanAndFeatures>, ClerkGetActiveOrganizationPlanError>
+    {
+        let org = self
+            .organization()
+            .map_err(ClerkGetActiveOrganizationPlanError::ClerkNotLoadedError)?;
+
+        let Some(org) = org else {
+            return Ok(None);
+        };
+
+        let subscription = match self
+            .api_client
+            .get_organization_billing_subscription(&org.id)
+            .await
+        {
+            Ok(subscription) => subscription,
+            Err(crate::apis::Error::ResponseError(resp))
+                if resp.status == reqwest::StatusCode::NOT_FOUND =>
+            {
+                return Ok(None);
+            }
+            Err(_) => return Err(ClerkGetActiveOrganizationPlanError::ClerkApiError),
+        };
+
+        let item = subscription
+            .subscription_items
+            .iter()
+            .find(|i| matches!(i.status, crate::models::billing_subscription_item::Status::Active))
+            .or_else(|| subscription.subscription_items.first());
+
+        let Some(item) = item else {
+            return Ok(None);
+        };
+
+        let plan = if let Some(plan) = item.plan.clone() {
+            *plan
+        } else {
+            self.api_client
+                .get_billing_plan(&item.plan_id)
+                .await
+                .map_err(|_| ClerkGetActiveOrganizationPlanError::ClerkApiError)?
+        };
+
+        let features = plan.features.clone().unwrap_or_default();
+
+        Ok(Some(ActiveOrganizationPlanAndFeatures {
+            organization_id: org.id,
+            plan,
+            features,
+        }))
     }
 
     /// Get a session JWT token for the current session

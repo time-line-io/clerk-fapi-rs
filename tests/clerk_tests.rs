@@ -69,6 +69,117 @@ async fn test_sends_clerk_api_version_header_by_default() {
     client_mock.assert_async().await;
 }
 
+#[tokio::test]
+async fn test_get_active_organization_plan_and_features() {
+    let mut server = Server::new_async().await;
+
+    let org_id = "org_456abc789xyz123";
+
+    let subscription_mock = server
+        .mock("GET", format!("/v1/organizations/{org_id}/billing/subscription").as_str())
+        .match_query(Matcher::Any)
+        .with_status(200)
+        .with_header("content-type", "application/json")
+        .with_body(
+            serde_json::json!({
+                "response": {
+                    "object": "commerce_subscription",
+                    "id": "sub_123",
+                    "instance_id": "ins_123",
+                    "status": "active",
+                    "payer_id": org_id,
+                    "created_at": 0i64,
+                    "updated_at": 0i64,
+                    "active_at": null,
+                    "past_due_at": null,
+                    "subscription_items": [
+                        {
+                            "object": "commerce_subscription_item",
+                            "id": "subitem_123",
+                            "instance_id": "ins_123",
+                            "status": "active",
+                            "plan_id": "plan_pro",
+                            "plan": {
+                                "object": "commerce_plan",
+                                "id": "plan_pro",
+                                "name": "Pro",
+                                "fee": {
+                                    "amount": 4900i64,
+                                    "amount_formatted": "$49.00",
+                                    "currency": "USD",
+                                    "currency_symbol": "$"
+                                },
+                                "annual_monthly_fee": null,
+                                "annual_fee": null,
+                                "description": null,
+                                "product_id": "prod_123",
+                                "is_default": false,
+                                "is_recurring": true,
+                                "publicly_visible": true,
+                                "has_base_fee": true,
+                                "for_payer_type": "organization",
+                                "slug": "pro",
+                                "avatar_url": null,
+                                "free_trial_enabled": false,
+                                "free_trial_days": null,
+                                "features": [
+                                    {
+                                        "object": "feature",
+                                        "id": "feat_1",
+                                        "name": "SAML",
+                                        "description": null,
+                                        "slug": "saml",
+                                        "avatar_url": null
+                                    }
+                                ]
+                            },
+                            "plan_period": "month",
+                            "payer_id": org_id,
+                            "is_free_trial": false,
+                            "period_start": 0i64,
+                            "period_end": null,
+                            "canceled_at": null,
+                            "past_due_at": null,
+                            "ended_at": null
+                        }
+                    ],
+                    "next_payment": null,
+                    "eligible_for_free_trial": null
+                },
+                "client": null
+            })
+            .to_string(),
+        )
+        .create_async()
+        .await;
+
+    let clerk = Clerk::new(
+        ClerkFapiConfiguration::new(
+            "pk_test_Y2xlcmsuZXhhbXBsZS5jb20k".to_string(),
+            Some(server.url()),
+            None,
+        )
+        .unwrap(),
+    );
+
+    // Set loaded state with an active org that matches our billing mock.
+    let environment: clerk_fapi_rs::models::ClientEnvironment =
+        serde_json::from_str(&get_env_data()).unwrap();
+    let mut client_value = logged_in_client();
+    client_value["sessions"][0]["last_active_organization_id"] = serde_json::Value::String(org_id.to_string());
+    let client: clerk_fapi_rs::models::ClientClient = serde_json::from_value(client_value).unwrap();
+    clerk.set_loaded(environment, client);
+
+    let result = clerk.get_active_organization_plan_and_features().await.unwrap();
+    let info = result.expect("expected active org plan info");
+
+    assert_eq!(info.organization_id, org_id);
+    assert_eq!(info.plan.slug, "pro");
+    assert!(info.features.iter().any(|f| f.slug == "saml"));
+
+    subscription_mock.assert_async().await;
+}
+
 fn get_env_data() -> String {
     serde_json::json!(
         {
