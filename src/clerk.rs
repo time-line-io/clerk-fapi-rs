@@ -423,9 +423,23 @@ impl Clerk {
             Err(crate::apis::Error::ResponseError(resp))
                 if resp.status == reqwest::StatusCode::NOT_FOUND =>
             {
+                // Billing might not be enabled for this instance/org.
                 return Ok(None);
             }
-            Err(_) => return Err(ClerkGetActiveOrganizationPlanError::ClerkApiError),
+            Err(crate::apis::Error::ResponseError(resp)) => {
+                error!(
+                    "Clerk: get_active_organization_plan_and_features failed: status={} body={}",
+                    resp.status,
+                    resp.content
+                );
+                return Err(ClerkGetActiveOrganizationPlanError::ClerkApiError);
+            }
+            Err(e) => {
+                error!(
+                    "Clerk: get_active_organization_plan_and_features failed: {e}"
+                );
+                return Err(ClerkGetActiveOrganizationPlanError::ClerkApiError);
+            }
         };
 
         let item = subscription
@@ -444,7 +458,14 @@ impl Clerk {
             self.api_client
                 .get_billing_plan(&item.plan_id)
                 .await
-                .map_err(|_| ClerkGetActiveOrganizationPlanError::ClerkApiError)?
+                .map_err(|e| {
+                    error!(
+                        "Clerk: get_active_organization_plan_and_features failed to fetch plan_id={}: {}",
+                        item.plan_id,
+                        e
+                    );
+                    ClerkGetActiveOrganizationPlanError::ClerkApiError
+                })?
         };
 
         let features = plan.features.clone().unwrap_or_default();
