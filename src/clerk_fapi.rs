@@ -196,12 +196,187 @@ impl ClerkFapiClient {
         Ok(*response.response)
     }
 
+    /// Returns subscription items for the organization.
+    pub async fn get_organization_billing_subscription_items(
+        &self,
+        organization_id: &str,
+    ) -> Result<
+        Vec<BillingSubscriptionItem>,
+        Error<billing_api::GetOrganizationBillingSubscriptionItemsError>,
+    > {
+        let response = billing_api::get_organization_billing_subscription_items(
+            &self.clerk_config(),
+            organization_id,
+        )
+        .await?;
+        if let Some(client) = response.client.clone() {
+            self.handle_client_update(*client);
+        }
+        Ok(response.response.data.unwrap_or_default())
+    }
+
+    /// Returns saved payment methods for the organization.
+    pub async fn get_organization_payment_methods(
+        &self,
+        organization_id: &str,
+    ) -> Result<Vec<BillingPaymentMethod>, Error<billing_api::GetOrganizationPaymentMethodsError>>
+    {
+        let response =
+            billing_api::get_organization_payment_methods(&self.clerk_config(), organization_id)
+                .await?;
+        if let Some(client) = response.client.clone() {
+            self.handle_client_update(*client);
+        }
+        Ok(response.response.data.unwrap_or_default())
+    }
+
     /// Returns a billing plan by ID or slug.
     pub async fn get_billing_plan(
         &self,
         plan_id_or_slug: &str,
     ) -> Result<BillingPlan, Error<billing_api::GetBillingPlanError>> {
         billing_api::get_billing_plan(&self.clerk_config(), plan_id_or_slug).await
+    }
+
+    /// Returns publicly visible billing plans, optionally filtered by payer type.
+    pub async fn get_billing_plan_list(
+        &self,
+        payer_type: Option<&str>,
+    ) -> Result<GetBillingPlanList200Response, Error<billing_api::GetBillingPlanListError>> {
+        billing_api::get_billing_plan_list(&self.clerk_config(), payer_type).await
+    }
+
+    /// Creates a billing checkout for the organization.
+    pub async fn create_organization_billing_checkout(
+        &self,
+        organization_id: &str,
+        plan_id: &str,
+        plan_period: &str,
+        payment_method_id: Option<&str>,
+    ) -> Result<ClientBillingCheckout, Error<billing_api::CreateOrganizationBillingCheckoutError>>
+    {
+        let response = billing_api::create_organization_billing_checkout(
+            &self.clerk_config(),
+            organization_id,
+            plan_id,
+            plan_period,
+            payment_method_id,
+        )
+        .await?;
+        if let Some(client) = response.client.clone() {
+            self.handle_client_update(*client);
+        }
+        Ok(response)
+    }
+
+    /// Confirms a billing checkout for the organization.
+    pub async fn confirm_organization_billing_checkout(
+        &self,
+        organization_id: &str,
+        checkout_id: &str,
+        payment_method_id: Option<&str>,
+        gateway: Option<&str>,
+        payment_token: Option<&str>,
+        use_test_card: Option<bool>,
+    ) -> Result<ClientBillingCheckout, Error<billing_api::ConfirmOrganizationBillingCheckoutError>>
+    {
+        let response = billing_api::confirm_organization_billing_checkout(
+            &self.clerk_config(),
+            organization_id,
+            checkout_id,
+            payment_method_id,
+            gateway,
+            payment_token,
+            use_test_card,
+        )
+        .await?;
+        if let Some(client) = response.client.clone() {
+            self.handle_client_update(*client);
+        }
+        Ok(response)
+    }
+
+    /// Initializes a payment method for the organization.
+    pub async fn initialize_organization_billing_payment_method(
+        &self,
+        organization_id: &str,
+        gateway: Option<&str>,
+    ) -> Result<
+        ClientBillingPaymentMethodInitialize,
+        Error<billing_api::InitializeOrganizationPaymentMethodError>,
+    > {
+        let response = billing_api::initialize_organization_payment_method(
+            &self.clerk_config(),
+            organization_id,
+            gateway,
+        )
+        .await?;
+        if let Some(client) = response.client.clone() {
+            self.handle_client_update(*client);
+        }
+        Ok(response)
+    }
+
+    /// Creates a billing checkout for the current user, optionally scoped to an organization.
+    pub async fn create_user_billing_checkout(
+        &self,
+        plan_id: &str,
+        plan_period: &str,
+        org_id: Option<&str>,
+        payment_method_id: Option<&str>,
+    ) -> Result<ClientBillingCheckout, Error<billing_api::CreateUserBillingCheckoutError>> {
+        let response = billing_api::create_user_billing_checkout(
+            &self.clerk_config(),
+            plan_id,
+            plan_period,
+            org_id,
+            payment_method_id,
+        )
+        .await?;
+        if let Some(client) = response.client.clone() {
+            self.handle_client_update(*client);
+        }
+        Ok(response)
+    }
+
+    /// Confirms a billing checkout for the current user.
+    pub async fn confirm_user_billing_checkout(
+        &self,
+        checkout_id: &str,
+        payment_method_id: Option<&str>,
+        gateway: Option<&str>,
+        payment_token: Option<&str>,
+        use_test_card: Option<bool>,
+    ) -> Result<ClientBillingCheckout, Error<billing_api::ConfirmUserBillingCheckoutError>> {
+        let response = billing_api::confirm_user_billing_checkout(
+            &self.clerk_config(),
+            checkout_id,
+            payment_method_id,
+            gateway,
+            payment_token,
+            use_test_card,
+        )
+        .await?;
+        if let Some(client) = response.client.clone() {
+            self.handle_client_update(*client);
+        }
+        Ok(response)
+    }
+
+    /// Initializes a payment method setup process for the current user.
+    pub async fn initialize_user_billing_payment_method(
+        &self,
+        gateway: Option<&str>,
+    ) -> Result<
+        ClientBillingPaymentMethodInitialize,
+        Error<billing_api::InitializeUserPaymentMethodError>,
+    > {
+        let response =
+            billing_api::initialize_user_payment_method(&self.clerk_config(), gateway).await?;
+        if let Some(client) = response.client.clone() {
+            self.handle_client_update(*client);
+        }
+        Ok(response)
     }
 
     // Default API methods

@@ -22,7 +22,14 @@ impl <T> fmt::Display for Error<T> {
             Error::Reqwest(e) => ("reqwest", e.to_string()),
             Error::Serde(e) => ("serde", e.to_string()),
             Error::Io(e) => ("IO", e.to_string()),
-            Error::ResponseError(e) => ("response", format!("status code {}", e.status)),
+            Error::ResponseError(e) => {
+                let detail = e.content.trim();
+                if detail.is_empty() {
+                    ("response", format!("status code {}", e.status))
+                } else {
+                    ("response", format!("status code {}: {}", e.status, detail))
+                }
+            }
         };
         write!(f, "error in {}: {}", module, e)
     }
