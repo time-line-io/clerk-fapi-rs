@@ -1852,9 +1852,10 @@ pub async fn get_user_statements(configuration: &configuration::Configuration, l
 }
 
 /// Initializes a payment method for the organization.
-pub async fn initialize_organization_payment_method(configuration: &configuration::Configuration, organization_id: &str) -> Result<models::ClientBillingPaymentMethodInitialize, Error<InitializeOrganizationPaymentMethodError>> {
+pub async fn initialize_organization_payment_method(configuration: &configuration::Configuration, organization_id: &str, gateway: Option<&str>) -> Result<models::ClientBillingPaymentMethodInitialize, Error<InitializeOrganizationPaymentMethodError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_organization_id = organization_id;
+    let p_form_gateway = gateway.unwrap_or("stripe");
 
     let uri_str = format!("{}/v1/organizations/{organizationID}/billing/payment_methods/initialize", configuration.base_path, organizationID=crate::apis::urlencode(p_path_organization_id));
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -1878,6 +1879,9 @@ pub async fn initialize_organization_payment_method(configuration: &configuratio
         };
         req_builder = req_builder.header("__session", value);
     };
+    let mut multipart_form_params = std::collections::HashMap::new();
+    multipart_form_params.insert("gateway", p_form_gateway.to_string());
+    req_builder = req_builder.form(&multipart_form_params);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -1905,7 +1909,8 @@ pub async fn initialize_organization_payment_method(configuration: &configuratio
 }
 
 /// Initializes a payment method setup process for the current user.
-pub async fn initialize_user_payment_method(configuration: &configuration::Configuration, ) -> Result<models::ClientBillingPaymentMethodInitialize, Error<InitializeUserPaymentMethodError>> {
+pub async fn initialize_user_payment_method(configuration: &configuration::Configuration, gateway: Option<&str>) -> Result<models::ClientBillingPaymentMethodInitialize, Error<InitializeUserPaymentMethodError>> {
+    let p_form_gateway = gateway.unwrap_or("stripe");
 
     let uri_str = format!("{}/v1/me/billing/payment_methods/initialize", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -1929,6 +1934,9 @@ pub async fn initialize_user_payment_method(configuration: &configuration::Confi
         };
         req_builder = req_builder.header("__session", value);
     };
+    let mut multipart_form_params = std::collections::HashMap::new();
+    multipart_form_params.insert("gateway", p_form_gateway.to_string());
+    req_builder = req_builder.form(&multipart_form_params);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

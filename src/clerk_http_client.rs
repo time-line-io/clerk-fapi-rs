@@ -51,6 +51,11 @@ impl ClerkHttpClient {
         *write_guard = Some(token_id);
     }
 
+    /// Clerk JS attaches `_clerk_session_id` to FAPI paths outside `/client` and `/waitlist`.
+    fn path_needs_clerk_session_id(path: &str) -> bool {
+        !path.starts_with("/v1/client") && !path.starts_with("/v1/waitlist")
+    }
+
     /// Process the request before sending
     fn process_request(&self, mut req: Request) -> Request {
         if let Some(version) = self.clerk_api_version.as_ref() {
@@ -64,11 +69,32 @@ impl ClerkHttpClient {
             }
         }
 
+        let session_id = {
+            let state = self.state.read();
+            state
+                .session()
+                .ok()
+                .flatten()
+                .map(|session| session.id.clone())
+        };
+
+        let auth_header = {
+            let mut state = self.state.write();
+            state.authorization_header()
+        };
+
         // When running in non standard browser we need to tell Clerk
         // API that with the _is_native query parameter
         let url = req.url_mut();
         if self.client_kind == ClientKind::NonBrowser {
             url.query_pairs_mut().append_pair("_is_native", "1");
+        }
+
+        if let Some(session_id) = session_id.as_ref() {
+            if Self::path_needs_clerk_session_id(url.path()) {
+                url.query_pairs_mut()
+                    .append_pair("_clerk_session_id", session_id);
+            }
         }
 
         let token_id = {
@@ -81,19 +107,16 @@ impl ClerkHttpClient {
                 .append_pair("__clerk_db_jwt", &dev_browser_token_id);
         }
 
-        {
-            let mut state = self.state.write();
-            match state.authorization_header() {
-                Some(auth) => {
-                    if let Ok(value) = HeaderValue::from_str(auth.as_str()) {
-                        req.headers_mut().insert("Authorization", value);
-                    } else {
-                        error!("ClerkHttpClient: Failed to parse authorization header");
-                    }
+        match auth_header {
+            Some(auth) => {
+                if let Ok(value) = HeaderValue::from_str(auth.as_str()) {
+                    req.headers_mut().insert("Authorization", value);
+                } else {
+                    error!("ClerkHttpClient: Failed to parse authorization header");
                 }
-                None => {
-                    debug!("ClerkHttpClient: No authorization header available");
-                }
+            }
+            None => {
+                debug!("ClerkHttpClient: No authorization header available");
             }
         }
 
