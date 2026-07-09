@@ -19,9 +19,19 @@ pub struct StubsVerificationGoogleOneTap {
     pub status: Status,
     #[serde(rename = "strategy")]
     pub strategy: Strategy,
-    #[serde(rename = "expire_at", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
-    pub expire_at: Option<Option<i32>>,
-    #[serde(rename = "attempts", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "expire_at",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub expire_at: Option<Option<i64>>,
+    #[serde(
+        rename = "attempts",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub attempts: Option<Option<i32>>,
 }
 
@@ -36,7 +46,7 @@ impl StubsVerificationGoogleOneTap {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "verification_google_one_tap")]
@@ -48,7 +58,7 @@ impl Default for Object {
         Self::VerificationGoogleOneTap
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "unverified")]
@@ -62,7 +72,7 @@ impl Default for Status {
         Self::Unverified
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
     #[serde(rename = "google_one_tap")]
@@ -74,4 +84,3 @@ impl Default for Strategy {
         Self::GoogleOneTap
     }
 }
-

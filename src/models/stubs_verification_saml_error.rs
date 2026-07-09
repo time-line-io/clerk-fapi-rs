@@ -20,7 +20,7 @@ pub struct StubsVerificationSamlError {
     #[serde(rename = "code")]
     pub code: String,
     #[serde(rename = "meta", skip_serializing_if = "Option::is_none")]
-    pub meta: Option<serde_json::Value>,
+    pub meta: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 impl StubsVerificationSamlError {
@@ -33,4 +33,3 @@ impl StubsVerificationSamlError {
         }
     }
 }
-

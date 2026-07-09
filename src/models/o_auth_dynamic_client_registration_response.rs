@@ -54,7 +54,17 @@ pub struct OAuthDynamicClientRegistrationResponse {
 
 impl OAuthDynamicClientRegistrationResponse {
     /// Client information response after successful registration according to RFC 7591. Contains the client identifier, client secret (for confidential clients), and other client metadata.
-    pub fn new(client_id: String, client_id_issued_at: i64, client_secret_expires_at: i64, client_name: String, redirect_uris: Vec<String>, grant_types: Vec<String>, response_types: Vec<String>, scope: String, token_endpoint_auth_method: TokenEndpointAuthMethod) -> OAuthDynamicClientRegistrationResponse {
+    pub fn new(
+        client_id: String,
+        client_id_issued_at: i64,
+        client_secret_expires_at: i64,
+        client_name: String,
+        redirect_uris: Vec<String>,
+        grant_types: Vec<String>,
+        response_types: Vec<String>,
+        scope: String,
+        token_endpoint_auth_method: TokenEndpointAuthMethod,
+    ) -> OAuthDynamicClientRegistrationResponse {
         OAuthDynamicClientRegistrationResponse {
             client_id,
             client_secret: None,
@@ -87,4 +97,3 @@ impl Default for TokenEndpointAuthMethod {
         Self::ClientSecretBasic
     }
 }
-

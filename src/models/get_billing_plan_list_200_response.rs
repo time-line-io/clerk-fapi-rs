@@ -21,10 +21,6 @@ pub struct GetBillingPlanList200Response {
 
 impl GetBillingPlanList200Response {
     pub fn new(data: Vec<models::BillingPlan>, total_count: i64) -> GetBillingPlanList200Response {
-        GetBillingPlanList200Response {
-            data,
-            total_count,
-        }
+        GetBillingPlanList200Response { data, total_count }
     }
 }
-

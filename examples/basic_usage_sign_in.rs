@@ -10,7 +10,8 @@ async fn main() {
     let clerk = Clerk::new(config);
     clerk.load().await.expect("failed to load");
 
-    println!("Loaded Clerk. Client id: {}", clerk.client().expect("no client").id);
+    println!(
+        "Loaded Clerk. Client id: {}",
+        clerk.client().expect("no client").id
+    );
 }
-
-

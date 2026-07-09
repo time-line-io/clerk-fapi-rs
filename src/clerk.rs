@@ -3,10 +3,10 @@ use crate::clerk_fapi::ClerkFapiClient;
 use crate::clerk_state::{ClerkNotLoadedError, ClerkState};
 use crate::configuration::{ClerkFapiConfiguration, ClientKind};
 use crate::models::{
-    ClientClient as Client, ClientClientWrappedOrganizationMembershipsResponse,
-    ClientEnvironment as Environment, ClientOrganization as Organization,
-    ClientOrganizationMembership, ClientSession as Session, ClientUser as User,
-    BillingPlan, BillingPlanFeaturesInner,
+    BillingPlan, BillingPlanFeaturesInner, ClientClient as Client,
+    ClientClientWrappedOrganizationMembershipsResponse, ClientEnvironment as Environment,
+    ClientOrganization as Organization, ClientOrganizationMembership, ClientSession as Session,
+    ClientUser as User,
 };
 use crate::utils::{
     find_organization_id_from_memberships, find_target_organization, find_target_session,
@@ -429,15 +429,12 @@ impl Clerk {
             Err(crate::apis::Error::ResponseError(resp)) => {
                 error!(
                     "Clerk: get_active_organization_plan_and_features failed: status={} body={}",
-                    resp.status,
-                    resp.content
+                    resp.status, resp.content
                 );
                 return Err(ClerkGetActiveOrganizationPlanError::ClerkApiError);
             }
             Err(e) => {
-                error!(
-                    "Clerk: get_active_organization_plan_and_features failed: {e}"
-                );
+                error!("Clerk: get_active_organization_plan_and_features failed: {e}");
                 return Err(ClerkGetActiveOrganizationPlanError::ClerkApiError);
             }
         };
@@ -445,7 +442,12 @@ impl Clerk {
         let item = subscription
             .subscription_items
             .iter()
-            .find(|i| matches!(i.status, crate::models::billing_subscription_item::Status::Active))
+            .find(|i| {
+                matches!(
+                    i.status,
+                    crate::models::billing_subscription_item::Status::Active
+                )
+            })
             .or_else(|| subscription.subscription_items.first());
 
         let Some(item) = item else {

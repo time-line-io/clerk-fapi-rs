@@ -19,9 +19,6 @@ pub struct UserSettingsAttackProtectionSettingsPii {
 
 impl UserSettingsAttackProtectionSettingsPii {
     pub fn new(enabled: bool) -> UserSettingsAttackProtectionSettingsPii {
-        UserSettingsAttackProtectionSettingsPii {
-            enabled,
-        }
+        UserSettingsAttackProtectionSettingsPii { enabled }
     }
 }
-

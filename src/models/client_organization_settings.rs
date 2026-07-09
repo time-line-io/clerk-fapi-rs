@@ -29,7 +29,13 @@ pub struct ClientOrganizationSettings {
 }
 
 impl ClientOrganizationSettings {
-    pub fn new(enabled: bool, max_allowed_memberships: i32, actions: models::OrganizationSettingsActionsSettings, domains: models::OrganizationSettingsDomainsSettings, creator_role: String) -> ClientOrganizationSettings {
+    pub fn new(
+        enabled: bool,
+        max_allowed_memberships: i32,
+        actions: models::OrganizationSettingsActionsSettings,
+        domains: models::OrganizationSettingsDomainsSettings,
+        creator_role: String,
+    ) -> ClientOrganizationSettings {
         ClientOrganizationSettings {
             enabled,
             max_allowed_memberships,
@@ -40,4 +46,3 @@ impl ClientOrganizationSettings {
         }
     }
 }
-

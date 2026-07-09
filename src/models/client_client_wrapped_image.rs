@@ -16,15 +16,21 @@ pub struct ClientClientWrappedImage {
     #[serde(rename = "response")]
     pub response: Box<models::Image>,
     #[serde(rename = "client", deserialize_with = "Option::deserialize")]
-    pub client: Option<Box<models::SchemasClientClient>>,
+    pub client: Option<Box<models::ClientClient>>,
 }
 
 impl ClientClientWrappedImage {
-    pub fn new(response: models::Image, client: Option<models::SchemasClientClient>) -> ClientClientWrappedImage {
+    pub fn new(
+        response: models::Image,
+        client: Option<models::ClientClient>,
+    ) -> ClientClientWrappedImage {
         ClientClientWrappedImage {
             response: Box::new(response),
-            client: if let Some(x) = client {Some(Box::new(x))} else {None},
+            client: if let Some(x) = client {
+                Some(Box::new(x))
+            } else {
+                None
+            },
         }
     }
 }
-

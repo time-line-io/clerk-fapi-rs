@@ -23,7 +23,12 @@ pub struct Totp {
     pub uri: Option<String>,
     #[serde(rename = "verified")]
     pub verified: bool,
-    #[serde(rename = "backup_codes", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "backup_codes",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub backup_codes: Option<Option<Vec<String>>>,
     #[serde(rename = "created_at")]
     pub created_at: i64,
@@ -32,7 +37,15 @@ pub struct Totp {
 }
 
 impl Totp {
-    pub fn new(object: Object, id: String, secret: Option<String>, uri: Option<String>, verified: bool, created_at: i64, updated_at: i64) -> Totp {
+    pub fn new(
+        object: Object,
+        id: String,
+        secret: Option<String>,
+        uri: Option<String>,
+        verified: bool,
+        created_at: i64,
+        updated_at: i64,
+    ) -> Totp {
         Totp {
             object,
             id,
@@ -45,7 +58,7 @@ impl Totp {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "totp")]
@@ -57,4 +70,3 @@ impl Default for Object {
         Self::Totp
     }
 }
-

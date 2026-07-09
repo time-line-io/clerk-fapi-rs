@@ -22,7 +22,11 @@ pub struct UserSettingsAttackProtectionSettingsUserLockout {
 }
 
 impl UserSettingsAttackProtectionSettingsUserLockout {
-    pub fn new(enabled: bool, max_attempts: i32, duration_in_minutes: i32) -> UserSettingsAttackProtectionSettingsUserLockout {
+    pub fn new(
+        enabled: bool,
+        max_attempts: i32,
+        duration_in_minutes: i32,
+    ) -> UserSettingsAttackProtectionSettingsUserLockout {
         UserSettingsAttackProtectionSettingsUserLockout {
             enabled,
             max_attempts,
@@ -30,4 +34,3 @@ impl UserSettingsAttackProtectionSettingsUserLockout {
         }
     }
 }
-

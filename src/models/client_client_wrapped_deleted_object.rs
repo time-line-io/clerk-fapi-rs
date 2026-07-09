@@ -20,11 +20,17 @@ pub struct ClientClientWrappedDeletedObject {
 }
 
 impl ClientClientWrappedDeletedObject {
-    pub fn new(response: models::ClientDeletedObject, client: Option<models::ClientClient>) -> ClientClientWrappedDeletedObject {
+    pub fn new(
+        response: models::ClientDeletedObject,
+        client: Option<models::ClientClient>,
+    ) -> ClientClientWrappedDeletedObject {
         ClientClientWrappedDeletedObject {
             response: Box::new(response),
-            client: if let Some(x) = client {Some(Box::new(x))} else {None},
+            client: if let Some(x) = client {
+                Some(Box::new(x))
+            } else {
+                None
+            },
         }
     }
 }
-

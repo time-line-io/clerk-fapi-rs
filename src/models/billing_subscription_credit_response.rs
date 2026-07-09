@@ -27,7 +27,12 @@ pub struct BillingSubscriptionCreditResponse {
 }
 
 impl BillingSubscriptionCreditResponse {
-    pub fn new(amount: models::BillingMoneyResponse, cycle_days_remaining: i64, cycle_days_total: i64, cycle_remaining_percent: f64) -> BillingSubscriptionCreditResponse {
+    pub fn new(
+        amount: models::BillingMoneyResponse,
+        cycle_days_remaining: i64,
+        cycle_days_total: i64,
+        cycle_remaining_percent: f64,
+    ) -> BillingSubscriptionCreditResponse {
         BillingSubscriptionCreditResponse {
             amount: Box::new(amount),
             cycle_days_remaining,
@@ -36,4 +41,3 @@ impl BillingSubscriptionCreditResponse {
         }
     }
 }
-

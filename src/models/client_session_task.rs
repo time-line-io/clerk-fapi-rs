@@ -19,9 +19,6 @@ pub struct ClientSessionTask {
 
 impl ClientSessionTask {
     pub fn new(key: String) -> ClientSessionTask {
-        ClientSessionTask {
-            key,
-        }
+        ClientSessionTask { key }
     }
 }
-

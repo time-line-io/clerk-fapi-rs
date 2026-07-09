@@ -20,11 +20,10 @@ pub struct ClientBillingGenericArrayResponse {
 }
 
 impl ClientBillingGenericArrayResponse {
-    pub fn new(data: Vec<serde_json::Value>, total_count: i64) -> ClientBillingGenericArrayResponse {
-        ClientBillingGenericArrayResponse {
-            data,
-            total_count,
-        }
+    pub fn new(
+        data: Vec<serde_json::Value>,
+        total_count: i64,
+    ) -> ClientBillingGenericArrayResponse {
+        ClientBillingGenericArrayResponse { data, total_count }
     }
 }
-

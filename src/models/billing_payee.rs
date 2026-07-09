@@ -31,7 +31,13 @@ pub struct BillingPayee {
 }
 
 impl BillingPayee {
-    pub fn new(object: Object, id: String, gateway_type: String, gateway_external_id: String, gateway_status: String) -> BillingPayee {
+    pub fn new(
+        object: Object,
+        id: String,
+        gateway_type: String,
+        gateway_external_id: String,
+        gateway_status: String,
+    ) -> BillingPayee {
         BillingPayee {
             object,
             id,
@@ -53,4 +59,3 @@ impl Default for Object {
         Self::CommercePayee
     }
 }
-

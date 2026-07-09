@@ -25,7 +25,11 @@ pub struct BillingStatementResponseGroup {
 }
 
 impl BillingStatementResponseGroup {
-    pub fn new(object: String, timestamp: i64, items: Vec<models::BillingPaymentAttempt>) -> BillingStatementResponseGroup {
+    pub fn new(
+        object: String,
+        timestamp: i64,
+        items: Vec<models::BillingPaymentAttempt>,
+    ) -> BillingStatementResponseGroup {
         BillingStatementResponseGroup {
             object,
             timestamp,
@@ -33,4 +37,3 @@ impl BillingStatementResponseGroup {
         }
     }
 }
-

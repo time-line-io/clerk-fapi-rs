@@ -15,6 +15,8 @@ use serde::{Deserialize, Serialize};
 pub struct BillingStatementTotalsResponse {
     #[serde(rename = "subtotal")]
     pub subtotal: Box<models::BillingMoneyResponse>,
+    #[serde(rename = "base_fee")]
+    pub base_fee: Box<models::BillingMoneyResponse>,
     #[serde(rename = "tax_total")]
     pub tax_total: Box<models::BillingMoneyResponse>,
     #[serde(rename = "grand_total")]
@@ -22,12 +24,17 @@ pub struct BillingStatementTotalsResponse {
 }
 
 impl BillingStatementTotalsResponse {
-    pub fn new(subtotal: models::BillingMoneyResponse, tax_total: models::BillingMoneyResponse, grand_total: models::BillingMoneyResponse) -> BillingStatementTotalsResponse {
+    pub fn new(
+        subtotal: models::BillingMoneyResponse,
+        base_fee: models::BillingMoneyResponse,
+        tax_total: models::BillingMoneyResponse,
+        grand_total: models::BillingMoneyResponse,
+    ) -> BillingStatementTotalsResponse {
         BillingStatementTotalsResponse {
             subtotal: Box::new(subtotal),
+            base_fee: Box::new(base_fee),
             tax_total: Box::new(tax_total),
             grand_total: Box::new(grand_total),
         }
     }
 }
-

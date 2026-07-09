@@ -12,19 +12,31 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SchemasClientClientWrappedSignIn {
-    #[serde(rename = "response")]
-    pub response: Box<models::SchemasClientSignIn>,
-    #[serde(rename = "client", deserialize_with = "Option::deserialize")]
-    pub client: Option<Box<models::SchemasClientClient>>,
+pub struct BillingPlanUnitPriceTier {
+    /// Start block (inclusive) for this tier
+    #[serde(rename = "starts_at_block")]
+    pub starts_at_block: i64,
+    /// End block (inclusive) for this tier; null means unlimited
+    #[serde(
+        rename = "ends_after_block",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub ends_after_block: Option<Option<i64>>,
+    #[serde(rename = "fee_per_block")]
+    pub fee_per_block: Box<models::BillingMoneyResponse>,
 }
 
-impl SchemasClientClientWrappedSignIn {
-    pub fn new(response: models::SchemasClientSignIn, client: Option<models::SchemasClientClient>) -> SchemasClientClientWrappedSignIn {
-        SchemasClientClientWrappedSignIn {
-            response: Box::new(response),
-            client: if let Some(x) = client {Some(Box::new(x))} else {None},
+impl BillingPlanUnitPriceTier {
+    pub fn new(
+        starts_at_block: i64,
+        fee_per_block: models::BillingMoneyResponse,
+    ) -> BillingPlanUnitPriceTier {
+        BillingPlanUnitPriceTier {
+            starts_at_block,
+            ends_after_block: None,
+            fee_per_block: Box::new(fee_per_block),
         }
     }
 }
-

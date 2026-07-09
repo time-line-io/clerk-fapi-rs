@@ -20,11 +20,13 @@ pub struct ClientClientWrappedPasskey {
 }
 
 impl ClientClientWrappedPasskey {
-    pub fn new(response: models::ClientPasskey, client: models::ClientClient) -> ClientClientWrappedPasskey {
+    pub fn new(
+        response: models::ClientPasskey,
+        client: models::ClientClient,
+    ) -> ClientClientWrappedPasskey {
         ClientClientWrappedPasskey {
             response: Box::new(response),
             client: Box::new(client),
         }
     }
 }
-

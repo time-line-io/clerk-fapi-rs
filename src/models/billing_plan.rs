@@ -22,10 +22,14 @@ pub struct BillingPlan {
     /// The name of the plan
     #[serde(rename = "name")]
     pub name: String,
-    #[serde(rename = "fee")]
-    pub fee: Box<models::BillingFee>,
+    /// The monthly fee for this plan
+    #[serde(rename = "fee", deserialize_with = "Option::deserialize")]
+    pub fee: Option<Box<models::BillingFee>>,
     /// The monthly equivalent when billed annually
-    #[serde(rename = "annual_monthly_fee", deserialize_with = "Option::deserialize")]
+    #[serde(
+        rename = "annual_monthly_fee",
+        deserialize_with = "Option::deserialize"
+    )]
     pub annual_monthly_fee: Option<Box<models::BillingFee>>,
     /// The annual fee for this plan
     #[serde(rename = "annual_fee", deserialize_with = "Option::deserialize")]
@@ -63,20 +67,53 @@ pub struct BillingPlan {
     /// Number of free trial days for this plan
     #[serde(rename = "free_trial_days", deserialize_with = "Option::deserialize")]
     pub free_trial_days: Option<i32>,
+    /// Per-unit pricing tiers for this plan (for example, seats)
+    #[serde(rename = "unit_prices", skip_serializing_if = "Option::is_none")]
+    pub unit_prices: Option<Vec<models::BillingPlanUnitPrice>>,
     /// The features included in this plan
     #[serde(rename = "features", skip_serializing_if = "Option::is_none")]
     pub features: Option<Vec<models::BillingPlanFeaturesInner>>,
 }
 
 impl BillingPlan {
-    pub fn new(object: Object, id: String, name: String, fee: models::BillingFee, annual_monthly_fee: Option<models::BillingFee>, annual_fee: Option<models::BillingFee>, description: Option<String>, product_id: String, is_default: bool, is_recurring: bool, publicly_visible: bool, has_base_fee: bool, for_payer_type: String, slug: String, avatar_url: Option<String>, free_trial_enabled: bool, free_trial_days: Option<i32>) -> BillingPlan {
+    pub fn new(
+        object: Object,
+        id: String,
+        name: String,
+        fee: Option<models::BillingFee>,
+        annual_monthly_fee: Option<models::BillingFee>,
+        annual_fee: Option<models::BillingFee>,
+        description: Option<String>,
+        product_id: String,
+        is_default: bool,
+        is_recurring: bool,
+        publicly_visible: bool,
+        has_base_fee: bool,
+        for_payer_type: String,
+        slug: String,
+        avatar_url: Option<String>,
+        free_trial_enabled: bool,
+        free_trial_days: Option<i32>,
+    ) -> BillingPlan {
         BillingPlan {
             object,
             id,
             name,
-            fee: Box::new(fee),
-            annual_monthly_fee: if let Some(x) = annual_monthly_fee {Some(Box::new(x))} else {None},
-            annual_fee: if let Some(x) = annual_fee {Some(Box::new(x))} else {None},
+            fee: if let Some(x) = fee {
+                Some(Box::new(x))
+            } else {
+                None
+            },
+            annual_monthly_fee: if let Some(x) = annual_monthly_fee {
+                Some(Box::new(x))
+            } else {
+                None
+            },
+            annual_fee: if let Some(x) = annual_fee {
+                Some(Box::new(x))
+            } else {
+                None
+            },
             description,
             product_id,
             is_default,
@@ -88,6 +125,7 @@ impl BillingPlan {
             avatar_url,
             free_trial_enabled,
             free_trial_days,
+            unit_prices: None,
             features: None,
         }
     }
@@ -104,4 +142,3 @@ impl Default for Object {
         Self::CommercePlan
     }
 }
-

@@ -19,9 +19,6 @@ pub struct Jwks {
 
 impl Jwks {
     pub fn new() -> Jwks {
-        Jwks {
-            keys: None,
-        }
+        Jwks { keys: None }
     }
 }
-

@@ -14,17 +14,23 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClientBillingCheckout {
     #[serde(rename = "response")]
-    pub response: serde_json::Value,
+    pub response: Box<models::BillingCheckout>,
     #[serde(rename = "client", deserialize_with = "Option::deserialize")]
     pub client: Option<Box<models::ClientClient>>,
 }
 
 impl ClientBillingCheckout {
-    pub fn new(response: serde_json::Value, client: Option<models::ClientClient>) -> ClientBillingCheckout {
+    pub fn new(
+        response: models::BillingCheckout,
+        client: Option<models::ClientClient>,
+    ) -> ClientBillingCheckout {
         ClientBillingCheckout {
-            response,
-            client: if let Some(x) = client {Some(Box::new(x))} else {None},
+            response: Box::new(response),
+            client: if let Some(x) = client {
+                Some(Box::new(x))
+            } else {
+                None
+            },
         }
     }
 }
-

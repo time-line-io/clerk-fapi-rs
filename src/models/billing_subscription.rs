@@ -44,15 +44,34 @@ pub struct BillingSubscription {
     #[serde(rename = "subscription_items")]
     pub subscription_items: Vec<models::BillingSubscriptionItem>,
     /// Information about the next scheduled payment
-    #[serde(rename = "next_payment", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "next_payment",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub next_payment: Option<Option<Box<models::BillingSubscriptionNextPayment>>>,
     /// Whether the payer is eligible for a free trial
-    #[serde(rename = "eligible_for_free_trial", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "eligible_for_free_trial",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub eligible_for_free_trial: Option<bool>,
 }
 
 impl BillingSubscription {
-    pub fn new(object: Object, id: String, instance_id: String, status: Status, payer_id: String, created_at: i64, updated_at: i64, active_at: Option<i64>, past_due_at: Option<i64>, subscription_items: Vec<models::BillingSubscriptionItem>) -> BillingSubscription {
+    pub fn new(
+        object: Object,
+        id: String,
+        instance_id: String,
+        status: Status,
+        payer_id: String,
+        created_at: i64,
+        updated_at: i64,
+        active_at: Option<i64>,
+        past_due_at: Option<i64>,
+        subscription_items: Vec<models::BillingSubscriptionItem>,
+    ) -> BillingSubscription {
         BillingSubscription {
             object,
             id,
@@ -103,4 +122,3 @@ impl Default for Status {
         Self::Active
     }
 }
-

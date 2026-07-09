@@ -19,9 +19,6 @@ pub struct UserSettingsAttackProtectionSettingsEnumerationProtection {
 
 impl UserSettingsAttackProtectionSettingsEnumerationProtection {
     pub fn new(enabled: bool) -> UserSettingsAttackProtectionSettingsEnumerationProtection {
-        UserSettingsAttackProtectionSettingsEnumerationProtection {
-            enabled,
-        }
+        UserSettingsAttackProtectionSettingsEnumerationProtection { enabled }
     }
 }
-

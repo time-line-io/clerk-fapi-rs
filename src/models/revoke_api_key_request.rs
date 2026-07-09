@@ -13,7 +13,12 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RevokeApiKeyRequest {
-    #[serde(rename = "revocation_reason", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "revocation_reason",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub revocation_reason: Option<Option<String>>,
 }
 
@@ -24,4 +29,3 @@ impl RevokeApiKeyRequest {
         }
     }
 }
-

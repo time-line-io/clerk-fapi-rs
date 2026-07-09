@@ -1,5 +1,13 @@
 pub mod backup_codes;
 pub use self::backup_codes::BackupCodes;
+pub mod billing_checkout;
+pub use self::billing_checkout::BillingCheckout;
+pub mod billing_checkout_totals;
+pub use self::billing_checkout_totals::BillingCheckoutTotals;
+pub mod billing_credits_response;
+pub use self::billing_credits_response::BillingCreditsResponse;
+pub mod billing_discounts_response;
+pub use self::billing_discounts_response::BillingDiscountsResponse;
 pub mod billing_fee;
 pub use self::billing_fee::BillingFee;
 pub mod billing_money_response;
@@ -8,16 +16,32 @@ pub mod billing_payee;
 pub use self::billing_payee::BillingPayee;
 pub mod billing_payer;
 pub use self::billing_payer::BillingPayer;
+pub mod billing_payer_credit_response;
+pub use self::billing_payer_credit_response::BillingPayerCreditResponse;
 pub mod billing_payment_attempt;
 pub use self::billing_payment_attempt::BillingPaymentAttempt;
 pub mod billing_payment_method;
 pub use self::billing_payment_method::BillingPaymentMethod;
 pub mod billing_payment_method_initialize;
 pub use self::billing_payment_method_initialize::BillingPaymentMethodInitialize;
+pub mod billing_per_period_totals;
+pub use self::billing_per_period_totals::BillingPerPeriodTotals;
+pub mod billing_per_unit_total;
+pub use self::billing_per_unit_total::BillingPerUnitTotal;
+pub mod billing_per_unit_total_tier;
+pub use self::billing_per_unit_total_tier::BillingPerUnitTotalTier;
 pub mod billing_plan;
 pub use self::billing_plan::BillingPlan;
 pub mod billing_plan_features_inner;
 pub use self::billing_plan_features_inner::BillingPlanFeaturesInner;
+pub mod billing_plan_unit_price;
+pub use self::billing_plan_unit_price::BillingPlanUnitPrice;
+pub mod billing_plan_unit_price_tier;
+pub use self::billing_plan_unit_price_tier::BillingPlanUnitPriceTier;
+pub mod billing_proration_credit_detail;
+pub use self::billing_proration_credit_detail::BillingProrationCreditDetail;
+pub mod billing_proration_discount_detail;
+pub use self::billing_proration_discount_detail::BillingProrationDiscountDetail;
 pub mod billing_statement;
 pub use self::billing_statement::BillingStatement;
 pub mod billing_statement_response_group;
@@ -32,8 +56,14 @@ pub mod billing_subscription_item;
 pub use self::billing_subscription_item::BillingSubscriptionItem;
 pub mod billing_subscription_item_next_payment;
 pub use self::billing_subscription_item_next_payment::BillingSubscriptionItemNextPayment;
+pub mod billing_subscription_item_seats;
+pub use self::billing_subscription_item_seats::BillingSubscriptionItemSeats;
 pub mod billing_subscription_next_payment;
 pub use self::billing_subscription_next_payment::BillingSubscriptionNextPayment;
+pub mod billing_totals_response;
+pub use self::billing_totals_response::BillingTotalsResponse;
+pub mod billing_totals_response_proration;
+pub use self::billing_totals_response_proration::BillingTotalsResponseProration;
 pub mod clerk_error;
 pub use self::clerk_error::ClerkError;
 pub mod clerk_errors;
@@ -94,6 +124,14 @@ pub mod client_client_wrapped_deleted_object;
 pub use self::client_client_wrapped_deleted_object::ClientClientWrappedDeletedObject;
 pub mod client_client_wrapped_email_address;
 pub use self::client_client_wrapped_email_address::ClientClientWrappedEmailAddress;
+pub mod client_client_wrapped_enterprise_connection;
+pub use self::client_client_wrapped_enterprise_connection::ClientClientWrappedEnterpriseConnection;
+pub mod client_client_wrapped_enterprise_connection_test_run;
+pub use self::client_client_wrapped_enterprise_connection_test_run::ClientClientWrappedEnterpriseConnectionTestRun;
+pub mod client_client_wrapped_enterprise_connection_test_runs_list;
+pub use self::client_client_wrapped_enterprise_connection_test_runs_list::ClientClientWrappedEnterpriseConnectionTestRunsList;
+pub mod client_client_wrapped_enterprise_connections;
+pub use self::client_client_wrapped_enterprise_connections::ClientClientWrappedEnterpriseConnections;
 pub mod client_client_wrapped_external_account;
 pub use self::client_client_wrapped_external_account::ClientClientWrappedExternalAccount;
 pub mod client_client_wrapped_image;
@@ -102,6 +140,10 @@ pub mod client_client_wrapped_organization;
 pub use self::client_client_wrapped_organization::ClientClientWrappedOrganization;
 pub mod client_client_wrapped_organization_domain;
 pub use self::client_client_wrapped_organization_domain::ClientClientWrappedOrganizationDomain;
+pub mod client_client_wrapped_organization_domain_bulk_create;
+pub use self::client_client_wrapped_organization_domain_bulk_create::ClientClientWrappedOrganizationDomainBulkCreate;
+pub mod client_client_wrapped_organization_domain_bulk_ownership_verification;
+pub use self::client_client_wrapped_organization_domain_bulk_ownership_verification::ClientClientWrappedOrganizationDomainBulkOwnershipVerification;
 pub mod client_client_wrapped_organization_domains;
 pub use self::client_client_wrapped_organization_domains::ClientClientWrappedOrganizationDomains;
 pub mod client_client_wrapped_organization_domains_response;
@@ -186,6 +228,16 @@ pub mod client_organization;
 pub use self::client_organization::ClientOrganization;
 pub mod client_organization_domain;
 pub use self::client_organization_domain::ClientOrganizationDomain;
+pub mod client_organization_domain_bulk_create;
+pub use self::client_organization_domain_bulk_create::ClientOrganizationDomainBulkCreate;
+pub mod client_organization_domain_bulk_create_error;
+pub use self::client_organization_domain_bulk_create_error::ClientOrganizationDomainBulkCreateError;
+pub mod client_organization_domain_bulk_ownership_verification;
+pub use self::client_organization_domain_bulk_ownership_verification::ClientOrganizationDomainBulkOwnershipVerification;
+pub mod client_organization_domain_bulk_ownership_verification_error;
+pub use self::client_organization_domain_bulk_ownership_verification_error::ClientOrganizationDomainBulkOwnershipVerificationError;
+pub mod client_organization_domain_ownership_verification;
+pub use self::client_organization_domain_ownership_verification::ClientOrganizationDomainOwnershipVerification;
 pub mod client_organization_domain_verification;
 pub use self::client_organization_domain_verification::ClientOrganizationDomainVerification;
 pub mod client_organization_invitation;
@@ -248,8 +300,26 @@ pub mod client_sign_up;
 pub use self::client_sign_up::ClientSignUp;
 pub mod client_sign_up_verifications;
 pub use self::client_sign_up_verifications::ClientSignUpVerifications;
+pub mod client_sign_up_verifications_email_address;
+pub use self::client_sign_up_verifications_email_address::ClientSignUpVerificationsEmailAddress;
+pub mod client_sign_up_verifications_email_address_one_of;
+pub use self::client_sign_up_verifications_email_address_one_of::ClientSignUpVerificationsEmailAddressOneOf;
+pub mod client_sign_up_verifications_email_address_one_of_1;
+pub use self::client_sign_up_verifications_email_address_one_of_1::ClientSignUpVerificationsEmailAddressOneOf1;
+pub mod client_sign_up_verifications_email_address_one_of_2;
+pub use self::client_sign_up_verifications_email_address_one_of_2::ClientSignUpVerificationsEmailAddressOneOf2;
+pub mod client_sign_up_verifications_email_address_one_of_3;
+pub use self::client_sign_up_verifications_email_address_one_of_3::ClientSignUpVerificationsEmailAddressOneOf3;
+pub mod client_sign_up_verifications_email_address_one_of_4;
+pub use self::client_sign_up_verifications_email_address_one_of_4::ClientSignUpVerificationsEmailAddressOneOf4;
 pub mod client_sign_up_verifications_external_account;
 pub use self::client_sign_up_verifications_external_account::ClientSignUpVerificationsExternalAccount;
+pub mod client_sign_up_verifications_phone_number;
+pub use self::client_sign_up_verifications_phone_number::ClientSignUpVerificationsPhoneNumber;
+pub mod client_sign_up_verifications_web3_wallet;
+pub use self::client_sign_up_verifications_web3_wallet::ClientSignUpVerificationsWeb3Wallet;
+pub mod client_touch_wrapped_session;
+pub use self::client_touch_wrapped_session::ClientTouchWrappedSession;
 pub mod client_user;
 pub use self::client_user::ClientUser;
 pub mod client_user_settings;
@@ -268,6 +338,26 @@ pub mod create_organization_payment_method_request;
 pub use self::create_organization_payment_method_request::CreateOrganizationPaymentMethodRequest;
 pub mod create_session_token_200_response;
 pub use self::create_session_token_200_response::CreateSessionToken200Response;
+pub mod enterprise_connection_response;
+pub use self::enterprise_connection_response::EnterpriseConnectionResponse;
+pub mod enterprise_connection_response_oauth_config;
+pub use self::enterprise_connection_response_oauth_config::EnterpriseConnectionResponseOauthConfig;
+pub mod enterprise_connection_response_saml_connection;
+pub use self::enterprise_connection_response_saml_connection::EnterpriseConnectionResponseSamlConnection;
+pub mod enterprise_connection_test_run_list_item;
+pub use self::enterprise_connection_test_run_list_item::EnterpriseConnectionTestRunListItem;
+pub mod enterprise_connection_test_run_list_item_logs_inner;
+pub use self::enterprise_connection_test_run_list_item_logs_inner::EnterpriseConnectionTestRunListItemLogsInner;
+pub mod enterprise_connection_test_run_list_item_oauth;
+pub use self::enterprise_connection_test_run_list_item_oauth::EnterpriseConnectionTestRunListItemOauth;
+pub mod enterprise_connection_test_run_list_item_parsed_user_info;
+pub use self::enterprise_connection_test_run_list_item_parsed_user_info::EnterpriseConnectionTestRunListItemParsedUserInfo;
+pub mod enterprise_connection_test_run_list_item_saml;
+pub use self::enterprise_connection_test_run_list_item_saml::EnterpriseConnectionTestRunListItemSaml;
+pub mod enterprise_connection_test_run_response;
+pub use self::enterprise_connection_test_run_response::EnterpriseConnectionTestRunResponse;
+pub mod enterprise_connection_test_runs_paginated_response;
+pub use self::enterprise_connection_test_runs_paginated_response::EnterpriseConnectionTestRunsPaginatedResponse;
 pub mod external_account_with_verification;
 pub use self::external_account_with_verification::ExternalAccountWithVerification;
 pub mod external_account_with_verification_verification;
@@ -296,6 +386,14 @@ pub mod get_o_auth_token_400_response;
 pub use self::get_o_auth_token_400_response::GetOAuthToken400Response;
 pub mod get_o_auth_token_401_response;
 pub use self::get_o_auth_token_401_response::GetOAuthToken401Response;
+pub mod get_organization_creation_defaults_200_response;
+pub use self::get_organization_creation_defaults_200_response::GetOrganizationCreationDefaults200Response;
+pub mod get_organization_creation_defaults_200_response_response;
+pub use self::get_organization_creation_defaults_200_response_response::GetOrganizationCreationDefaults200ResponseResponse;
+pub mod get_organization_creation_defaults_200_response_response_advisory;
+pub use self::get_organization_creation_defaults_200_response_response_advisory::GetOrganizationCreationDefaults200ResponseResponseAdvisory;
+pub mod get_organization_creation_defaults_200_response_response_form;
+pub use self::get_organization_creation_defaults_200_response_response_form::GetOrganizationCreationDefaults200ResponseResponseForm;
 pub mod get_proxy_health_200_response;
 pub use self::get_proxy_health_200_response::GetProxyHealth200Response;
 pub mod get_proxy_health_200_response_one_of;
@@ -344,24 +442,6 @@ pub mod organization_settings_slug_settings;
 pub use self::organization_settings_slug_settings::OrganizationSettingsSlugSettings;
 pub mod revoke_api_key_request;
 pub use self::revoke_api_key_request::RevokeApiKeyRequest;
-pub mod schemas_client_client;
-pub use self::schemas_client_client::SchemasClientClient;
-pub mod schemas_client_client_wrapped_organization;
-pub use self::schemas_client_client_wrapped_organization::SchemasClientClientWrappedOrganization;
-pub mod schemas_client_client_wrapped_sign_in;
-pub use self::schemas_client_client_wrapped_sign_in::SchemasClientClientWrappedSignIn;
-pub mod schemas_client_client_wrapped_user;
-pub use self::schemas_client_client_wrapped_user::SchemasClientClientWrappedUser;
-pub mod schemas_client_session;
-pub use self::schemas_client_session::SchemasClientSession;
-pub mod schemas_client_session_base;
-pub use self::schemas_client_session_base::SchemasClientSessionBase;
-pub mod schemas_client_sign_in;
-pub use self::schemas_client_sign_in::SchemasClientSignIn;
-pub mod schemas_client_sign_in_second_factor_verification;
-pub use self::schemas_client_sign_in_second_factor_verification::SchemasClientSignInSecondFactorVerification;
-pub mod schemas_stubs_sign_in_factor;
-pub use self::schemas_stubs_sign_in_factor::SchemasStubsSignInFactor;
 pub mod set_organization_default_payment_method_request;
 pub use self::set_organization_default_payment_method_request::SetOrganizationDefaultPaymentMethodRequest;
 pub mod stubs_identification_link;
@@ -370,8 +450,8 @@ pub mod stubs_saml_connection_saml_account;
 pub use self::stubs_saml_connection_saml_account::StubsSamlConnectionSamlAccount;
 pub mod stubs_sign_in_factor;
 pub use self::stubs_sign_in_factor::StubsSignInFactor;
-pub mod stubs_sign_up_verification;
-pub use self::stubs_sign_up_verification::StubsSignUpVerification;
+pub mod stubs_sign_up_verification_additional_fields;
+pub use self::stubs_sign_up_verification_additional_fields::StubsSignUpVerificationAdditionalFields;
 pub mod stubs_verification_admin;
 pub use self::stubs_verification_admin::StubsVerificationAdmin;
 pub mod stubs_verification_backup_code;
@@ -396,6 +476,8 @@ pub mod stubs_verification_saml;
 pub use self::stubs_verification_saml::StubsVerificationSaml;
 pub mod stubs_verification_saml_error;
 pub use self::stubs_verification_saml_error::StubsVerificationSamlError;
+pub mod stubs_verification_scim;
+pub use self::stubs_verification_scim::StubsVerificationScim;
 pub mod stubs_verification_ticket;
 pub use self::stubs_verification_ticket::StubsVerificationTicket;
 pub mod stubs_verification_totp;
@@ -458,141 +540,5 @@ pub mod well_known_o_auth2_authorization_server_metadata;
 pub use self::well_known_o_auth2_authorization_server_metadata::WellKnownOAuth2AuthorizationServerMetadata;
 pub mod well_known_open_id_configuration;
 pub use self::well_known_open_id_configuration::WellKnownOpenIdConfiguration;
-
-// ---------------------------------------------------------------------------
-// Handwritten conversions
-// ---------------------------------------------------------------------------
-
-fn try_convert_via_json<T, U>(value: T) -> Option<U>
-where
-    T: serde::Serialize,
-    U: serde::de::DeserializeOwned,
-{
-    serde_json::to_value(value)
-        .ok()
-        .and_then(|v| serde_json::from_value::<U>(v).ok())
-}
-
-impl From<SchemasClientSession> for ClientSession {
-    fn from(value: SchemasClientSession) -> Self {
-        // Best effort: the schema types are usually JSON-compatible with the client types.
-        if let Some(v) = try_convert_via_json::<SchemasClientSession, ClientSession>(value.clone()) {
-            return v;
-        }
-
-        // Fallback mapping for known-compatible fields.
-        ClientSession {
-            id: value.id,
-            object: client_session::Object::Session,
-            status: match value.status {
-                schemas_client_session::Status::Active => client_session::Status::Active,
-                schemas_client_session::Status::Revoked => client_session::Status::Revoked,
-                schemas_client_session::Status::Ended => client_session::Status::Ended,
-                schemas_client_session::Status::Expired => client_session::Status::Expired,
-                schemas_client_session::Status::Removed => client_session::Status::Removed,
-                schemas_client_session::Status::Abandoned => client_session::Status::Abandoned,
-            },
-            expire_at: value.expire_at,
-            abandon_at: value.abandon_at,
-            last_active_at: value.last_active_at,
-            last_active_token: value.last_active_token,
-            actor: value.actor,
-            tasks: None,
-            last_active_organization_id: value.last_active_organization_id,
-            user: value.user,
-            public_user_data: value.public_user_data,
-            factor_verification_age: value.factor_verification_age,
-            created_at: value.created_at,
-            updated_at: value.updated_at,
-        }
-    }
-}
-
-impl From<SchemasClientSignIn> for ClientSignIn {
-    fn from(value: SchemasClientSignIn) -> Self {
-        // Best effort conversion. If it fails, we fall back to a minimal struct.
-        if let Some(v) = try_convert_via_json::<SchemasClientSignIn, ClientSignIn>(value.clone()) {
-            return v;
-        }
-
-        ClientSignIn {
-            object: client_sign_in::Object::SignInAttempt,
-            id: value.id,
-            status: match value.status {
-                schemas_client_sign_in::Status::Abandoned => client_sign_in::Status::Abandoned,
-                schemas_client_sign_in::Status::NeedsIdentifier => client_sign_in::Status::NeedsIdentifier,
-                schemas_client_sign_in::Status::NeedsFirstFactor => client_sign_in::Status::NeedsFirstFactor,
-                schemas_client_sign_in::Status::NeedsSecondFactor => client_sign_in::Status::NeedsSecondFactor,
-                schemas_client_sign_in::Status::NeedsClientTrust => client_sign_in::Status::NeedsClientTrust,
-                schemas_client_sign_in::Status::NeedsNewPassword => client_sign_in::Status::NeedsNewPassword,
-                schemas_client_sign_in::Status::Complete => client_sign_in::Status::Complete,
-            },
-            supported_identifiers: value
-                .supported_identifiers
-                .into_iter()
-                .map(|s| match s {
-                    schemas_client_sign_in::SupportedIdentifiers::EmailAddress => {
-                        client_sign_in::SupportedIdentifiers::EmailAddress
-                    }
-                    schemas_client_sign_in::SupportedIdentifiers::PhoneNumber => {
-                        client_sign_in::SupportedIdentifiers::PhoneNumber
-                    }
-                    schemas_client_sign_in::SupportedIdentifiers::Username => {
-                        client_sign_in::SupportedIdentifiers::Username
-                    }
-                    schemas_client_sign_in::SupportedIdentifiers::Web3Wallet => {
-                        client_sign_in::SupportedIdentifiers::Web3Wallet
-                    }
-                    schemas_client_sign_in::SupportedIdentifiers::Passkey => {
-                        client_sign_in::SupportedIdentifiers::Passkey
-                    }
-                })
-                .collect(),
-            supported_first_factors: None,
-            supported_second_factors: None,
-            first_factor_verification: value.first_factor_verification,
-            second_factor_verification: None,
-            identifier: value.identifier,
-            user_data: value.user_data,
-            created_session_id: value.created_session_id,
-            abandon_at: value.abandon_at,
-            client_trust_state: value.client_trust_state.map(|inner| {
-                inner.map(|s| match s {
-                    schemas_client_sign_in::ClientTrustState::Pending => {
-                        client_sign_in::ClientTrustState::Pending
-                    }
-                    schemas_client_sign_in::ClientTrustState::New => client_sign_in::ClientTrustState::New,
-                    schemas_client_sign_in::ClientTrustState::Known => {
-                        client_sign_in::ClientTrustState::Known
-                    }
-                })
-            }),
-        }
-    }
-}
-
-impl From<SchemasClientClient> for ClientClient {
-    fn from(value: SchemasClientClient) -> Self {
-        if let Some(v) = try_convert_via_json::<SchemasClientClient, ClientClient>(value.clone()) {
-            return v;
-        }
-
-        let sessions = value.sessions.into_iter().map(Into::into).collect();
-        let sign_in = value.sign_in.map(|s| Box::new((*s).into()));
-
-        ClientClient {
-            object: client_client::Object::Client,
-            id: value.id,
-            sessions,
-            sign_in,
-            // Note: schema already uses ClientSignUp here.
-            sign_up: value.sign_up,
-            last_active_session_id: value.last_active_session_id,
-            last_authentication_strategy: value.last_authentication_strategy,
-            cookie_expires_at: value.cookie_expires_at,
-            captcha_bypass: value.captcha_bypass,
-            created_at: value.created_at,
-            updated_at: value.updated_at,
-        }
-    }
-}
+pub mod well_known_web_authn;
+pub use self::well_known_web_authn::WellKnownWebAuthn;

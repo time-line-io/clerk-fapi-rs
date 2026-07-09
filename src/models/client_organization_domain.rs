@@ -23,15 +23,34 @@ pub struct ClientOrganizationDomain {
     pub name: String,
     #[serde(rename = "enrollment_mode")]
     pub enrollment_mode: String,
-    #[serde(rename = "affiliation_email_address", deserialize_with = "Option::deserialize")]
+    #[serde(
+        rename = "affiliation_email_address",
+        deserialize_with = "Option::deserialize"
+    )]
     pub affiliation_email_address: Option<String>,
+    #[serde(
+        rename = "affiliation_verification",
+        deserialize_with = "Option::deserialize"
+    )]
+    pub affiliation_verification: Option<Box<models::ClientOrganizationDomainVerification>>,
+    #[serde(
+        rename = "ownership_verification",
+        deserialize_with = "Option::deserialize"
+    )]
+    pub ownership_verification: Option<Box<models::ClientOrganizationDomainOwnershipVerification>>,
+    /// Deprecated alias for `affiliation_verification`. Kept for backward compatibility on the current API version; will be removed in the next API version. Prefer `affiliation_verification`.
     #[serde(rename = "verification", deserialize_with = "Option::deserialize")]
     pub verification: Option<Box<models::ClientOrganizationDomainVerification>>,
     #[serde(rename = "total_pending_invitations")]
     pub total_pending_invitations: i32,
     #[serde(rename = "total_pending_suggestions")]
     pub total_pending_suggestions: i32,
-    #[serde(rename = "public_organization_data", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "public_organization_data",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub public_organization_data: Option<Option<Box<models::ClientPublicOrganizationData>>>,
     /// Unix timestamp of creation.
     #[serde(rename = "created_at")]
@@ -42,7 +61,21 @@ pub struct ClientOrganizationDomain {
 }
 
 impl ClientOrganizationDomain {
-    pub fn new(object: Object, id: String, organization_id: String, name: String, enrollment_mode: String, affiliation_email_address: Option<String>, verification: Option<models::ClientOrganizationDomainVerification>, total_pending_invitations: i32, total_pending_suggestions: i32, created_at: i64, updated_at: i64) -> ClientOrganizationDomain {
+    pub fn new(
+        object: Object,
+        id: String,
+        organization_id: String,
+        name: String,
+        enrollment_mode: String,
+        affiliation_email_address: Option<String>,
+        affiliation_verification: Option<models::ClientOrganizationDomainVerification>,
+        ownership_verification: Option<models::ClientOrganizationDomainOwnershipVerification>,
+        verification: Option<models::ClientOrganizationDomainVerification>,
+        total_pending_invitations: i32,
+        total_pending_suggestions: i32,
+        created_at: i64,
+        updated_at: i64,
+    ) -> ClientOrganizationDomain {
         ClientOrganizationDomain {
             object,
             id,
@@ -50,7 +83,21 @@ impl ClientOrganizationDomain {
             name,
             enrollment_mode,
             affiliation_email_address,
-            verification: if let Some(x) = verification {Some(Box::new(x))} else {None},
+            affiliation_verification: if let Some(x) = affiliation_verification {
+                Some(Box::new(x))
+            } else {
+                None
+            },
+            ownership_verification: if let Some(x) = ownership_verification {
+                Some(Box::new(x))
+            } else {
+                None
+            },
+            verification: if let Some(x) = verification {
+                Some(Box::new(x))
+            } else {
+                None
+            },
             total_pending_invitations,
             total_pending_suggestions,
             public_organization_data: None,
@@ -59,7 +106,7 @@ impl ClientOrganizationDomain {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "organization_domain")]
@@ -71,4 +118,3 @@ impl Default for Object {
         Self::OrganizationDomain
     }
 }
-

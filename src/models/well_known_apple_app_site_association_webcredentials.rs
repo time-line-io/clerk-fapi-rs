@@ -19,9 +19,6 @@ pub struct WellKnownAppleAppSiteAssociationWebcredentials {
 
 impl WellKnownAppleAppSiteAssociationWebcredentials {
     pub fn new() -> WellKnownAppleAppSiteAssociationWebcredentials {
-        WellKnownAppleAppSiteAssociationWebcredentials {
-            apps: None,
-        }
+        WellKnownAppleAppSiteAssociationWebcredentials { apps: None }
     }
 }
-

@@ -19,9 +19,6 @@ pub struct OrganizationSettingsSlugSettings {
 
 impl OrganizationSettingsSlugSettings {
     pub fn new(disabled: bool) -> OrganizationSettingsSlugSettings {
-        OrganizationSettingsSlugSettings {
-            disabled,
-        }
+        OrganizationSettingsSlugSettings { disabled }
     }
 }
-

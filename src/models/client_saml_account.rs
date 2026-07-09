@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ClientSamlAccount {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value. 
+    /// String representing the object's type. Objects of the same type share the same value.
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "provider")]
@@ -31,10 +31,20 @@ pub struct ClientSamlAccount {
     /// The unique ID of the user in the external provider's system
     #[serde(rename = "provider_user_id", deserialize_with = "Option::deserialize")]
     pub provider_user_id: Option<String>,
-    #[serde(rename = "enterprise_connection_id", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "enterprise_connection_id",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub enterprise_connection_id: Option<Option<String>>,
-    /// Unix timestamp of last authentication. 
-    #[serde(rename = "last_authenticated_at", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    /// Unix timestamp of last authentication.
+    #[serde(
+        rename = "last_authenticated_at",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub last_authenticated_at: Option<Option<i64>>,
     #[serde(rename = "public_metadata")]
     pub public_metadata: std::collections::HashMap<String, serde_json::Value>,
@@ -45,7 +55,19 @@ pub struct ClientSamlAccount {
 }
 
 impl ClientSamlAccount {
-    pub fn new(id: String, object: Object, provider: String, active: bool, email_address: String, first_name: Option<String>, last_name: Option<String>, provider_user_id: Option<String>, public_metadata: std::collections::HashMap<String, serde_json::Value>, verification: Option<models::ClientSamlAccountVerification>, saml_connection: Option<models::StubsSamlConnectionSamlAccount>) -> ClientSamlAccount {
+    pub fn new(
+        id: String,
+        object: Object,
+        provider: String,
+        active: bool,
+        email_address: String,
+        first_name: Option<String>,
+        last_name: Option<String>,
+        provider_user_id: Option<String>,
+        public_metadata: std::collections::HashMap<String, serde_json::Value>,
+        verification: Option<models::ClientSamlAccountVerification>,
+        saml_connection: Option<models::StubsSamlConnectionSamlAccount>,
+    ) -> ClientSamlAccount {
         ClientSamlAccount {
             id,
             object,
@@ -58,12 +80,20 @@ impl ClientSamlAccount {
             enterprise_connection_id: None,
             last_authenticated_at: None,
             public_metadata,
-            verification: if let Some(x) = verification {Some(Box::new(x))} else {None},
-            saml_connection: if let Some(x) = saml_connection {Some(Box::new(x))} else {None},
+            verification: if let Some(x) = verification {
+                Some(Box::new(x))
+            } else {
+                None
+            },
+            saml_connection: if let Some(x) = saml_connection {
+                Some(Box::new(x))
+            } else {
+                None
+            },
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value. 
+/// String representing the object's type. Objects of the same type share the same value.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "saml_account")]
@@ -75,4 +105,3 @@ impl Default for Object {
         Self::SamlAccount
     }
 }
-

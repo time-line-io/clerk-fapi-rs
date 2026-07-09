@@ -36,7 +36,14 @@ pub struct JwksRsaPublicKey {
 }
 
 impl JwksRsaPublicKey {
-    pub fn new(kid: String, alg: String, r#use: String, kty: Kty, n: String, e: String) -> JwksRsaPublicKey {
+    pub fn new(
+        kid: String,
+        alg: String,
+        r#use: String,
+        kty: Kty,
+        n: String,
+        e: String,
+    ) -> JwksRsaPublicKey {
         JwksRsaPublicKey {
             kid,
             alg,
@@ -51,7 +58,7 @@ impl JwksRsaPublicKey {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Kty {
     #[serde(rename = "RSA")]
@@ -63,4 +70,3 @@ impl Default for Kty {
         Self::Rsa
     }
 }
-

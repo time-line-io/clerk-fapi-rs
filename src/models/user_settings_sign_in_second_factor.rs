@@ -19,9 +19,6 @@ pub struct UserSettingsSignInSecondFactor {
 
 impl UserSettingsSignInSecondFactor {
     pub fn new(required: bool) -> UserSettingsSignInSecondFactor {
-        UserSettingsSignInSecondFactor {
-            required,
-        }
+        UserSettingsSignInSecondFactor { required }
     }
 }
-

@@ -12,19 +12,14 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SchemasClientClientWrappedUser {
-    #[serde(rename = "response")]
-    pub response: Box<models::ClientUser>,
-    #[serde(rename = "client")]
-    pub client: Box<models::SchemasClientClient>,
+pub struct EnterpriseConnectionTestRunResponse {
+    /// URL to open in the browser to start the IdP test flow.
+    #[serde(rename = "url")]
+    pub url: String,
 }
 
-impl SchemasClientClientWrappedUser {
-    pub fn new(response: models::ClientUser, client: models::SchemasClientClient) -> SchemasClientClientWrappedUser {
-        SchemasClientClientWrappedUser {
-            response: Box::new(response),
-            client: Box::new(client),
-        }
+impl EnterpriseConnectionTestRunResponse {
+    pub fn new(url: String) -> EnterpriseConnectionTestRunResponse {
+        EnterpriseConnectionTestRunResponse { url }
     }
 }
-

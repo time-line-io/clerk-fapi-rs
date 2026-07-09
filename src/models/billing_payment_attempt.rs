@@ -45,6 +45,14 @@ pub struct BillingPaymentAttempt {
     pub subscription_item: Box<models::BillingSubscriptionItem>,
     #[serde(rename = "amount")]
     pub amount: Box<models::BillingMoneyResponse>,
+    /// Totals breakdown for this payment attempt
+    #[serde(
+        rename = "totals",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub totals: Option<Option<Box<models::BillingTotalsResponse>>>,
     /// Unique identifier for the payment method used
     #[serde(rename = "payment_method_id")]
     pub payment_method_id: String,
@@ -54,10 +62,16 @@ pub struct BillingPaymentAttempt {
     #[serde(rename = "statement_id")]
     pub statement_id: String,
     /// External ID from the payment gateway
-    #[serde(rename = "gateway_external_id", deserialize_with = "Option::deserialize")]
+    #[serde(
+        rename = "gateway_external_id",
+        deserialize_with = "Option::deserialize"
+    )]
     pub gateway_external_id: Option<String>,
     /// URL to view this payment in the gateway dashboard
-    #[serde(rename = "gateway_external_url", deserialize_with = "Option::deserialize")]
+    #[serde(
+        rename = "gateway_external_url",
+        deserialize_with = "Option::deserialize"
+    )]
     pub gateway_external_url: Option<String>,
     /// Status of the payment attempt
     #[serde(rename = "status")]
@@ -80,7 +94,30 @@ pub struct BillingPaymentAttempt {
 }
 
 impl BillingPaymentAttempt {
-    pub fn new(object: Object, id: String, payment_id: String, instance_id: String, charge_type: String, payee_id: String, payee: models::BillingPayee, payer_id: String, payer: models::BillingPayer, subscription_item_id: String, subscription_item: models::BillingSubscriptionItem, amount: models::BillingMoneyResponse, payment_method_id: String, payment_method: models::BillingPaymentMethod, statement_id: String, gateway_external_id: Option<String>, gateway_external_url: Option<String>, status: String, paid_at: Option<i64>, failed_at: Option<i64>, created_at: i64, updated_at: i64) -> BillingPaymentAttempt {
+    pub fn new(
+        object: Object,
+        id: String,
+        payment_id: String,
+        instance_id: String,
+        charge_type: String,
+        payee_id: String,
+        payee: models::BillingPayee,
+        payer_id: String,
+        payer: models::BillingPayer,
+        subscription_item_id: String,
+        subscription_item: models::BillingSubscriptionItem,
+        amount: models::BillingMoneyResponse,
+        payment_method_id: String,
+        payment_method: models::BillingPaymentMethod,
+        statement_id: String,
+        gateway_external_id: Option<String>,
+        gateway_external_url: Option<String>,
+        status: String,
+        paid_at: Option<i64>,
+        failed_at: Option<i64>,
+        created_at: i64,
+        updated_at: i64,
+    ) -> BillingPaymentAttempt {
         BillingPaymentAttempt {
             object,
             id,
@@ -94,6 +131,7 @@ impl BillingPaymentAttempt {
             subscription_item_id,
             subscription_item: Box::new(subscription_item),
             amount: Box::new(amount),
+            totals: None,
             payment_method_id,
             payment_method: Box::new(payment_method),
             statement_id,
@@ -120,4 +158,3 @@ impl Default for Object {
         Self::CommercePayment
     }
 }
-

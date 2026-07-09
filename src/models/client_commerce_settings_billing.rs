@@ -13,9 +13,17 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClientCommerceSettingsBilling {
-    #[serde(rename = "stripe_publishable_key", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "stripe_publishable_key",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub stripe_publishable_key: Option<Option<String>>,
-    #[serde(rename = "free_trial_requires_payment_method", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "free_trial_requires_payment_method",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub free_trial_requires_payment_method: Option<bool>,
     #[serde(rename = "user", skip_serializing_if = "Option::is_none")]
     pub user: Option<Box<models::ClientCommerceSettingsBillingUser>>,
@@ -33,4 +41,3 @@ impl ClientCommerceSettingsBilling {
         }
     }
 }
-

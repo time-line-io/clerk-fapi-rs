@@ -38,7 +38,16 @@ pub struct BillingStatement {
 }
 
 impl BillingStatement {
-    pub fn new(object: Object, instance_id: String, id: String, timestamp: i64, payer: models::BillingPayer, status: String, totals: models::BillingStatementTotalsResponse, groups: Vec<models::BillingStatementResponseGroup>) -> BillingStatement {
+    pub fn new(
+        object: Object,
+        instance_id: String,
+        id: String,
+        timestamp: i64,
+        payer: models::BillingPayer,
+        status: String,
+        totals: models::BillingStatementTotalsResponse,
+        groups: Vec<models::BillingStatementResponseGroup>,
+    ) -> BillingStatement {
         BillingStatement {
             object,
             instance_id,
@@ -63,4 +72,3 @@ impl Default for Object {
         Self::CommerceStatement
     }
 }
-

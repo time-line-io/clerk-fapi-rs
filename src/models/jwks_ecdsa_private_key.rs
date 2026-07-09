@@ -40,7 +40,16 @@ pub struct JwksEcdsaPrivateKey {
 }
 
 impl JwksEcdsaPrivateKey {
-    pub fn new(kid: String, alg: String, r#use: String, kty: Kty, crv: String, x: String, y: String, d: String) -> JwksEcdsaPrivateKey {
+    pub fn new(
+        kid: String,
+        alg: String,
+        r#use: String,
+        kty: Kty,
+        crv: String,
+        x: String,
+        y: String,
+        d: String,
+    ) -> JwksEcdsaPrivateKey {
         JwksEcdsaPrivateKey {
             kid,
             alg,
@@ -57,7 +66,7 @@ impl JwksEcdsaPrivateKey {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Kty {
     #[serde(rename = "EC")]
@@ -69,4 +78,3 @@ impl Default for Kty {
         Self::Ec
     }
 }
-

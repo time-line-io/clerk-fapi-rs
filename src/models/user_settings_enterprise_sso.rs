@@ -15,13 +15,16 @@ use serde::{Deserialize, Serialize};
 pub struct UserSettingsEnterpriseSso {
     #[serde(rename = "enabled")]
     pub enabled: bool,
+    /// When true, end-users may manage enterprise connections for this environment.
+    #[serde(rename = "self_serve_sso", skip_serializing_if = "Option::is_none")]
+    pub self_serve_sso: Option<bool>,
 }
 
 impl UserSettingsEnterpriseSso {
     pub fn new(enabled: bool) -> UserSettingsEnterpriseSso {
         UserSettingsEnterpriseSso {
             enabled,
+            self_serve_sso: None,
         }
     }
 }
-

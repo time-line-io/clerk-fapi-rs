@@ -36,7 +36,17 @@ pub struct ClientRole {
 }
 
 impl ClientRole {
-    pub fn new(object: Object, id: String, name: String, key: String, description: String, is_creator_eligible: bool, permissions: Vec<models::ClientPermission>, created_at: i64, updated_at: i64) -> ClientRole {
+    pub fn new(
+        object: Object,
+        id: String,
+        name: String,
+        key: String,
+        description: String,
+        is_creator_eligible: bool,
+        permissions: Vec<models::ClientPermission>,
+        created_at: i64,
+        updated_at: i64,
+    ) -> ClientRole {
         ClientRole {
             object,
             id,
@@ -50,7 +60,7 @@ impl ClientRole {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "role")]
@@ -62,4 +72,3 @@ impl Default for Object {
         Self::Role
     }
 }
-

@@ -19,7 +19,12 @@ pub struct StubsVerificationPasskey {
     pub status: Status,
     #[serde(rename = "strategy")]
     pub strategy: Strategy,
-    #[serde(rename = "attempts", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "attempts",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub attempts: Option<Option<i32>>,
     #[serde(rename = "expire_at")]
     pub expire_at: i64,
@@ -39,7 +44,7 @@ impl StubsVerificationPasskey {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "verification_passkey")]
@@ -51,7 +56,7 @@ impl Default for Object {
         Self::VerificationPasskey
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "unverified")]
@@ -69,7 +74,7 @@ impl Default for Status {
         Self::Unverified
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
     #[serde(rename = "passkey")]
@@ -81,4 +86,3 @@ impl Default for Strategy {
         Self::Passkey
     }
 }
-

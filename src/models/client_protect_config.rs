@@ -19,9 +19,6 @@ pub struct ClientProtectConfig {
 
 impl ClientProtectConfig {
     pub fn new() -> ClientProtectConfig {
-        ClientProtectConfig {
-            loaders: None,
-        }
+        ClientProtectConfig { loaders: None }
     }
 }
-

@@ -20,11 +20,10 @@ pub struct GetApiKeys200Response {
 }
 
 impl GetApiKeys200Response {
-    pub fn new(data: Vec<models::GetApiKeys200ResponseDataInner>, total_count: f64) -> GetApiKeys200Response {
-        GetApiKeys200Response {
-            data,
-            total_count,
-        }
+    pub fn new(
+        data: Vec<models::GetApiKeys200ResponseDataInner>,
+        total_count: f64,
+    ) -> GetApiKeys200Response {
+        GetApiKeys200Response { data, total_count }
     }
 }
-

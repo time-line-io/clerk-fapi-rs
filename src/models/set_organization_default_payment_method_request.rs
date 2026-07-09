@@ -20,9 +20,6 @@ pub struct SetOrganizationDefaultPaymentMethodRequest {
 
 impl SetOrganizationDefaultPaymentMethodRequest {
     pub fn new(payment_method_id: String) -> SetOrganizationDefaultPaymentMethodRequest {
-        SetOrganizationDefaultPaymentMethodRequest {
-            payment_method_id,
-        }
+        SetOrganizationDefaultPaymentMethodRequest { payment_method_id }
     }
 }
-
