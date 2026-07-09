@@ -21,13 +21,10 @@ pub struct ClientWaitlistEntry {
 
 impl ClientWaitlistEntry {
     pub fn new(object: Object, id: String) -> ClientWaitlistEntry {
-        ClientWaitlistEntry {
-            object,
-            id,
-        }
+        ClientWaitlistEntry { object, id }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "waitlist_entry")]
@@ -39,4 +36,3 @@ impl Default for Object {
         Self::WaitlistEntry
     }
 }
-

@@ -18,6 +18,17 @@ pub struct BillingSubscriptionItemNextPayment {
     /// Unix timestamp (in milliseconds) for the next payment date
     #[serde(rename = "date", skip_serializing_if = "Option::is_none")]
     pub date: Option<i64>,
+    /// Per-unit total breakdown for the next payment
+    #[serde(rename = "per_unit_totals", skip_serializing_if = "Option::is_none")]
+    pub per_unit_totals: Option<Vec<models::BillingPerUnitTotal>>,
+    /// Breakdown of the recurring amount that will be billed at renewal (base fee + per-unit charges). Tax and credits are not included.
+    #[serde(
+        rename = "totals",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub totals: Option<Option<Box<models::BillingTotalsResponse>>>,
 }
 
 impl BillingSubscriptionItemNextPayment {
@@ -25,7 +36,8 @@ impl BillingSubscriptionItemNextPayment {
         BillingSubscriptionItemNextPayment {
             amount: None,
             date: None,
+            per_unit_totals: None,
+            totals: None,
         }
     }
 }
-

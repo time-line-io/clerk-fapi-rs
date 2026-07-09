@@ -14,5 +14,3 @@ async fn main() {
     let env = clerk.environment().expect("no environment");
     println!("Loaded Clerk environment (debug): {:?}", env);
 }
-
-

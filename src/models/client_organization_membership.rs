@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ClientOrganizationMembership {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value. 
+    /// String representing the object's type. Objects of the same type share the same value.
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "public_metadata")]
@@ -34,12 +34,27 @@ pub struct ClientOrganizationMembership {
     pub updated_at: i64,
     #[serde(rename = "organization")]
     pub organization: Box<models::ClientOrganization>,
-    #[serde(rename = "public_user_data", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "public_user_data",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub public_user_data: Option<Option<Box<models::ClientPublicUserData>>>,
 }
 
 impl ClientOrganizationMembership {
-    pub fn new(id: String, object: Object, public_metadata: std::collections::HashMap<String, serde_json::Value>, role: String, role_name: String, permissions: Option<Vec<String>>, created_at: i64, updated_at: i64, organization: models::ClientOrganization) -> ClientOrganizationMembership {
+    pub fn new(
+        id: String,
+        object: Object,
+        public_metadata: std::collections::HashMap<String, serde_json::Value>,
+        role: String,
+        role_name: String,
+        permissions: Option<Vec<String>>,
+        created_at: i64,
+        updated_at: i64,
+        organization: models::ClientOrganization,
+    ) -> ClientOrganizationMembership {
         ClientOrganizationMembership {
             id,
             object,
@@ -54,7 +69,7 @@ impl ClientOrganizationMembership {
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value. 
+/// String representing the object's type. Objects of the same type share the same value.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "organization_membership")]
@@ -66,4 +81,3 @@ impl Default for Object {
         Self::OrganizationMembership
     }
 }
-

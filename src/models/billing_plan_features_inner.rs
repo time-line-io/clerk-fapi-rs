@@ -34,7 +34,14 @@ pub struct BillingPlanFeaturesInner {
 }
 
 impl BillingPlanFeaturesInner {
-    pub fn new(object: Object, id: String, name: String, description: Option<String>, slug: String, avatar_url: Option<String>) -> BillingPlanFeaturesInner {
+    pub fn new(
+        object: Object,
+        id: String,
+        name: String,
+        description: Option<String>,
+        slug: String,
+        avatar_url: Option<String>,
+    ) -> BillingPlanFeaturesInner {
         BillingPlanFeaturesInner {
             object,
             id,
@@ -57,4 +64,3 @@ impl Default for Object {
         Self::Feature
     }
 }
-

@@ -26,7 +26,10 @@ pub struct ClientOrganizationInvitationUserContext {
     pub role_name: String,
     #[serde(rename = "organization_id", skip_serializing_if = "Option::is_none")]
     pub organization_id: Option<String>,
-    #[serde(rename = "public_organization_data", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "public_organization_data",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub public_organization_data: Option<serde_json::Value>,
     /// String representing the object's type. Objects of the same type share the same value.
     #[serde(rename = "status", skip_serializing_if = "Option::is_none")]
@@ -46,7 +49,18 @@ pub struct ClientOrganizationInvitationUserContext {
 }
 
 impl ClientOrganizationInvitationUserContext {
-    pub fn new(id: String, object: Object, email_address: String, role: String, role_name: String, public_metadata: std::collections::HashMap<String, serde_json::Value>, url: Option<String>, expires_at: Option<i64>, created_at: i64, updated_at: i64) -> ClientOrganizationInvitationUserContext {
+    pub fn new(
+        id: String,
+        object: Object,
+        email_address: String,
+        role: String,
+        role_name: String,
+        public_metadata: std::collections::HashMap<String, serde_json::Value>,
+        url: Option<String>,
+        expires_at: Option<i64>,
+        created_at: i64,
+        updated_at: i64,
+    ) -> ClientOrganizationInvitationUserContext {
         ClientOrganizationInvitationUserContext {
             id,
             object,
@@ -85,6 +99,8 @@ pub enum Status {
     Revoked,
     #[serde(rename = "accepted")]
     Accepted,
+    #[serde(rename = "expired")]
+    Expired,
     #[serde(rename = "completed")]
     Completed,
 }
@@ -94,4 +110,3 @@ impl Default for Status {
         Self::Pending
     }
 }
-

@@ -17,10 +17,16 @@ pub struct BillingPaymentMethodInitialize {
     #[serde(rename = "object")]
     pub object: Object,
     /// Client secret from the payment gateway for setting up payment method
-    #[serde(rename = "external_client_secret", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "external_client_secret",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub external_client_secret: Option<String>,
     /// External gateway identifier
-    #[serde(rename = "external_gateway_id", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "external_gateway_id",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub external_gateway_id: Option<String>,
     /// Ordered list of supported payment methods
     #[serde(rename = "payment_method_order")]
@@ -28,7 +34,10 @@ pub struct BillingPaymentMethodInitialize {
 }
 
 impl BillingPaymentMethodInitialize {
-    pub fn new(object: Object, payment_method_order: Vec<String>) -> BillingPaymentMethodInitialize {
+    pub fn new(
+        object: Object,
+        payment_method_order: Vec<String>,
+    ) -> BillingPaymentMethodInitialize {
         BillingPaymentMethodInitialize {
             object,
             external_client_secret: None,
@@ -49,4 +58,3 @@ impl Default for Object {
         Self::CommercePaymentMethodInitialize
     }
 }
-

@@ -20,11 +20,17 @@ pub struct ClientBillingPaymentAttempt {
 }
 
 impl ClientBillingPaymentAttempt {
-    pub fn new(response: models::BillingPaymentAttempt, client: Option<models::ClientClient>) -> ClientBillingPaymentAttempt {
+    pub fn new(
+        response: models::BillingPaymentAttempt,
+        client: Option<models::ClientClient>,
+    ) -> ClientBillingPaymentAttempt {
         ClientBillingPaymentAttempt {
             response: Box::new(response),
-            client: if let Some(x) = client {Some(Box::new(x))} else {None},
+            client: if let Some(x) = client {
+                Some(Box::new(x))
+            } else {
+                None
+            },
         }
     }
 }
-

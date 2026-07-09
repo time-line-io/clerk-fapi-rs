@@ -23,7 +23,12 @@ pub struct GetApiKeys200ResponseDataInner {
     pub subject: String,
     #[serde(rename = "name")]
     pub name: String,
-    #[serde(rename = "description", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<Option<String>>,
     #[serde(rename = "claims", deserialize_with = "Option::deserialize")]
     pub claims: Option<serde_json::Value>,
@@ -35,20 +40,40 @@ pub struct GetApiKeys200ResponseDataInner {
     pub revocation_reason: Option<String>,
     #[serde(rename = "expired")]
     pub expired: bool,
+    /// The timestamp for when the API key will expire, in milliseconds
     #[serde(rename = "expiration", deserialize_with = "Option::deserialize")]
     pub expiration: Option<f64>,
     #[serde(rename = "created_by", deserialize_with = "Option::deserialize")]
     pub created_by: Option<String>,
+    /// The timestamp for when the API key was last used, in milliseconds
     #[serde(rename = "last_used_at", deserialize_with = "Option::deserialize")]
     pub last_used_at: Option<f64>,
+    /// The timestamp for when the API key was created, in milliseconds
     #[serde(rename = "created_at")]
     pub created_at: f64,
+    /// The timestamp for when the API key was last updated, in milliseconds
     #[serde(rename = "updated_at")]
     pub updated_at: f64,
 }
 
 impl GetApiKeys200ResponseDataInner {
-    pub fn new(object: Object, id: String, r#type: String, subject: String, name: String, claims: Option<serde_json::Value>, scopes: Vec<String>, revoked: bool, revocation_reason: Option<String>, expired: bool, expiration: Option<f64>, created_by: Option<String>, last_used_at: Option<f64>, created_at: f64, updated_at: f64) -> GetApiKeys200ResponseDataInner {
+    pub fn new(
+        object: Object,
+        id: String,
+        r#type: String,
+        subject: String,
+        name: String,
+        claims: Option<serde_json::Value>,
+        scopes: Vec<String>,
+        revoked: bool,
+        revocation_reason: Option<String>,
+        expired: bool,
+        expiration: Option<f64>,
+        created_by: Option<String>,
+        last_used_at: Option<f64>,
+        created_at: f64,
+        updated_at: f64,
+    ) -> GetApiKeys200ResponseDataInner {
         GetApiKeys200ResponseDataInner {
             object,
             id,
@@ -69,7 +94,7 @@ impl GetApiKeys200ResponseDataInner {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "api_key")]
@@ -81,4 +106,3 @@ impl Default for Object {
         Self::ApiKey
     }
 }
-

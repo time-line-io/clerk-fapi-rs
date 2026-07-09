@@ -19,9 +19,6 @@ pub struct GetApiKeys404Response {
 
 impl GetApiKeys404Response {
     pub fn new(errors: Vec<models::GetApiKeys404ResponseErrorsInner>) -> GetApiKeys404Response {
-        GetApiKeys404Response {
-            errors,
-        }
+        GetApiKeys404Response { errors }
     }
 }
-

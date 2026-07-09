@@ -19,15 +19,26 @@ pub struct UserSettingsUsernameSettings {
     pub max_length: Option<i32>,
     #[serde(rename = "allow_extended_special_characters")]
     pub allow_extended_special_characters: bool,
+    /// Whether usernames may contain only digits. When enabled, phone-number inputs must be provided in explicit E.164 format.
+    #[serde(
+        rename = "allow_numeric_usernames",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub allow_numeric_usernames: Option<bool>,
 }
 
 impl UserSettingsUsernameSettings {
-    pub fn new(min_length: Option<i32>, max_length: Option<i32>, allow_extended_special_characters: bool) -> UserSettingsUsernameSettings {
+    pub fn new(
+        min_length: Option<i32>,
+        max_length: Option<i32>,
+        allow_extended_special_characters: bool,
+        allow_numeric_usernames: Option<bool>,
+    ) -> UserSettingsUsernameSettings {
         UserSettingsUsernameSettings {
             min_length,
             max_length,
             allow_extended_special_characters,
+            allow_numeric_usernames,
         }
     }
 }
-

@@ -27,7 +27,7 @@ impl GetOAuthToken401Response {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Error {
     #[serde(rename = "invalid_client")]
@@ -43,4 +43,3 @@ impl Default for Error {
         Self::InvalidClient
     }
 }
-

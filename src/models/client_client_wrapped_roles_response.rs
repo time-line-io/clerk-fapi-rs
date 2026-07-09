@@ -17,6 +17,12 @@ pub struct ClientClientWrappedRolesResponse {
     pub data: Option<Vec<models::ClientRole>>,
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
     pub total_count: Option<i64>,
+    /// Indicates whether there is an active role set migration for this organization.
+    #[serde(
+        rename = "has_role_set_migration",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub has_role_set_migration: Option<bool>,
 }
 
 impl ClientClientWrappedRolesResponse {
@@ -24,7 +30,7 @@ impl ClientClientWrappedRolesResponse {
         ClientClientWrappedRolesResponse {
             data: None,
             total_count: None,
+            has_role_set_migration: None,
         }
     }
 }
-

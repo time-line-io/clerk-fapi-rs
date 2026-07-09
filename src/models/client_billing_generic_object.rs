@@ -20,11 +20,17 @@ pub struct ClientBillingGenericObject {
 }
 
 impl ClientBillingGenericObject {
-    pub fn new(response: Option<serde_json::Value>, client: Option<models::ClientClient>) -> ClientBillingGenericObject {
+    pub fn new(
+        response: Option<serde_json::Value>,
+        client: Option<models::ClientClient>,
+    ) -> ClientBillingGenericObject {
         ClientBillingGenericObject {
             response,
-            client: if let Some(x) = client {Some(Box::new(x))} else {None},
+            client: if let Some(x) = client {
+                Some(Box::new(x))
+            } else {
+                None
+            },
         }
     }
 }
-

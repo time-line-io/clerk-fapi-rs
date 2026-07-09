@@ -19,14 +19,24 @@ pub struct UserSettingsPasskeySettings {
     /// Passkey UI will be shown when user clicks on a button.
     #[serde(rename = "show_sign_in_button")]
     pub show_sign_in_button: bool,
+    /// Whether signing in with a passkey satisfies an existing second-factor requirement (skipping the second-factor prompt).
+    #[serde(
+        rename = "satisfies_second_factor",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub satisfies_second_factor: Option<bool>,
 }
 
 impl UserSettingsPasskeySettings {
-    pub fn new(allow_autofill: bool, show_sign_in_button: bool) -> UserSettingsPasskeySettings {
+    pub fn new(
+        allow_autofill: bool,
+        show_sign_in_button: bool,
+        satisfies_second_factor: Option<bool>,
+    ) -> UserSettingsPasskeySettings {
         UserSettingsPasskeySettings {
             allow_autofill,
             show_sign_in_button,
+            satisfies_second_factor,
         }
     }
 }
-

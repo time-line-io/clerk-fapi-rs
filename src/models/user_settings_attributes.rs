@@ -38,7 +38,19 @@ pub struct UserSettingsAttributes {
 }
 
 impl UserSettingsAttributes {
-    pub fn new(email_address: models::UserSettingsAttribute, phone_number: models::UserSettingsAttribute, username: models::UserSettingsAttribute, web3_wallet: models::UserSettingsAttribute, first_name: models::UserSettingsAttribute, last_name: models::UserSettingsAttribute, password: models::UserSettingsAttribute, authenticator_app: models::UserSettingsAttribute, ticket: models::UserSettingsAttribute, backup_code: models::UserSettingsAttribute, passkey: models::UserSettingsAttribute) -> UserSettingsAttributes {
+    pub fn new(
+        email_address: models::UserSettingsAttribute,
+        phone_number: models::UserSettingsAttribute,
+        username: models::UserSettingsAttribute,
+        web3_wallet: models::UserSettingsAttribute,
+        first_name: models::UserSettingsAttribute,
+        last_name: models::UserSettingsAttribute,
+        password: models::UserSettingsAttribute,
+        authenticator_app: models::UserSettingsAttribute,
+        ticket: models::UserSettingsAttribute,
+        backup_code: models::UserSettingsAttribute,
+        passkey: models::UserSettingsAttribute,
+    ) -> UserSettingsAttributes {
         UserSettingsAttributes {
             email_address: Box::new(email_address),
             phone_number: Box::new(phone_number),
@@ -54,4 +66,3 @@ impl UserSettingsAttributes {
         }
     }
 }
-

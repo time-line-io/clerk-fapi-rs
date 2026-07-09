@@ -11,56 +11,74 @@
 use crate::models;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum SchemasClientSignInSecondFactorVerification {
-    StubsVerificationOtp(Box<models::StubsVerificationOtp>),
-    StubsVerificationTotp(Box<models::StubsVerificationTotp>),
-    StubsVerificationTicket(Box<models::StubsVerificationTicket>),
-    StubsVerificationBackupCode(Box<models::StubsVerificationBackupCode>),
+#[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
+pub struct StubsVerificationScim {
+    #[serde(rename = "object", skip_serializing_if = "Option::is_none")]
+    pub object: Option<Object>,
+    #[serde(rename = "status")]
+    pub status: Status,
+    #[serde(rename = "strategy")]
+    pub strategy: Strategy,
+    #[serde(
+        rename = "attempts",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub attempts: Option<Option<i32>>,
+    #[serde(
+        rename = "expire_at",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub expire_at: Option<Option<i64>>,
 }
 
-impl Default for SchemasClientSignInSecondFactorVerification {
-    fn default() -> Self {
-        Self::StubsVerificationOtp(Default::default())
+impl StubsVerificationScim {
+    pub fn new(status: Status, strategy: Strategy) -> StubsVerificationScim {
+        StubsVerificationScim {
+            object: None,
+            status,
+            strategy,
+            attempts: None,
+            expire_at: None,
+        }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
-    #[serde(rename = "verification_backup_code")]
-    VerificationBackupCode,
+    #[serde(rename = "verification_scim")]
+    VerificationScim,
 }
 
 impl Default for Object {
     fn default() -> Object {
-        Self::VerificationBackupCode
+        Self::VerificationScim
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
-    #[serde(rename = "unverified")]
-    Unverified,
     #[serde(rename = "verified")]
     Verified,
 }
 
 impl Default for Status {
     fn default() -> Status {
-        Self::Unverified
+        Self::Verified
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
-    #[serde(rename = "backup_code")]
-    BackupCode,
+    #[serde(rename = "scim")]
+    Scim,
 }
 
 impl Default for Strategy {
     fn default() -> Strategy {
-        Self::BackupCode
+        Self::Scim
     }
 }
-

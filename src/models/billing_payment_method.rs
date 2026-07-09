@@ -35,7 +35,10 @@ pub struct BillingPaymentMethod {
     #[serde(rename = "gateway_external_id")]
     pub gateway_external_id: String,
     /// External account ID in the payment gateway
-    #[serde(rename = "gateway_external_account_id", deserialize_with = "Option::deserialize")]
+    #[serde(
+        rename = "gateway_external_account_id",
+        deserialize_with = "Option::deserialize"
+    )]
     pub gateway_external_account_id: Option<String>,
     /// Last 4 digits of the card (for card payment methods)
     #[serde(rename = "last4", deserialize_with = "Option::deserialize")]
@@ -44,16 +47,31 @@ pub struct BillingPaymentMethod {
     #[serde(rename = "status")]
     pub status: Status,
     /// Type of wallet (if applicable)
-    #[serde(rename = "wallet_type", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "wallet_type",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub wallet_type: Option<Option<String>>,
     /// Type of card (if applicable)
     #[serde(rename = "card_type", deserialize_with = "Option::deserialize")]
     pub card_type: Option<String>,
     /// Card expiration year (for card payment methods)
-    #[serde(rename = "expiry_year", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "expiry_year",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub expiry_year: Option<Option<i32>>,
     /// Card expiration month (for card payment methods)
-    #[serde(rename = "expiry_month", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "expiry_month",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub expiry_month: Option<Option<i32>>,
     /// Unix timestamp (in milliseconds) when the payment method was created
     #[serde(rename = "created_at", skip_serializing_if = "Option::is_none")]
@@ -67,7 +85,18 @@ pub struct BillingPaymentMethod {
 }
 
 impl BillingPaymentMethod {
-    pub fn new(object: Object, id: String, payer_id: String, payment_type: PaymentType, gateway: String, gateway_external_id: String, gateway_external_account_id: Option<String>, last4: Option<String>, status: Status, card_type: Option<String>) -> BillingPaymentMethod {
+    pub fn new(
+        object: Object,
+        id: String,
+        payer_id: String,
+        payment_type: PaymentType,
+        gateway: String,
+        gateway_external_id: String,
+        gateway_external_account_id: Option<String>,
+        last4: Option<String>,
+        status: Status,
+        card_type: Option<String>,
+    ) -> BillingPaymentMethod {
         BillingPaymentMethod {
             object,
             id,
@@ -129,4 +158,3 @@ impl Default for Status {
         Self::Active
     }
 }
-

@@ -29,10 +29,22 @@ pub struct UserSettingsAttribute {
     pub verifications: Vec<String>,
     #[serde(rename = "verify_at_sign_up")]
     pub verify_at_sign_up: bool,
+    #[serde(rename = "immutable", skip_serializing_if = "Option::is_none")]
+    pub immutable: Option<bool>,
 }
 
 impl UserSettingsAttribute {
-    pub fn new(enabled: bool, required: bool, used_for_first_factor: bool, first_factors: Vec<String>, used_for_second_factor: bool, second_factors: Vec<String>, verifications: Vec<String>, verify_at_sign_up: bool) -> UserSettingsAttribute {
+    pub fn new(
+        enabled: bool,
+        required: bool,
+        used_for_first_factor: bool,
+        first_factors: Vec<String>,
+        used_for_second_factor: bool,
+        second_factors: Vec<String>,
+        verifications: Vec<String>,
+        verify_at_sign_up: bool,
+        immutable: Option<bool>,
+    ) -> UserSettingsAttribute {
         UserSettingsAttribute {
             enabled,
             required,
@@ -42,7 +54,7 @@ impl UserSettingsAttribute {
             second_factors,
             verifications,
             verify_at_sign_up,
+            immutable,
         }
     }
 }
-

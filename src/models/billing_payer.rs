@@ -26,23 +26,45 @@ pub struct BillingPayer {
     #[serde(rename = "user_id", deserialize_with = "Option::deserialize")]
     pub user_id: Option<String>,
     /// First name of the payer (only set when user_id isn't null)
-    #[serde(rename = "first_name", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "first_name",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub first_name: Option<Option<String>>,
     /// Last name of the payer (only set when user_id isn't null)
-    #[serde(rename = "last_name", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "last_name",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub last_name: Option<Option<String>>,
     /// Email address of the payer (only set when user_id isn't null)
-    #[serde(rename = "email", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "email",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub email: Option<Option<String>>,
     /// Organization ID for org-type payers
     #[serde(rename = "organization_id", deserialize_with = "Option::deserialize")]
     pub organization_id: Option<String>,
     /// Organization name for org-type payers (only set when organization_id isn't null)
-    #[serde(rename = "organization_name", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "organization_name",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub organization_name: Option<Option<String>>,
     /// URL of the payer's image/avatar
     #[serde(rename = "image_url", skip_serializing_if = "Option::is_none")]
     pub image_url: Option<String>,
+    #[serde(rename = "credits_balance", skip_serializing_if = "Option::is_none")]
+    pub credits_balance: Option<Box<models::BillingMoneyResponse>>,
     /// Unix timestamp (in milliseconds) when the payer was created
     #[serde(rename = "created_at", skip_serializing_if = "Option::is_none")]
     pub created_at: Option<i64>,
@@ -52,7 +74,13 @@ pub struct BillingPayer {
 }
 
 impl BillingPayer {
-    pub fn new(object: Object, id: String, instance_id: String, user_id: Option<String>, organization_id: Option<String>) -> BillingPayer {
+    pub fn new(
+        object: Object,
+        id: String,
+        instance_id: String,
+        user_id: Option<String>,
+        organization_id: Option<String>,
+    ) -> BillingPayer {
         BillingPayer {
             object,
             id,
@@ -64,6 +92,7 @@ impl BillingPayer {
             organization_id,
             organization_name: None,
             image_url: None,
+            credits_balance: None,
             created_at: None,
             updated_at: None,
         }
@@ -81,4 +110,3 @@ impl Default for Object {
         Self::CommercePayer
     }
 }
-

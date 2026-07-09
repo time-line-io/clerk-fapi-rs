@@ -16,7 +16,7 @@ pub enum Error<T> {
     ResponseError(ResponseContent<T>),
 }
 
-impl <T> fmt::Display for Error<T> {
+impl<T> fmt::Display for Error<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let (module, e) = match self {
             Error::Reqwest(e) => ("reqwest", e.to_string()),
@@ -35,7 +35,7 @@ impl <T> fmt::Display for Error<T> {
     }
 }
 
-impl <T: fmt::Debug> error::Error for Error<T> {
+impl<T: fmt::Debug> error::Error for Error<T> {
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         Some(match self {
             Error::Reqwest(e) => e,
@@ -46,19 +46,19 @@ impl <T: fmt::Debug> error::Error for Error<T> {
     }
 }
 
-impl <T> From<reqwest::Error> for Error<T> {
+impl<T> From<reqwest::Error> for Error<T> {
     fn from(e: reqwest::Error) -> Self {
         Error::Reqwest(e)
     }
 }
 
-impl <T> From<serde_json::Error> for Error<T> {
+impl<T> From<serde_json::Error> for Error<T> {
     fn from(e: serde_json::Error) -> Self {
         Error::Serde(e)
     }
 }
 
-impl <T> From<std::io::Error> for Error<T> {
+impl<T> From<std::io::Error> for Error<T> {
     fn from(e: std::io::Error) -> Self {
         Error::Io(e)
     }
@@ -85,8 +85,10 @@ pub fn parse_deep_object(prefix: &str, value: &serde_json::Value) -> Vec<(String
                             value,
                         ));
                     }
-                },
-                serde_json::Value::String(s) => params.push((format!("{}[{}]", prefix, key), s.clone())),
+                }
+                serde_json::Value::String(s) => {
+                    params.push((format!("{}[{}]", prefix, key), s.clone()))
+                }
                 _ => params.push((format!("{}[{}]", prefix, key), value.to_string())),
             }
         }
@@ -103,7 +105,7 @@ pub fn parse_deep_object(prefix: &str, value: &serde_json::Value) -> Vec<(String
 enum ContentType {
     Json,
     Text,
-    Unsupported(String)
+    Unsupported(String),
 }
 
 impl From<&str> for ContentType {
@@ -118,11 +120,11 @@ impl From<&str> for ContentType {
     }
 }
 
-pub mod api_keys_api;
 #[allow(non_snake_case)]
 pub mod active_sessions_api;
+pub mod api_keys_api;
 pub mod backup_codes_api;
-pub mod billing_api;
+pub mod checkouts_api;
 pub mod client_api;
 #[allow(non_snake_case)]
 pub mod default_api;
@@ -130,6 +132,7 @@ pub mod dev_browser_api;
 pub mod domains_api;
 #[allow(non_snake_case)]
 pub mod email_addresses_api;
+pub mod enterprise_connections_api;
 pub mod environment_api;
 pub mod external_accounts_api;
 pub mod health_api;
@@ -140,17 +143,24 @@ pub mod o_auth2_callbacks_api;
 #[allow(non_snake_case)]
 pub mod o_auth2_identity_provider_api;
 pub mod organization_api;
+pub mod organization_creation_defaults_api;
 pub mod organizations_memberships_api;
 #[allow(non_snake_case)]
 pub mod passkeys_api;
+pub mod payment_attempts_api;
+pub mod payment_methods_api;
 #[allow(non_snake_case)]
 pub mod phone_numbers_api;
+pub mod plans_api;
 pub mod redirect_api;
 pub mod roles_api;
 pub mod saml_api;
 pub mod sessions_api;
 pub mod sign_ins_api;
 pub mod sign_ups_api;
+pub mod statements_api;
+pub mod subscription_items_api;
+pub mod subscriptions_api;
 pub mod totp_api;
 #[allow(non_snake_case)]
 pub mod user_api;
@@ -164,12 +174,13 @@ pub mod well_known_api;
 pub use active_sessions_api::*;
 pub use api_keys_api::*;
 pub use backup_codes_api::*;
-pub use billing_api::*;
+pub use checkouts_api::*;
 pub use client_api::*;
 pub use default_api::*;
 pub use dev_browser_api::*;
 pub use domains_api::*;
 pub use email_addresses_api::*;
+pub use enterprise_connections_api::*;
 pub use environment_api::*;
 pub use external_accounts_api::*;
 pub use health_api::*;
@@ -179,15 +190,22 @@ pub use membership_requests_api::*;
 pub use o_auth2_callbacks_api::*;
 pub use o_auth2_identity_provider_api::*;
 pub use organization_api::*;
+pub use organization_creation_defaults_api::*;
 pub use organizations_memberships_api::*;
 pub use passkeys_api::*;
+pub use payment_attempts_api::*;
+pub use payment_methods_api::*;
 pub use phone_numbers_api::*;
+pub use plans_api::*;
 pub use redirect_api::*;
 pub use roles_api::*;
 pub use saml_api::*;
 pub use sessions_api::*;
 pub use sign_ins_api::*;
 pub use sign_ups_api::*;
+pub use statements_api::*;
+pub use subscription_items_api::*;
+pub use subscriptions_api::*;
 pub use totp_api::*;
 pub use user_api::*;
 pub use waitlist_api::*;

@@ -28,7 +28,12 @@ pub struct BillingMoneyResponse {
 }
 
 impl BillingMoneyResponse {
-    pub fn new(amount: i64, amount_formatted: String, currency: String, currency_symbol: String) -> BillingMoneyResponse {
+    pub fn new(
+        amount: i64,
+        amount_formatted: String,
+        currency: String,
+        currency_symbol: String,
+    ) -> BillingMoneyResponse {
         BillingMoneyResponse {
             amount,
             amount_formatted,
@@ -37,4 +42,3 @@ impl BillingMoneyResponse {
         }
     }
 }
-

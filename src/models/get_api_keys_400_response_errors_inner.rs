@@ -22,7 +22,11 @@ pub struct GetApiKeys400ResponseErrorsInner {
 }
 
 impl GetApiKeys400ResponseErrorsInner {
-    pub fn new(message: String, long_message: String, code: String) -> GetApiKeys400ResponseErrorsInner {
+    pub fn new(
+        message: String,
+        long_message: String,
+        code: String,
+    ) -> GetApiKeys400ResponseErrorsInner {
         GetApiKeys400ResponseErrorsInner {
             message,
             long_message,
@@ -30,4 +34,3 @@ impl GetApiKeys400ResponseErrorsInner {
         }
     }
 }
-

@@ -12,35 +12,21 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct StubsSignUpVerification {
-    #[serde(rename = "next_action")]
-    pub next_action: NextAction,
-    #[serde(rename = "supported_strategies")]
-    pub supported_strategies: Vec<String>,
+pub struct EnterpriseConnectionTestRunListItemOauth {
+    #[serde(rename = "id_token", skip_serializing_if = "Option::is_none")]
+    pub id_token: Option<String>,
+    #[serde(rename = "access_token", skip_serializing_if = "Option::is_none")]
+    pub access_token: Option<String>,
+    #[serde(rename = "user_info", skip_serializing_if = "Option::is_none")]
+    pub user_info: Option<String>,
 }
 
-impl StubsSignUpVerification {
-    pub fn new(next_action: NextAction, supported_strategies: Vec<String>) -> StubsSignUpVerification {
-        StubsSignUpVerification {
-            next_action,
-            supported_strategies,
+impl EnterpriseConnectionTestRunListItemOauth {
+    pub fn new() -> EnterpriseConnectionTestRunListItemOauth {
+        EnterpriseConnectionTestRunListItemOauth {
+            id_token: None,
+            access_token: None,
+            user_info: None,
         }
     }
 }
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum NextAction {
-    #[serde(rename = "needs_prepare")]
-    NeedsPrepare,
-    #[serde(rename = "needs_attempt")]
-    NeedsAttempt,
-    #[serde(rename = "")]
-    Empty,
-}
-
-impl Default for NextAction {
-    fn default() -> NextAction {
-        Self::NeedsPrepare
-    }
-}
-

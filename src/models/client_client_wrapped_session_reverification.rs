@@ -20,11 +20,17 @@ pub struct ClientClientWrappedSessionReverification {
 }
 
 impl ClientClientWrappedSessionReverification {
-    pub fn new(response: models::ClientSessionReverification, client: Option<models::ClientClient>) -> ClientClientWrappedSessionReverification {
+    pub fn new(
+        response: models::ClientSessionReverification,
+        client: Option<models::ClientClient>,
+    ) -> ClientClientWrappedSessionReverification {
         ClientClientWrappedSessionReverification {
             response: Box::new(response),
-            client: if let Some(x) = client {Some(Box::new(x))} else {None},
+            client: if let Some(x) = client {
+                Some(Box::new(x))
+            } else {
+                None
+            },
         }
     }
 }
-

@@ -15,7 +15,7 @@ use std::sync::Arc;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 const NAME: &str = env!("CARGO_PKG_NAME");
-const DEFAULT_CLERK_API_VERSION: &str = "2025-04-10";
+const DEFAULT_CLERK_API_VERSION: &str = "2026-05-12";
 const PUBLISHABLE_KEY_LIVE_PREFIX: &str = "pk_live_";
 const PUBLISHABLE_KEY_TEST_PREFIX: &str = "pk_test_";
 
@@ -151,7 +151,7 @@ pub struct ClerkFapiConfiguration {
     pub(crate) kind: ClientKind,
     /// Clerk API version pinning (via the `Clerk-API-Version` header).
     ///
-    /// Defaults to `2025-04-10` to ensure Session Token JWT v2 is returned.
+    /// Defaults to the latest checked-in Clerk FAPI version.
     pub(crate) clerk_api_version: Option<String>,
 }
 

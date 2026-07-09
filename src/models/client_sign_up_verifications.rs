@@ -14,23 +14,43 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ClientSignUpVerifications {
     #[serde(rename = "email_address", deserialize_with = "Option::deserialize")]
-    pub email_address: Option<Box<models::StubsSignUpVerification>>,
+    pub email_address: Option<Box<models::ClientSignUpVerificationsEmailAddress>>,
     #[serde(rename = "phone_number", deserialize_with = "Option::deserialize")]
-    pub phone_number: Option<Box<models::StubsSignUpVerification>>,
+    pub phone_number: Option<Box<models::ClientSignUpVerificationsPhoneNumber>>,
     #[serde(rename = "web3_wallet", deserialize_with = "Option::deserialize")]
-    pub web3_wallet: Option<Box<models::StubsSignUpVerification>>,
+    pub web3_wallet: Option<Box<models::ClientSignUpVerificationsWeb3Wallet>>,
     #[serde(rename = "external_account", deserialize_with = "Option::deserialize")]
     pub external_account: Option<Box<models::ClientSignUpVerificationsExternalAccount>>,
 }
 
 impl ClientSignUpVerifications {
-    pub fn new(email_address: Option<models::StubsSignUpVerification>, phone_number: Option<models::StubsSignUpVerification>, web3_wallet: Option<models::StubsSignUpVerification>, external_account: Option<models::ClientSignUpVerificationsExternalAccount>) -> ClientSignUpVerifications {
+    pub fn new(
+        email_address: Option<models::ClientSignUpVerificationsEmailAddress>,
+        phone_number: Option<models::ClientSignUpVerificationsPhoneNumber>,
+        web3_wallet: Option<models::ClientSignUpVerificationsWeb3Wallet>,
+        external_account: Option<models::ClientSignUpVerificationsExternalAccount>,
+    ) -> ClientSignUpVerifications {
         ClientSignUpVerifications {
-            email_address: if let Some(x) = email_address {Some(Box::new(x))} else {None},
-            phone_number: if let Some(x) = phone_number {Some(Box::new(x))} else {None},
-            web3_wallet: if let Some(x) = web3_wallet {Some(Box::new(x))} else {None},
-            external_account: if let Some(x) = external_account {Some(Box::new(x))} else {None},
+            email_address: if let Some(x) = email_address {
+                Some(Box::new(x))
+            } else {
+                None
+            },
+            phone_number: if let Some(x) = phone_number {
+                Some(Box::new(x))
+            } else {
+                None
+            },
+            web3_wallet: if let Some(x) = web3_wallet {
+                Some(Box::new(x))
+            } else {
+                None
+            },
+            external_account: if let Some(x) = external_account {
+                Some(Box::new(x))
+            } else {
+                None
+            },
         }
     }
 }
-

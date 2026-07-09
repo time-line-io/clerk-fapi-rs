@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ClientSessionBase {
     #[serde(rename = "id")]
     pub id: String,
-    /// String representing the object's type. Objects of the same type share the same value. 
+    /// String representing the object's type. Objects of the same type share the same value.
     #[serde(rename = "object")]
     pub object: Object,
     #[serde(rename = "status")]
@@ -26,16 +26,38 @@ pub struct ClientSessionBase {
     pub abandon_at: i64,
     #[serde(rename = "last_active_at")]
     pub last_active_at: i64,
-    #[serde(rename = "last_active_token", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "last_active_token",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub last_active_token: Option<Option<Box<models::Token>>>,
-    #[serde(rename = "actor", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "actor",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub actor: Option<Option<std::collections::HashMap<String, serde_json::Value>>>,
-    #[serde(rename = "tasks", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "tasks",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub tasks: Option<Option<Vec<models::ClientSessionTask>>>,
 }
 
 impl ClientSessionBase {
-    pub fn new(id: String, object: Object, status: Status, expire_at: i64, abandon_at: i64, last_active_at: i64) -> ClientSessionBase {
+    pub fn new(
+        id: String,
+        object: Object,
+        status: Status,
+        expire_at: i64,
+        abandon_at: i64,
+        last_active_at: i64,
+    ) -> ClientSessionBase {
         ClientSessionBase {
             id,
             object,
@@ -49,7 +71,7 @@ impl ClientSessionBase {
         }
     }
 }
-/// String representing the object's type. Objects of the same type share the same value. 
+/// String representing the object's type. Objects of the same type share the same value.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "session")]
@@ -61,7 +83,7 @@ impl Default for Object {
         Self::Session
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "active")]
@@ -85,4 +107,3 @@ impl Default for Status {
         Self::Active
     }
 }
-

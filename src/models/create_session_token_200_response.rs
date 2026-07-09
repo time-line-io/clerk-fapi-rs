@@ -19,9 +19,6 @@ pub struct CreateSessionToken200Response {
 
 impl CreateSessionToken200Response {
     pub fn new() -> CreateSessionToken200Response {
-        CreateSessionToken200Response {
-            jwt: None,
-        }
+        CreateSessionToken200Response { jwt: None }
     }
 }
-

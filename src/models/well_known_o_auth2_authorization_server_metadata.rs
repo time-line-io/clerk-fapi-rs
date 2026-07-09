@@ -23,7 +23,10 @@ pub struct WellKnownOAuth2AuthorizationServerMetadata {
     pub revocation_endpoint: String,
     #[serde(rename = "jwks_uri")]
     pub jwks_uri: String,
-    #[serde(rename = "registration_endpoint", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "registration_endpoint",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub registration_endpoint: Option<String>,
     #[serde(rename = "response_types_supported")]
     pub response_types_supported: Vec<String>,
@@ -39,18 +42,43 @@ pub struct WellKnownOAuth2AuthorizationServerMetadata {
     pub id_token_signing_alg_values_supported: Vec<String>,
     #[serde(rename = "claims_supported")]
     pub claims_supported: Vec<String>,
-    #[serde(rename = "service_documentation", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "service_documentation",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub service_documentation: Option<String>,
-    #[serde(rename = "ui_locales_supported", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "ui_locales_supported",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub ui_locales_supported: Option<Vec<String>>,
     #[serde(rename = "op_tos_uri", skip_serializing_if = "Option::is_none")]
     pub op_tos_uri: Option<String>,
     #[serde(rename = "code_challenge_methods_supported")]
     pub code_challenge_methods_supported: Vec<String>,
+    #[serde(
+        rename = "client_id_metadata_document_supported",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub client_id_metadata_document_supported: Option<bool>,
 }
 
 impl WellKnownOAuth2AuthorizationServerMetadata {
-    pub fn new(issuer: String, authorization_endpoint: String, token_endpoint: String, revocation_endpoint: String, jwks_uri: String, response_types_supported: Vec<String>, grant_types_supported: Vec<String>, token_endpoint_auth_methods_supported: Vec<String>, scopes_supported: Vec<String>, subject_types_supported: Vec<String>, id_token_signing_alg_values_supported: Vec<String>, claims_supported: Vec<String>, code_challenge_methods_supported: Vec<String>) -> WellKnownOAuth2AuthorizationServerMetadata {
+    pub fn new(
+        issuer: String,
+        authorization_endpoint: String,
+        token_endpoint: String,
+        revocation_endpoint: String,
+        jwks_uri: String,
+        response_types_supported: Vec<String>,
+        grant_types_supported: Vec<String>,
+        token_endpoint_auth_methods_supported: Vec<String>,
+        scopes_supported: Vec<String>,
+        subject_types_supported: Vec<String>,
+        id_token_signing_alg_values_supported: Vec<String>,
+        claims_supported: Vec<String>,
+        code_challenge_methods_supported: Vec<String>,
+    ) -> WellKnownOAuth2AuthorizationServerMetadata {
         WellKnownOAuth2AuthorizationServerMetadata {
             issuer,
             authorization_endpoint,
@@ -69,7 +97,7 @@ impl WellKnownOAuth2AuthorizationServerMetadata {
             ui_locales_supported: None,
             op_tos_uri: None,
             code_challenge_methods_supported,
+            client_id_metadata_document_supported: None,
         }
     }
 }
-

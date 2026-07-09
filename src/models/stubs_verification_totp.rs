@@ -19,10 +19,20 @@ pub struct StubsVerificationTotp {
     pub status: Status,
     #[serde(rename = "strategy")]
     pub strategy: Strategy,
-    #[serde(rename = "attempts", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "attempts",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub attempts: Option<Option<i32>>,
-    #[serde(rename = "expire_at", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
-    pub expire_at: Option<Option<i32>>,
+    #[serde(
+        rename = "expire_at",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub expire_at: Option<Option<i64>>,
 }
 
 impl StubsVerificationTotp {
@@ -36,7 +46,7 @@ impl StubsVerificationTotp {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "verification_totp")]
@@ -48,7 +58,7 @@ impl Default for Object {
         Self::VerificationTotp
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "unverified")]
@@ -62,7 +72,7 @@ impl Default for Status {
         Self::Unverified
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
     #[serde(rename = "totp")]
@@ -74,4 +84,3 @@ impl Default for Strategy {
         Self::Totp
     }
 }
-

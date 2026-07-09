@@ -21,16 +21,24 @@ pub struct ClientOrganizationDomainVerification {
     pub attempts: Option<i32>,
     #[serde(rename = "expire_at", deserialize_with = "Option::deserialize")]
     pub expire_at: Option<i64>,
+    #[serde(rename = "verified_at", deserialize_with = "Option::deserialize")]
+    pub verified_at: Option<i64>,
 }
 
 impl ClientOrganizationDomainVerification {
-    pub fn new(status: String, strategy: String, attempts: Option<i32>, expire_at: Option<i64>) -> ClientOrganizationDomainVerification {
+    pub fn new(
+        status: String,
+        strategy: String,
+        attempts: Option<i32>,
+        expire_at: Option<i64>,
+        verified_at: Option<i64>,
+    ) -> ClientOrganizationDomainVerification {
         ClientOrganizationDomainVerification {
             status,
             strategy,
             attempts,
             expire_at,
+            verified_at,
         }
     }
 }
-

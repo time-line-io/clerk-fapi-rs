@@ -25,7 +25,11 @@ pub struct ClientApiKeysSettings {
 }
 
 impl ClientApiKeysSettings {
-    pub fn new(enabled: bool, user_api_keys_enabled: bool, orgs_api_keys_enabled: bool) -> ClientApiKeysSettings {
+    pub fn new(
+        enabled: bool,
+        user_api_keys_enabled: bool,
+        orgs_api_keys_enabled: bool,
+    ) -> ClientApiKeysSettings {
         ClientApiKeysSettings {
             enabled,
             user_api_keys_enabled,
@@ -33,4 +37,3 @@ impl ClientApiKeysSettings {
         }
     }
 }
-

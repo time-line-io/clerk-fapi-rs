@@ -18,19 +18,42 @@ pub struct OAuthDynamicClientRegistrationRequest {
     #[serde(rename = "redirect_uris")]
     pub redirect_uris: Vec<String>,
     /// Indicator of the requested authentication method for the token endpoint. - `client_secret_basic`: HTTP Basic authentication scheme - `client_secret_post`: Client credentials in the request body - `none`: Public client (no authentication)  **Note:** In the current implementation, `client_secret_basic` and `client_secret_post` are treated equivalently. Both methods can be used interchangeably at the token endpoint regardless of which one was specified during registration.
-    #[serde(rename = "token_endpoint_auth_method", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "token_endpoint_auth_method",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub token_endpoint_auth_method: Option<TokenEndpointAuthMethod>,
     /// Human-readable string name of the client to be presented to the end-user during authorization.
-    #[serde(rename = "client_name", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "client_name",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub client_name: Option<Option<String>>,
     /// URL string of a web page providing information about the client.
-    #[serde(rename = "client_uri", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "client_uri",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub client_uri: Option<Option<String>>,
     /// URL string that references a logo for the client. If present, the Clerk will display this image to the end-user during approval.
-    #[serde(rename = "logo_uri", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "logo_uri",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub logo_uri: Option<Option<String>>,
     /// Space-separated list of scope values that the client can use when requesting access tokens. If omitted, the client will be registered with the default set of scopes.
-    #[serde(rename = "scope", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "scope",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub scope: Option<Option<String>>,
 }
 
@@ -63,4 +86,3 @@ impl Default for TokenEndpointAuthMethod {
         Self::ClientSecretBasic
     }
 }
-

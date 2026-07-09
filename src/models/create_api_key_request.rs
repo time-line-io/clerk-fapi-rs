@@ -17,11 +17,21 @@ pub struct CreateApiKeyRequest {
     pub r#type: Option<String>,
     #[serde(rename = "name")]
     pub name: String,
-    #[serde(rename = "description", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<Option<String>>,
     #[serde(rename = "subject")]
     pub subject: String,
-    #[serde(rename = "seconds_until_expiration", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "seconds_until_expiration",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub seconds_until_expiration: Option<Option<f64>>,
 }
 
@@ -36,4 +46,3 @@ impl CreateApiKeyRequest {
         }
     }
 }
-

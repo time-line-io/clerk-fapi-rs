@@ -32,19 +32,31 @@ pub struct ClientOrganizationMembershipRequest {
 }
 
 impl ClientOrganizationMembershipRequest {
-    pub fn new(object: Object, id: String, organization_id: String, status: String, public_user_data: Option<models::ClientPublicUserData>, created_at: i64, updated_at: i64) -> ClientOrganizationMembershipRequest {
+    pub fn new(
+        object: Object,
+        id: String,
+        organization_id: String,
+        status: String,
+        public_user_data: Option<models::ClientPublicUserData>,
+        created_at: i64,
+        updated_at: i64,
+    ) -> ClientOrganizationMembershipRequest {
         ClientOrganizationMembershipRequest {
             object,
             id,
             organization_id,
             status,
-            public_user_data: if let Some(x) = public_user_data {Some(Box::new(x))} else {None},
+            public_user_data: if let Some(x) = public_user_data {
+                Some(Box::new(x))
+            } else {
+                None
+            },
             created_at,
             updated_at,
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "organization_membership_request")]
@@ -56,4 +68,3 @@ impl Default for Object {
         Self::OrganizationMembershipRequest
     }
 }
-

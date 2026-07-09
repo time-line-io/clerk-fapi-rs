@@ -19,13 +19,28 @@ pub struct StubsVerificationOauth {
     pub status: Status,
     #[serde(rename = "strategy")]
     pub strategy: String,
-    #[serde(rename = "external_verification_redirect_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "external_verification_redirect_url",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub external_verification_redirect_url: Option<Option<String>>,
-    #[serde(rename = "error", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "error",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub error: Option<Option<Box<models::ClerkError>>>,
     #[serde(rename = "expire_at")]
     pub expire_at: i64,
-    #[serde(rename = "attempts", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "attempts",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub attempts: Option<Option<i32>>,
 }
 
@@ -42,7 +57,7 @@ impl StubsVerificationOauth {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
     #[serde(rename = "verification_oauth")]
@@ -54,7 +69,7 @@ impl Default for Object {
         Self::VerificationOauth
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
     #[serde(rename = "unverified")]
@@ -74,4 +89,3 @@ impl Default for Status {
         Self::Unverified
     }
 }
-

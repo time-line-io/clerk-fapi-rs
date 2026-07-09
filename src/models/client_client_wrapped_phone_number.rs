@@ -20,11 +20,13 @@ pub struct ClientClientWrappedPhoneNumber {
 }
 
 impl ClientClientWrappedPhoneNumber {
-    pub fn new(response: models::ClientPhoneNumber, client: models::ClientClient) -> ClientClientWrappedPhoneNumber {
+    pub fn new(
+        response: models::ClientPhoneNumber,
+        client: models::ClientClient,
+    ) -> ClientClientWrappedPhoneNumber {
         ClientClientWrappedPhoneNumber {
             response: Box::new(response),
             client: Box::new(client),
         }
     }
 }
-

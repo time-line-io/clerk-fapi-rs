@@ -27,9 +27,20 @@ pub struct BillingSubscriptionItem {
     pub status: Status,
     #[serde(rename = "credit", skip_serializing_if = "Option::is_none")]
     pub credit: Option<Box<models::BillingSubscriptionCreditResponse>>,
+    /// Unified credits breakdown for this subscription item
+    #[serde(
+        rename = "credits",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub credits: Option<Option<Box<models::BillingCreditsResponse>>>,
     /// Unique identifier for the associated plan
     #[serde(rename = "plan_id")]
     pub plan_id: String,
+    /// Unique identifier for the associated price
+    #[serde(rename = "price_id", skip_serializing_if = "Option::is_none")]
+    pub price_id: Option<String>,
     #[serde(rename = "plan", skip_serializing_if = "Option::is_none")]
     pub plan: Option<Box<models::BillingPlan>>,
     /// The billing period for this subscription
@@ -78,17 +89,49 @@ pub struct BillingSubscriptionItem {
     /// Unix timestamp (in milliseconds) when the subscription was last updated
     #[serde(rename = "updated_at", skip_serializing_if = "Option::is_none")]
     pub updated_at: Option<i64>,
+    /// Seat quantity for seat-based billing
+    #[serde(
+        rename = "seats",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub seats: Option<Option<Box<models::BillingSubscriptionItemSeats>>>,
+    /// Totals for this subscription item
+    #[serde(
+        rename = "totals",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub totals: Option<Option<Box<models::BillingTotalsResponse>>>,
 }
 
 impl BillingSubscriptionItem {
-    pub fn new(object: Object, id: String, instance_id: String, status: Status, plan_id: String, plan_period: PlanPeriod, payer_id: String, is_free_trial: bool, period_start: i64, period_end: Option<i64>, canceled_at: Option<i64>, past_due_at: Option<i64>, ended_at: Option<i64>) -> BillingSubscriptionItem {
+    pub fn new(
+        object: Object,
+        id: String,
+        instance_id: String,
+        status: Status,
+        plan_id: String,
+        plan_period: PlanPeriod,
+        payer_id: String,
+        is_free_trial: bool,
+        period_start: i64,
+        period_end: Option<i64>,
+        canceled_at: Option<i64>,
+        past_due_at: Option<i64>,
+        ended_at: Option<i64>,
+    ) -> BillingSubscriptionItem {
         BillingSubscriptionItem {
             object,
             id,
             instance_id,
             status,
             credit: None,
+            credits: None,
             plan_id,
+            price_id: None,
             plan: None,
             plan_period,
             payment_method_id: None,
@@ -107,6 +150,8 @@ impl BillingSubscriptionItem {
             ended_at,
             created_at: None,
             updated_at: None,
+            seats: None,
+            totals: None,
         }
     }
 }
@@ -160,4 +205,3 @@ impl Default for PlanPeriod {
         Self::Month
     }
 }
-

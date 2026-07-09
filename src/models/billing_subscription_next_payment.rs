@@ -18,6 +18,14 @@ pub struct BillingSubscriptionNextPayment {
     pub date: i64,
     #[serde(rename = "amount")]
     pub amount: Box<models::BillingFee>,
+    /// Breakdown of the recurring amount that will be billed at renewal (base fee + per-unit charges). Tax and credits are not included.
+    #[serde(
+        rename = "totals",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub totals: Option<Option<Box<models::BillingTotalsResponse>>>,
 }
 
 impl BillingSubscriptionNextPayment {
@@ -25,7 +33,7 @@ impl BillingSubscriptionNextPayment {
         BillingSubscriptionNextPayment {
             date,
             amount: Box::new(amount),
+            totals: None,
         }
     }
 }
-

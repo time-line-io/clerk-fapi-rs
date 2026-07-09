@@ -185,11 +185,15 @@ impl ClerkFapiClient {
     pub async fn get_organization_billing_subscription(
         &self,
         organization_id: &str,
-    ) -> Result<BillingSubscription, Error<billing_api::GetOrganizationBillingSubscriptionError>>
-    {
-        let response =
-            billing_api::get_organization_billing_subscription(&self.clerk_config(), organization_id)
-                .await?;
+    ) -> Result<
+        BillingSubscription,
+        Error<subscriptions_api::GetOrganizationBillingSubscriptionError>,
+    > {
+        let response = subscriptions_api::get_organization_billing_subscription(
+            &self.clerk_config(),
+            organization_id,
+        )
+        .await?;
         if let Some(client) = response.client.clone() {
             self.handle_client_update(*client);
         }
@@ -202,9 +206,9 @@ impl ClerkFapiClient {
         organization_id: &str,
     ) -> Result<
         Vec<BillingSubscriptionItem>,
-        Error<billing_api::GetOrganizationBillingSubscriptionItemsError>,
+        Error<subscription_items_api::GetOrganizationBillingSubscriptionItemsError>,
     > {
-        let response = billing_api::get_organization_billing_subscription_items(
+        let response = subscription_items_api::get_organization_billing_subscription_items(
             &self.clerk_config(),
             organization_id,
         )
@@ -219,11 +223,15 @@ impl ClerkFapiClient {
     pub async fn get_organization_payment_methods(
         &self,
         organization_id: &str,
-    ) -> Result<Vec<BillingPaymentMethod>, Error<billing_api::GetOrganizationPaymentMethodsError>>
-    {
-        let response =
-            billing_api::get_organization_payment_methods(&self.clerk_config(), organization_id)
-                .await?;
+    ) -> Result<
+        Vec<BillingPaymentMethod>,
+        Error<payment_methods_api::GetOrganizationPaymentMethodsError>,
+    > {
+        let response = payment_methods_api::get_organization_payment_methods(
+            &self.clerk_config(),
+            organization_id,
+        )
+        .await?;
         if let Some(client) = response.client.clone() {
             self.handle_client_update(*client);
         }
@@ -234,16 +242,16 @@ impl ClerkFapiClient {
     pub async fn get_billing_plan(
         &self,
         plan_id_or_slug: &str,
-    ) -> Result<BillingPlan, Error<billing_api::GetBillingPlanError>> {
-        billing_api::get_billing_plan(&self.clerk_config(), plan_id_or_slug).await
+    ) -> Result<BillingPlan, Error<plans_api::GetBillingPlanError>> {
+        plans_api::get_billing_plan(&self.clerk_config(), plan_id_or_slug).await
     }
 
     /// Returns publicly visible billing plans, optionally filtered by payer type.
     pub async fn get_billing_plan_list(
         &self,
         payer_type: Option<&str>,
-    ) -> Result<GetBillingPlanList200Response, Error<billing_api::GetBillingPlanListError>> {
-        billing_api::get_billing_plan_list(&self.clerk_config(), payer_type).await
+    ) -> Result<GetBillingPlanList200Response, Error<plans_api::GetBillingPlanListError>> {
+        plans_api::get_billing_plan_list(&self.clerk_config(), payer_type).await
     }
 
     /// Creates a billing checkout for the organization.
@@ -253,9 +261,9 @@ impl ClerkFapiClient {
         plan_id: &str,
         plan_period: &str,
         payment_method_id: Option<&str>,
-    ) -> Result<ClientBillingCheckout, Error<billing_api::CreateOrganizationBillingCheckoutError>>
+    ) -> Result<ClientBillingCheckout, Error<checkouts_api::CreateOrganizationBillingCheckoutError>>
     {
-        let response = billing_api::create_organization_billing_checkout(
+        let response = checkouts_api::create_organization_billing_checkout(
             &self.clerk_config(),
             organization_id,
             plan_id,
@@ -278,9 +286,9 @@ impl ClerkFapiClient {
         gateway: Option<&str>,
         payment_token: Option<&str>,
         use_test_card: Option<bool>,
-    ) -> Result<ClientBillingCheckout, Error<billing_api::ConfirmOrganizationBillingCheckoutError>>
+    ) -> Result<ClientBillingCheckout, Error<checkouts_api::ConfirmOrganizationBillingCheckoutError>>
     {
-        let response = billing_api::confirm_organization_billing_checkout(
+        let response = checkouts_api::confirm_organization_billing_checkout(
             &self.clerk_config(),
             organization_id,
             checkout_id,
@@ -303,9 +311,9 @@ impl ClerkFapiClient {
         gateway: Option<&str>,
     ) -> Result<
         ClientBillingPaymentMethodInitialize,
-        Error<billing_api::InitializeOrganizationPaymentMethodError>,
+        Error<payment_methods_api::InitializeOrganizationPaymentMethodError>,
     > {
-        let response = billing_api::initialize_organization_payment_method(
+        let response = payment_methods_api::initialize_organization_payment_method(
             &self.clerk_config(),
             organization_id,
             gateway,
@@ -324,8 +332,8 @@ impl ClerkFapiClient {
         plan_period: &str,
         org_id: Option<&str>,
         payment_method_id: Option<&str>,
-    ) -> Result<ClientBillingCheckout, Error<billing_api::CreateUserBillingCheckoutError>> {
-        let response = billing_api::create_user_billing_checkout(
+    ) -> Result<ClientBillingCheckout, Error<checkouts_api::CreateUserBillingCheckoutError>> {
+        let response = checkouts_api::create_user_billing_checkout(
             &self.clerk_config(),
             plan_id,
             plan_period,
@@ -347,8 +355,8 @@ impl ClerkFapiClient {
         gateway: Option<&str>,
         payment_token: Option<&str>,
         use_test_card: Option<bool>,
-    ) -> Result<ClientBillingCheckout, Error<billing_api::ConfirmUserBillingCheckoutError>> {
-        let response = billing_api::confirm_user_billing_checkout(
+    ) -> Result<ClientBillingCheckout, Error<checkouts_api::ConfirmUserBillingCheckoutError>> {
+        let response = checkouts_api::confirm_user_billing_checkout(
             &self.clerk_config(),
             checkout_id,
             payment_method_id,
@@ -369,10 +377,11 @@ impl ClerkFapiClient {
         gateway: Option<&str>,
     ) -> Result<
         ClientBillingPaymentMethodInitialize,
-        Error<billing_api::InitializeUserPaymentMethodError>,
+        Error<payment_methods_api::InitializeUserPaymentMethodError>,
     > {
         let response =
-            billing_api::initialize_user_payment_method(&self.clerk_config(), gateway).await?;
+            payment_methods_api::initialize_user_payment_method(&self.clerk_config(), gateway)
+                .await?;
         if let Some(client) = response.client.clone() {
             self.handle_client_update(*client);
         }
@@ -463,9 +472,13 @@ impl ClerkFapiClient {
         organization_id: &str,
         name: &str,
     ) -> Result<ClientOrganizationDomain, Error<CreateOrganizationDomainError>> {
-        let response =
-            domains_api::create_organization_domain(&self.clerk_config(), organization_id, name)
-                .await?;
+        let response = domains_api::create_organization_domain(
+            &self.clerk_config(),
+            organization_id,
+            name,
+            None,
+        )
+        .await?;
         self.handle_client_update(*response.client.clone());
         Ok(*response.response)
     }
@@ -692,8 +705,9 @@ impl ClerkFapiClient {
     ) -> Result<ExternalAccountWithVerification, Error<PostOAuthAccountsError>> {
         let response = external_accounts_api::post_o_auth_accounts(
             &self.clerk_config(),
-            strategy,
             origin,
+            Some(strategy),
+            None,
             redirect_url,
             action_complete_redirect_url,
             additional_scope,
@@ -1020,6 +1034,7 @@ impl ClerkFapiClient {
             configuration,
             client_id,
             _clerk_session_id,
+            None,
         )
         .await
     }
@@ -1152,7 +1167,8 @@ impl ClerkFapiClient {
         &self,
         name: Option<&str>,
     ) -> Result<ClientOrganization, Error<CreateOrganizationError>> {
-        let response = organization_api::create_organization(&self.clerk_config(), name).await?;
+        let response =
+            organization_api::create_organization(&self.clerk_config(), name, None).await?;
         self.handle_client_update(*response.client.clone());
         Ok(*response.response)
     }
@@ -1462,6 +1478,7 @@ impl ClerkFapiClient {
             phone_number_id,
             strategy,
             _clerk_session_id,
+            None,
         )
         .await?;
         self.handle_client_update(*response.client.clone());
@@ -1648,6 +1665,7 @@ impl ClerkFapiClient {
             strategy,
             email_address_id,
             phone_number_id,
+            None,
         )
         .await?;
         if let Some(client) = response.client.clone() {
@@ -1668,6 +1686,7 @@ impl ClerkFapiClient {
             session_id,
             strategy,
             phone_number_id,
+            None,
         )
         .await?;
         if let Some(client) = response.client.clone() {
@@ -1717,9 +1736,13 @@ impl ClerkFapiClient {
         session_id: &str,
         active_organization_id: Option<&str>,
     ) -> Result<ClientSession, Error<TouchSessionError>> {
-        let response =
-            sessions_api::touch_session(&self.clerk_config(), session_id, active_organization_id)
-                .await?;
+        let response = sessions_api::touch_session(
+            &self.clerk_config(),
+            session_id,
+            active_organization_id,
+            None,
+        )
+        .await?;
         if let Some(client) = response.client.clone() {
             self.handle_client_update(*client);
         }
@@ -1814,6 +1837,7 @@ impl ClerkFapiClient {
             token,
             oidc_login_hint,
             oidc_prompt,
+            None,
         )
         .await?;
         if let Some(client) = response.client.clone() {
@@ -1860,6 +1884,7 @@ impl ClerkFapiClient {
             action_complete_redirect_url,
             oidc_login_hint,
             oidc_prompt,
+            None,
         )
         .await?;
         if let Some(client) = response.client.clone() {
@@ -1879,6 +1904,7 @@ impl ClerkFapiClient {
             sign_in_id,
             strategy,
             phone_number_id,
+            None,
             None,
             None,
         )
@@ -1989,6 +2015,7 @@ impl ClerkFapiClient {
             legal_accepted,
             oidc_login_hint,
             oidc_prompt,
+            None,
         )
         .await?;
         if let Some(client) = response.client.clone() {
@@ -2027,6 +2054,7 @@ impl ClerkFapiClient {
             action_complete_redirect_url,
             oidc_login_hint,
             oidc_prompt,
+            None,
         )
         .await?;
         if let Some(client) = response.client.clone() {
@@ -2080,6 +2108,7 @@ impl ClerkFapiClient {
             legal_accepted,
             oidc_login_hint,
             oidc_prompt,
+            None,
         )
         .await?;
         if let Some(client) = response.client.clone() {
@@ -2167,7 +2196,6 @@ impl ClerkFapiClient {
         primary_email_address_id: Option<&str>,
         primary_phone_number_id: Option<&str>,
         primary_web3_wallet_id: Option<&str>,
-        unsafe_metadata: Option<&str>,
     ) -> Result<ClientUser, Error<PatchUserError>> {
         let response = user_api::patch_user(
             &self.clerk_config(),
@@ -2177,9 +2205,17 @@ impl ClerkFapiClient {
             primary_email_address_id,
             primary_phone_number_id,
             primary_web3_wallet_id,
-            unsafe_metadata,
         )
         .await?;
+        self.handle_client_update(*response.client.clone());
+        Ok(*response.response)
+    }
+
+    pub async fn patch_user_metadata(
+        &self,
+        unsafe_metadata: &str,
+    ) -> Result<ClientUser, Error<PatchUserMetadataError>> {
+        let response = user_api::patch_user_metadata(&self.clerk_config(), unsafe_metadata).await?;
         self.handle_client_update(*response.client.clone());
         Ok(*response.response)
     }

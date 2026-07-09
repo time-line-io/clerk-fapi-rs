@@ -21,6 +21,7 @@ pub enum ClientEmailAddressVerification {
     StubsVerificationAdmin(Box<models::StubsVerificationAdmin>),
     StubsVerificationFromOauth(Box<models::StubsVerificationFromOauth>),
     StubsVerificationSaml(Box<models::StubsVerificationSaml>),
+    StubsVerificationScim(Box<models::StubsVerificationScim>),
 }
 
 impl Default for ClientEmailAddressVerification {
@@ -28,48 +29,39 @@ impl Default for ClientEmailAddressVerification {
         Self::StubsVerificationOtp(Default::default())
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Object {
-    #[serde(rename = "verification_saml")]
-    VerificationSaml,
+    #[serde(rename = "verification_scim")]
+    VerificationScim,
 }
 
 impl Default for Object {
     fn default() -> Object {
-        Self::VerificationSaml
+        Self::VerificationScim
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Status {
-    #[serde(rename = "unverified")]
-    Unverified,
     #[serde(rename = "verified")]
     Verified,
-    #[serde(rename = "failed")]
-    Failed,
-    #[serde(rename = "expired")]
-    Expired,
-    #[serde(rename = "transferable")]
-    Transferable,
 }
 
 impl Default for Status {
     fn default() -> Status {
-        Self::Unverified
+        Self::Verified
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Strategy {
-    #[serde(rename = "saml")]
-    Saml,
+    #[serde(rename = "scim")]
+    Scim,
 }
 
 impl Default for Strategy {
     fn default() -> Strategy {
-        Self::Saml
+        Self::Scim
     }
 }
-

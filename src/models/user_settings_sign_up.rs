@@ -28,7 +28,14 @@ pub struct UserSettingsSignUp {
 }
 
 impl UserSettingsSignUp {
-    pub fn new(captcha_enabled: bool, captcha_widget_type: CaptchaWidgetType, custom_action_required: bool, progressive: bool, mode: Mode, legal_consent_enabled: bool) -> UserSettingsSignUp {
+    pub fn new(
+        captcha_enabled: bool,
+        captcha_widget_type: CaptchaWidgetType,
+        custom_action_required: bool,
+        progressive: bool,
+        mode: Mode,
+        legal_consent_enabled: bool,
+    ) -> UserSettingsSignUp {
         UserSettingsSignUp {
             captcha_enabled,
             captcha_widget_type,
@@ -39,7 +46,7 @@ impl UserSettingsSignUp {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum CaptchaWidgetType {
     #[serde(rename = "smart")]
@@ -53,7 +60,7 @@ impl Default for CaptchaWidgetType {
         Self::Smart
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Mode {
     #[serde(rename = "public")]
@@ -69,4 +76,3 @@ impl Default for Mode {
         Self::Public
     }
 }
-

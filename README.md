@@ -116,7 +116,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ## Session Token JWT v2
 
-Clerk Session Token JWT v1 is deprecated. To ensure Clerk returns **Session Token JWT v2**, this crate sends the `Clerk-API-Version: 2025-04-10` header **by default**.
+Clerk Session Token JWT v1 is deprecated. This crate sends the `Clerk-API-Version: 2026-05-12` header **by default**, matching the checked-in Frontend API OpenAPI spec.
 
 If you need a different pinned version:
 
@@ -125,8 +125,8 @@ If you need a different pinned version:
 
 ## Updating types
 
-1. Get latest defintions from
-   [Clerk docs](https://clerk.com/docs/reference/frontend-api) and save as
+1. Get the latest FAPI definition from
+   [Clerk's OpenAPI specs](https://github.com/clerk/openapi-specs/tree/main/fapi) and save it as
    `fapi_swagger.json`
 2. use [openapi-generator](https://openapi-generator.tech/) to generate types
 

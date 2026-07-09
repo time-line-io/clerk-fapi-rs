@@ -13,15 +13,17 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UpdateApiKeyRequest {
-    #[serde(rename = "description", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "description",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub description: Option<Option<String>>,
 }
 
 impl UpdateApiKeyRequest {
     pub fn new() -> UpdateApiKeyRequest {
-        UpdateApiKeyRequest {
-            description: None,
-        }
+        UpdateApiKeyRequest { description: None }
     }
 }
-

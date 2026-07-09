@@ -27,7 +27,7 @@ impl GetOAuthToken400Response {
         }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Error {
     #[serde(rename = "invalid_request")]
@@ -43,4 +43,3 @@ impl Default for Error {
         Self::InvalidRequest
     }
 }
-

@@ -12,19 +12,25 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SchemasClientClientWrappedOrganization {
+pub struct ClientClientWrappedEnterpriseConnection {
     #[serde(rename = "response")]
-    pub response: Box<models::ClientOrganization>,
-    #[serde(rename = "client")]
-    pub client: Box<models::SchemasClientClient>,
+    pub response: Box<models::EnterpriseConnectionResponse>,
+    #[serde(rename = "client", deserialize_with = "Option::deserialize")]
+    pub client: Option<Box<models::ClientClient>>,
 }
 
-impl SchemasClientClientWrappedOrganization {
-    pub fn new(response: models::ClientOrganization, client: models::SchemasClientClient) -> SchemasClientClientWrappedOrganization {
-        SchemasClientClientWrappedOrganization {
+impl ClientClientWrappedEnterpriseConnection {
+    pub fn new(
+        response: models::EnterpriseConnectionResponse,
+        client: Option<models::ClientClient>,
+    ) -> ClientClientWrappedEnterpriseConnection {
+        ClientClientWrappedEnterpriseConnection {
             response: Box::new(response),
-            client: Box::new(client),
+            client: if let Some(x) = client {
+                Some(Box::new(x))
+            } else {
+                None
+            },
         }
     }
 }
-

@@ -31,7 +31,7 @@ async fn test_sends_clerk_api_version_header_by_default() {
     let env_mock = server
         .mock("GET", "/v1/environment")
         .match_query(Matcher::Any)
-        .match_header("Clerk-API-Version", "2025-04-10")
+        .match_header("Clerk-API-Version", "2026-05-12")
         .with_status(200)
         .with_body(get_env_data())
         .with_header("content-type", "application/json")
@@ -41,7 +41,7 @@ async fn test_sends_clerk_api_version_header_by_default() {
     let client_mock = server
         .mock("GET", "/v1/client")
         .match_query(Matcher::Any)
-        .match_header("Clerk-API-Version", "2025-04-10")
+        .match_header("Clerk-API-Version", "2026-05-12")
         .with_status(200)
         .with_body(
             serde_json::json!({
@@ -76,7 +76,10 @@ async fn test_get_active_organization_plan_and_features() {
     let org_id = "org_456abc789xyz123";
 
     let subscription_mock = server
-        .mock("GET", format!("/v1/organizations/{org_id}/billing/subscription").as_str())
+        .mock(
+            "GET",
+            format!("/v1/organizations/{org_id}/billing/subscription").as_str(),
+        )
         .match_query(Matcher::Any)
         .with_status(200)
         .with_header("content-type", "application/json")
@@ -166,11 +169,15 @@ async fn test_get_active_organization_plan_and_features() {
     let environment: clerk_fapi_rs::models::ClientEnvironment =
         serde_json::from_str(&get_env_data()).unwrap();
     let mut client_value = logged_in_client();
-    client_value["sessions"][0]["last_active_organization_id"] = serde_json::Value::String(org_id.to_string());
+    client_value["sessions"][0]["last_active_organization_id"] =
+        serde_json::Value::String(org_id.to_string());
     let client: clerk_fapi_rs::models::ClientClient = serde_json::from_value(client_value).unwrap();
     clerk.set_loaded(environment, client);
 
-    let result = clerk.get_active_organization_plan_and_features().await.unwrap();
+    let result = clerk
+        .get_active_organization_plan_and_features()
+        .await
+        .unwrap();
     let info = result.expect("expected active org plan info");
 
     assert_eq!(info.organization_id, org_id);
@@ -959,10 +966,7 @@ async fn test_get_token() {
         .await;
 
     let token_mock = server
-        .mock(
-            "POST",
-            "/v1/client/sessions/sess_abc123xyz456def789/tokens",
-        )
+        .mock("POST", "/v1/client/sessions/sess_abc123xyz456def789/tokens")
         .match_query(Matcher::Any)
         .with_status(200)
         .with_body(

@@ -16,26 +16,44 @@ pub struct OAuthConsentInfo {
     #[serde(rename = "oauth_application_name")]
     pub oauth_application_name: String,
     /// URL to the OAuth application's logo image
-    #[serde(rename = "oauth_application_logo_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "oauth_application_logo_url",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub oauth_application_logo_url: Option<Option<String>>,
     /// URL to the OAuth application's website or homepage
-    #[serde(rename = "oauth_application_url", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "oauth_application_url",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub oauth_application_url: Option<Option<String>>,
     #[serde(rename = "client_id")]
     pub client_id: String,
+    /// The PSL-resolved registrable domain of the redirect URI (e.g. `example.co.uk` for `https://app.example.co.uk/callback`). Null when no `redirect_uri` query parameter was provided, when the URI is not registered for the OAuth application, or when the URI points to an IP address or localhost. The frontend should fall back to client-side display logic when this field is null.
+    #[serde(rename = "redirect_domain", deserialize_with = "Option::deserialize")]
+    pub redirect_domain: Option<String>,
     #[serde(rename = "scopes")]
     pub scopes: Vec<models::OAuthScopeWithDescription>,
 }
 
 impl OAuthConsentInfo {
-    pub fn new(oauth_application_name: String, client_id: String, scopes: Vec<models::OAuthScopeWithDescription>) -> OAuthConsentInfo {
+    pub fn new(
+        oauth_application_name: String,
+        client_id: String,
+        redirect_domain: Option<String>,
+        scopes: Vec<models::OAuthScopeWithDescription>,
+    ) -> OAuthConsentInfo {
         OAuthConsentInfo {
             oauth_application_name,
             oauth_application_logo_url: None,
             oauth_application_url: None,
             client_id,
+            redirect_domain,
             scopes,
         }
     }
 }
-
