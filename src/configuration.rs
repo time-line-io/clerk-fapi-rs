@@ -146,6 +146,7 @@ pub struct ClerkFapiConfiguration {
     pub(crate) instance_type: String,
     pub(crate) frontend_api: String,
     pub(crate) user_agent: String,
+    pub(crate) is_mobile: bool,
     pub(crate) store: Arc<dyn Store>,
     pub(crate) store_prefix: String,
     pub(crate) kind: ClientKind,
@@ -200,11 +201,38 @@ impl ClerkFapiConfiguration {
             instance_type: parsed_key.instance_type,
             frontend_api: parsed_key.frontend_api,
             user_agent,
+            is_mobile: true,
             store,
             store_prefix,
             kind,
             clerk_api_version: Some(DEFAULT_CLERK_API_VERSION.to_string()),
         })
+    }
+
+    /// Override the HTTP User-Agent with the caller's application identification.
+    ///
+    /// Defaults to this SDK's name and version. Browsers manage their own
+    /// User-Agent; this setting is intended for non-browser clients.
+    pub fn with_user_agent(mut self, user_agent: impl Into<String>) -> Result<Self, String> {
+        let user_agent = user_agent.into();
+        if user_agent.trim().is_empty() {
+            return Err("User-Agent must not be empty".to_string());
+        }
+        HeaderValue::from_str(&user_agent)
+            .map_err(|error| format!("Invalid User-Agent: {error}"))?;
+        self.user_agent = user_agent;
+        Ok(self)
+    }
+
+    /// Set whether a non-browser client should send `x-mobile: 1`.
+    ///
+    /// Defaults to true for backwards compatibility. Desktop clients can pass
+    /// false to omit the mobile marker while retaining native authentication
+    /// (`_is_native=1`, `x-no-origin: 1`, and the Authorization header).
+    /// This setting has no effect on browser clients.
+    pub fn with_is_mobile(mut self, is_mobile: bool) -> Self {
+        self.is_mobile = is_mobile;
+        self
     }
 
     /// Override the Clerk API version header (`Clerk-API-Version`).
@@ -324,6 +352,7 @@ impl Default for ClerkFapiConfiguration {
             instance_type: String::new(),
             frontend_api: String::new(),
             user_agent: format!("{NAME}/{VERSION}"),
+            is_mobile: true,
             store: Arc::new(DefaultStore::default()),
             store_prefix: "ClerkFapi:".to_string(),
             kind: ClientKind::NonBrowser,
