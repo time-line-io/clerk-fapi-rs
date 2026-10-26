@@ -214,13 +214,13 @@ impl ClerkFapiConfiguration {
     /// Defaults to this SDK's name and version. Browsers manage their own
     /// User-Agent; this setting is intended for non-browser clients.
     pub fn with_user_agent(mut self, user_agent: impl Into<String>) -> Result<Self, String> {
-        let user_agent = user_agent.into();
-        if user_agent.trim().is_empty() {
+        let user_agent_string = user_agent.into();
+        if user_agent_string.trim().is_empty() {
             return Err("User-Agent must not be empty".to_string());
         }
-        HeaderValue::from_str(&user_agent)
+        HeaderValue::from_str(&user_agent_string)
             .map_err(|error| format!("Invalid User-Agent: {error}"))?;
-        self.user_agent = user_agent;
+        self.user_agent = user_agent_string;
         Ok(self)
     }
 
