@@ -29,6 +29,24 @@ always reflected the reality in all of the cases. Those cases where I've run
 into are fixed by hand. The models and api methods are also exported so those
 can be used directly as well.
 
+### Native client identification
+
+Non-browser clients default to the SDK's User-Agent and `x-mobile: 1` for
+backwards compatibility. Applications can optionally supply their own User-Agent
+and mobile classification. For example, a desktop application can use:
+
+```rust
+let config = ClerkFapiConfiguration::new(public_key, None, None)?
+    .with_user_agent("ExampleApp/1.0.0 (macOS; aarch64)")?
+    .with_is_mobile(false);
+```
+
+The caller supplies all application and platform information; the SDK does not
+detect it. `with_user_agent` rejects empty or invalid HTTP header values.
+`with_is_mobile(false)` omits `x-mobile` while retaining native token
+authentication, including `_is_native=1` and `x-no-origin: 1`. Browser clients
+never receive these native headers, regardless of this setting.
+
 ### State
 
 By default the state is stored in in `HashMap` but if one wants to add some

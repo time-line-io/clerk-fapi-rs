@@ -32,7 +32,9 @@ impl ClerkFapiClient {
         // Create default headers
         let mut headers = HeaderMap::new();
         if config.kind == ClientKind::NonBrowser {
-            headers.insert("x-mobile", HeaderValue::from_static("1"));
+            if config.is_mobile {
+                headers.insert("x-mobile", HeaderValue::from_static("1"));
+            }
             headers.insert("x-no-origin", HeaderValue::from_static("1"));
         }
 
